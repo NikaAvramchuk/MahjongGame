@@ -6,45 +6,73 @@ public class Board {
                       zCoord = 5;
 
     //Mapa naszej planszy do gry w trójwymiarze
-    private int[][][] board =    {  {   {0,1,1,1,1,1,1,1,1,1,1,1,1,0,0},	// [x][y][0]
-                                        {0,0,0,1,1,1,1,1,1,1,1,0,0,0,0},
-                                        {0,0,1,1,1,1,1,1,1,1,1,1,0,0,0},
-                                        {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
-                                        {0,0,1,1,1,1,1,1,1,1,1,1,0,0,0},
-                                        {0,0,0,1,1,1,1,1,1,1,1,0,0,0,0},
-                                        {0,1,1,1,1,1,1,1,1,1,1,1,1,0,0}},
-                                    {   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},	// [x][y][1]
-                                        {0,0,0,0,1,1,1,1,1,1,0,0,0,0,0},
-                                        {0,0,0,0,1,1,1,1,1,1,0,0,0,0,0},
-                                        {0,0,0,0,1,1,1,1,1,1,0,0,0,0,0},
-                                        {0,0,0,0,1,1,1,1,1,1,0,0,0,0,0},
-                                        {0,0,0,0,1,1,1,1,1,1,0,0,0,0,0},
-                                        {0,0,0,0,1,1,1,1,1,1,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},
-                                    {   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},	// [x][y][2]
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,1,1,1,1,0,0,0,0,0,0},
-                                        {0,0,0,0,0,1,1,1,1,0,0,0,0,0,0},
-                                        {0,0,0,0,0,1,1,1,1,0,0,0,0,0,0},
-                                        {0,0,0,0,0,1,1,1,1,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},
-                                    {   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},    // [x][y][3]
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,1,1,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,1,1,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},
-                                    {   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},     // [x][y][4]
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}},
+    private boolean [][][] board = {
+            {
+                    {false,true,true,true,true,true,true,true,true,true,true,true,true,false,false},
+                    {false,false,false,true,true,true,true,true,true,true,true,false,false,false,false},
+                    {false,false,true,true,true,true,true,true,true,true,true,true,false,false,false},
+                    {false,true,true,true,true,true,true,true,true,true,true,true,true,true,true},
+                    {true,true,true,true,true,true,true,true,true,true,true,true,true,false,false},
+                    {false,false,true,true,true,true,true,true,true,true,true,true,false,false,false},
+                    {false,false,false,true,true,true,true,true,true,true,true,false,false,false,false},
+                    {false,true,true,true,true,true,true,true,true,true,true,true,true,false,false}
+            },
+            {
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,true,true,true,true,true,true,false,false,false,false,false},
+                    {false,false,false,false,true,true,true,true,true,true,false,false,false,false,false},
+                    {false,false,false,false,true,true,true,true,true,true,false,false,false,false,false},
+                    {false,false,false,false,true,true,true,true,true,true,false,false,false,false,false},
+                    {false,false,false,false,true,true,true,true,true,true,false,false,false,false,false},
+                    {false,false,false,false,true,true,true,true,true,true,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}
+            },
+            {
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,true,true,true,true,false,false,false,false,false,false},
+                    {false,false,false,false,false,true,true,true,true,false,false,false,false,false,false},
+                    {false,false,false,false,false,true,true,true,true,false,false,false,false,false,false},
+                    {false,false,false,false,false,true,true,true,true,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}
+
+            },
+            {
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,true,true,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,true,true,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}
+            },
+            {
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,true,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                    {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}
+            },
     };
+
+    public void createBoard () {
+        for (int z = 0; z<xCoord; z++) {
+            for (int y = 0; y<yCoord; y++)
+                for (int x = 0; x<zCoord; x++)
+                    if (board[x][y][z] = true)
+
+
+
+
+
+
+    }
+
+
+
 }
