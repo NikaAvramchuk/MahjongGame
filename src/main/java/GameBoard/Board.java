@@ -1,6 +1,11 @@
 package GameBoard;
 
 public class Board {
+    private final int xCoord = 15,
+                      yCoord = 8,
+                      zCoord = 5;
+
+    //Mapa naszej planszy do gry w trójwymiarze
     private int[][][] board =    {  {   {0,1,1,1,1,1,1,1,1,1,1,1,1,0,0},	// [x][y][0]
                                         {0,0,0,1,1,1,1,1,1,1,1,0,0,0,0},
                                         {0,0,1,1,1,1,1,1,1,1,1,1,0,0,0},
