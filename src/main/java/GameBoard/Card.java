@@ -1,9 +1,16 @@
 package GameBoard;
 
-public class Card {
+import javax.swing.*;
+import java.util.ArrayList;
+
+public class Card extends JButton {
     private int x;
     private int y;
     private int z;
+
+    private int Id;
+
+    public static ArrayList <Card> cardArrayList = new ArrayList<Card>();
 
 
     public int getX() {
@@ -30,11 +37,6 @@ public class Card {
         this.z = z;
     }
 
-    public boolean isClickable() {
-        return isClickable;
-    }
 
-    public void setClickable(boolean clickable) {
-        isClickable = clickable;
-    }
+
 }
