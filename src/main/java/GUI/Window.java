@@ -13,8 +13,7 @@ public class Window extends JFrame {
         setResizable(false);
 
         Panel panel = new Panel();
-        add(panel);
-
+        add(panel, BorderLayout.CENTER);
 
 
     }

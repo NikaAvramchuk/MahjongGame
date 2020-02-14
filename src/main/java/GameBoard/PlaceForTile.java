@@ -18,7 +18,7 @@ public class PlaceForTile {
     }
 
     public PlaceForTile(boolean cardIsHere) {
-        cardIsHere = false;
+        cardIsHere = cardIsHere;
     }
 
     public boolean isCardIsHere() {
