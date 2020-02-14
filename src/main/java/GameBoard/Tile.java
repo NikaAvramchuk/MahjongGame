@@ -66,6 +66,10 @@ public class Tile extends JButton {
         for (int i = 0; i < 144; i++){
             Tile t = new Tile();
             allTiles.add(t);
+            if(i%2==0)
+                t.setId(0);
+            else
+                t.setId(1);
         }
     }
 

@@ -1,6 +1,7 @@
 package GUI;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Window extends JFrame {
     public Window (){
@@ -10,8 +11,7 @@ public class Window extends JFrame {
         setResizable(false);
 
         Panel panel = new Panel();
-        add(panel);
-
+        add(panel, BorderLayout.CENTER);
 
     }
 

@@ -14,21 +14,31 @@ public class Panel extends JPanel {
     Board board = new Board();
     ArrayList<Tile> allTilesinBoard = new ArrayList<Tile>();
     Tile [] remowedTiles = new Tile[2];
+    ArrayList<Tile> compareTiles = new ArrayList<Tile>();
+    JButton jButton1;
+    JButton jButton2;
+    JButton jButton3;
+    JButton jButton4;
+
+
+
 
     public Panel() {
         setLayout(null);
-        Tile.createAllTiles();
         createBoard();
+        setVisible(true);
+
     }
 
     public void createBoard() {
         Random random = new Random();
+        Tile.createAllTiles();
 
         for (int z = 0; z < Board.zCoord; z++) {
             for (int y = 0; y < Board.yCoord; y++)
                 for (int x = 0; x < Board.xCoord; x++) {
-                    if (Board.boardNew[z][y][x] && !(Tile.allTiles.isEmpty())) {
-                        Tile t = Tile.allTiles.get(random.nextInt(Tile.allTiles.size()));
+                    if (Board.boardNew[z][y][x]==1 && !(Tile.allTiles.isEmpty())) {
+                        final Tile t = Tile.allTiles.get(random.nextInt(Tile.allTiles.size()));
                         t.setCoords(z,y,x);
                         if ((x==1 && y==0 && z==0) || (x==12 && y==0 && z==0))
                             t.setEnable(true);
@@ -58,15 +68,28 @@ public class Panel extends JPanel {
                             t.setEnable(true);
                         else
                             t.setEnable(false);
-                        t.setBounds(setBounds(t)[0],setBounds(t)[1],40,60);
+                        t.setBounds(setBounds(t)[0],setBounds(t)[1],50,70);
+                        t.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                    boolean result = false;
+                                    compareTiles.add(t);
+                                    if (compareTiles.size() == 2) {
+                                        result = compareTilesMethod(compareTiles.get(0), compareTiles.get(1));
+                                        compareTiles.remove(1);
+                                        compareTiles.remove(0);
+                                    }
+                                }
+                        });
                         add(t);
+                        allTilesinBoard.add(t);
                         Tile.allTiles.remove(t);
                     }
                 }
+//            setEnableds(allTilesinBoard);
         }
     }
 
-    public void removeTiles(Tile firstSelected, Tile secondSelected) {
+    public boolean compareTilesMethod(Tile firstSelected, Tile secondSelected) {
         if (firstSelected.getId() == secondSelected.getId()) {
             remowedTiles[0]= firstSelected;
             remowedTiles[1] = secondSelected;
@@ -74,23 +97,27 @@ public class Panel extends JPanel {
             remove(secondSelected);
             allTilesinBoard.remove(firstSelected);
             allTilesinBoard.remove(secondSelected);
-            Board.boardNew[firstSelected.getZ()][firstSelected.getY()][firstSelected.getX()]=false;
-            Board.boardNew[secondSelected.getZ()][secondSelected.getY()][secondSelected.getX()]=false;
-            if(Board.boardNew[firstSelected.getZ()][firstSelected.getY()][firstSelected.getX() + 1])
+            Board.boardNew[firstSelected.getZ()][firstSelected.getY()][firstSelected.getX()]=0;
+            Board.boardNew[secondSelected.getZ()][secondSelected.getY()][secondSelected.getX()]=0;
+            if(Board.boardNew[firstSelected.getZ()][firstSelected.getY()][firstSelected.getX() + 1]==0)
                 findTile(allTilesinBoard,firstSelected.getZ(),firstSelected.getY(),(firstSelected.getX()+1)).setEnable(true);
-            else
+            else if (Board.boardNew[firstSelected.getZ()][firstSelected.getY()][firstSelected.getX() -1]==0)
                 findTile(allTilesinBoard,firstSelected.getZ(),firstSelected.getY(),(firstSelected.getX()-1)).setEnable(true);
+            repaint();
+            revalidate();
+            return true;
         }
-        setEnabled(allTilesinBoard);
+
+        return false;
     }
 
-    public void setEnabled (ArrayList<Tile> allTilesinBoard) {
-        for (Tile tile: allTilesinBoard)
-            if (tile.isEnable())
-                tile.setEnabled(true);
-            else
-                tile.setEnabled(false);
-    }
+//    public void setEnableds (ArrayList<Tile> allTilesinBoard) {
+//        for (Tile tile: allTilesinBoard)
+//            if (tile.isEnable())
+//                tile.setEnabled(true);
+//            else
+//                tile.setEnabled(false);
+//    }
 
     public Tile findTile (ArrayList<Tile> allTilesinBoard, int z, int y, int x){
         Tile findTile = new Tile();
@@ -114,25 +141,25 @@ public class Panel extends JPanel {
         int x=0;
         int y=0;
         if (tile.getZ()==0) {
-            x = 100 + (40 * tile.getX());
-            y = 150 + (60 * tile.getY());
+            x = 100 + (50 * tile.getX());
+            y = 100 + (70 * tile.getY());
         }
-        else if (tile.getZ()==1) {
-            x = 260 + (40 * tile.getX());
-            y = 210 + (60 * tile.getY());
-        }
-        else if (tile.getZ()==2) {
-            x = 300 + (40 * tile.getX());
-            y = 270 + (60 * tile.getY());
-        }
-        else if (tile.getZ()==3) {
-            x = 340 + (40 * tile.getX());
-            y = 330 + (60 * tile.getY());
-        }
-        else if (tile.getZ()==4) {
-            x = 340 + (40 * tile.getX());
-            y = 330 + (60 * tile.getY());
-        }
+//        else if (tile.getZ()==1) {
+//            x = 260 + (40 * tile.getX());
+//            y = 210 + (60 * tile.getY());
+//        }
+//        else if (tile.getZ()==2) {
+//            x = 300 + (40 * tile.getX());
+//            y = 270 + (60 * tile.getY());
+//        }
+//        else if (tile.getZ()==3) {
+//            x = 340 + (40 * tile.getX());
+//            y = 330 + (60 * tile.getY());
+//        }
+//        else if (tile.getZ()==4) {
+//            x = 340 + (40 * tile.getX());
+//            y = 330 + (60 * tile.getY());
+//        }
         tablica[0] = x;
         tablica[1]= y;
 
