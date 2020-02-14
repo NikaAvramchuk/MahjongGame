@@ -4,8 +4,10 @@ import GameBoard.SizeOfTiles;
 import GameBoard.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -19,7 +21,24 @@ public class Panel extends JPanel {
         setLayout(null);
         Tile.createAllTiles();
         createBoard();
+        try {
+            final JButton test = new JButton(new ImageIcon(ResizeImages.resizeImage("C:\\Users\\Marcin\\Desktop\\tilesfinally.png", "C:\\Users\\Marcin\\Desktop\\Cmd\\tilesfixed2.png")));
+            JButton test2 = new JButton(new ImageIcon(ResizeImages.resizeImage("C:\\Users\\Marcin\\Desktop\\tile1.png", "C:\\Users\\Marcin\\Desktop\\Cmd\\tile1fixed.png")));
+
+
+            test2.setBounds(66, 10, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+            test.setBounds(20, 10, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+            test.setBorderPainted(false);
+            test2.setBorderPainted(false);
+            add(test);
+            add(test2);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
+
+    
 
     public void createBoard() {
         Random random = new Random();
@@ -82,6 +101,58 @@ public class Panel extends JPanel {
                 findTile(allTilesinBoard,firstSelected.getZ(),firstSelected.getY(),(firstSelected.getX()-1)).setEnable(true);
         }
         setEnabled(allTilesinBoard);
+    }
+
+    public void paintComponent(Graphics g){
+        Graphics2D g2 = (Graphics2D)g;
+        //left
+        Polygon ml = new Polygon();
+        ml.addPoint(20, 10);
+        ml.addPoint(15, 20);
+        ml.addPoint(15, 80);
+        ml.addPoint(20, 70);
+        g2.setPaint(Color.GRAY);
+        g2.fillPolygon(ml);
+
+
+
+        //Middle-bottom
+        Polygon mb = new Polygon();
+        mb.addPoint(20, 70);
+        mb.addPoint(15, 80);
+        mb.addPoint(61, 80);
+        mb.addPoint(66, 70);
+        g2.setPaint(Color.GRAY);
+
+        g2.fillPolygon(mb);
+
+
+        //top layer
+        Rectangle2D top = new Rectangle2D.Double(20, 10, 46, 60);
+
+        Polygon ml2 = new Polygon();
+        ml2.addPoint(66, 10);
+        ml2.addPoint(61, 20);
+        ml2.addPoint(61, 80);
+        ml2.addPoint(66, 70);
+        g2.setPaint(Color.GRAY);
+        g2.fillPolygon(ml2);
+
+
+        //Middle-bottom
+        Polygon mb2 = new Polygon();
+        mb2.addPoint(66, 70);
+        mb2.addPoint(61, 80);
+        mb2.addPoint(107, 80);
+        mb2.addPoint(113, 70);
+        g2.setPaint(Color.GRAY);
+
+        g2.fillPolygon(mb2);
+
+
+        //top layer
+        Rectangle2D top2 = new Rectangle2D.Double(66, 10, 46, 60);
+        g2.fill(top);
     }
 
     public void setEnabled (ArrayList<Tile> allTilesinBoard) {
