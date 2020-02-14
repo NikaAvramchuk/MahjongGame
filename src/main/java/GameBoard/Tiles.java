@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Tiles extends JPanel {
+public class Tiles {
 
     static ArrayList<JButton> allTiles = new ArrayList<JButton>();
 
@@ -29,6 +29,10 @@ public class Tiles extends JPanel {
                 counter++;
             }
         }
+
+    }
+
+    public static void setCoordinates(int [][][] table){
 
     }
 

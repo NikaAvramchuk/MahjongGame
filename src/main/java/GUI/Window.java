@@ -9,6 +9,7 @@ public class Window extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         Panel panel = new Panel();
         add(panel);
+        panel.createBoard();
 
 
     }
