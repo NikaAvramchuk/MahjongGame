@@ -11,6 +11,7 @@ public class Board {
             zCoord = 5;
 
     //Mapa naszej planszy do gry w trójwymiarze
+
     public static boolean[][][] boardNew = {
             {
                     {false, true, true, true, true, true, true, true, true, true, true, true, true, false, false},
@@ -64,8 +65,5 @@ public class Board {
                     {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}
             },
     };
-
-
-
 
 }

@@ -5,6 +5,7 @@ public enum SizeOfTiles {
 
     private final int value;
 
+
     SizeOfTiles(int value){
         this.value = value;
     }
@@ -12,4 +13,5 @@ public enum SizeOfTiles {
     public int getValue() {
         return value;
     }
+
 }
