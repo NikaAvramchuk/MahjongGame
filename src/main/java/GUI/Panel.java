@@ -59,8 +59,7 @@ public class Panel extends JPanel {
             add(test5);
             add(test6);
             add(test7);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -148,7 +147,7 @@ public class Panel extends JPanel {
         return false;
     }
 
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         int y = 10;
         for (int x = 20; x < 322; x += 46) {
             Graphics2D g2d = (Graphics2D) g;
@@ -213,14 +212,14 @@ public class Panel extends JPanel {
 //        g2.fill(top);
     }
 
-        public void setEnabled (ArrayList < Tile > allTilesinBoard) {
-            for (Tile tile : allTilesinBoard)
-                if (tile.isEnable())
-                    tile.setEnabled(true);
-                else
-                    tile.setEnabled(false);
+    public void setEnabled(ArrayList<Tile> allTilesinBoard) {
+        for (Tile tile : allTilesinBoard)
+            if (tile.isEnable())
+                tile.setEnabled(true);
+            else
+                tile.setEnabled(false);
 
-        }
+    }
 
 //    public void setEnableds (ArrayList<Tile> allTilesinBoard) {
 //        for (Tile tile: allTilesinBoard)
@@ -230,31 +229,31 @@ public class Panel extends JPanel {
 //                tile.setEnabled(false);
 //    }
 
-        public Tile findTile (ArrayList < Tile > allTilesinBoard,int z, int y, int x){
-            Tile findTile = new Tile();
-            for (Tile tile : allTilesinBoard) {
-                if (tile.getX() == x && tile.getY() == y && tile.getZ() == z)
-                    findTile = tile;
-            }
-            return findTile;
-
+    public Tile findTile(ArrayList<Tile> allTilesinBoard, int z, int y, int x) {
+        Tile findTile = new Tile();
+        for (Tile tile : allTilesinBoard) {
+            if (tile.getX() == x && tile.getY() == y && tile.getZ() == z)
+                findTile = tile;
         }
+        return findTile;
 
-        public void getBack () {
-            add(remowedTiles[0]);
-            add(remowedTiles[1]);
-            allTilesinBoard.add(remowedTiles[0]);
-            allTilesinBoard.add(remowedTiles[1]);
+    }
+
+    public void getBack() {
+        add(remowedTiles[0]);
+        add(remowedTiles[1]);
+        allTilesinBoard.add(remowedTiles[0]);
+        allTilesinBoard.add(remowedTiles[1]);
+    }
+
+    public int[] setBounds(Tile tile) {
+        int[] tablica = new int[2];
+        int x = 0;
+        int y = 0;
+        if (tile.getZ() == 0) {
+            x = 100 + (50 * tile.getX());
+            y = 100 + (70 * tile.getY());
         }
-
-        public int[] setBounds (Tile tile){
-            int[] tablica = new int[2];
-            int x = 0;
-            int y = 0;
-            if (tile.getZ() == 0) {
-                x = 100 + (50 * tile.getX());
-                y = 100 + (70 * tile.getY());
-            }
 //        else if (tile.getZ()==1) {
 //            x = 260 + (40 * tile.getX());
 //            y = 210 + (60 * tile.getY());
@@ -271,12 +270,13 @@ public class Panel extends JPanel {
 //            x = 340 + (40 * tile.getX());
 //            y = 330 + (60 * tile.getY());
 //        }
-            tablica[0] = x;
-            tablica[1] = y;
+        tablica[0] = x;
+        tablica[1] = y;
 
-            return tablica;
-
-        }
-
+        return tablica;
 
     }
+
+
+}
+
