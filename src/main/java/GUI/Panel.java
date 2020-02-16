@@ -32,6 +32,7 @@ public class Panel extends JPanel {
         setVisible(true);
 
 
+
         try {
             final JButton test = new JButton(new ImageIcon(ResizeImages.resizeImage("C:\\Users\\Marcin\\Desktop\\tilesfinally.png", "C:\\Users\\Marcin\\Desktop\\Cmd\\tilesfixed2.png")));
             JButton test2 = new JButton(new ImageIcon(ResizeImages.resizeImage("C:\\Users\\Marcin\\Desktop\\tile1.png", "C:\\Users\\Marcin\\Desktop\\Cmd\\tile1fixed.png")));
@@ -148,13 +149,10 @@ public class Panel extends JPanel {
         return false;
     }
 
-<<<<<<< HEAD
+
     public void paintComponent(Graphics g) {
         int y = 10;
-=======
-    public void paintComponent(Graphics g){
 
->>>>>>> c90b3ba936a6a99ba0cb5a91bd007fcbc3e2536f
         for (int x = 20; x < 322; x += 46) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -191,6 +189,8 @@ public class Panel extends JPanel {
             Rectangle2D top = new Rectangle2D.Double(x, y, 46, 60);
         }
         }
+
+
 //        Polygon ml2 = new Polygon();
 //        ml2.addPoint(66, 10);
 //        ml2.addPoint(61, 20);
@@ -218,16 +218,17 @@ public class Panel extends JPanel {
 //        Rectangle2D top2 = new Rectangle2D.Double(66, 10, 46, 60);
 //        g2.fill(top);
 
-//    }
 
-    public void setEnabled(ArrayList<Tile> allTilesinBoard) {
-        for (Tile tile : allTilesinBoard)
-            if (tile.isEnable())
-                tile.setEnabled(true);
-            else
-                tile.setEnabled(false);
 
-    }
+
+        public void setEnabled (ArrayList < Tile > allTilesinBoard) {
+            for (Tile tile : allTilesinBoard)
+                if (tile.isEnable())
+                    tile.setEnabled(true);
+                else
+                    tile.setEnabled(false);
+
+        }
 
 //    public void setEnableds (ArrayList<Tile> allTilesinBoard) {
 //        for (Tile tile: allTilesinBoard)
@@ -237,32 +238,32 @@ public class Panel extends JPanel {
 //                tile.setEnabled(false);
 //    }
 
-    public Tile findTile(ArrayList<Tile> allTilesinBoard, int z, int y, int x) {
-        Tile findTile = new Tile();
-        for (Tile tile : allTilesinBoard) {
-            if (tile.getX() == x && tile.getY() == y && tile.getZ() == z)
-                findTile = tile;
+        public Tile findTile (ArrayList < Tile > allTilesinBoard,int z, int y, int x){
+            Tile findTile = new Tile();
+            for (Tile tile : allTilesinBoard) {
+                if (tile.getX() == x && tile.getY() == y && tile.getZ() == z)
+                    findTile = tile;
+            }
+            return findTile;
+
         }
-        return findTile;
 
-    }
 
-<<<<<<< HEAD
-    public void getBack() {
-        add(remowedTiles[0]);
-        add(remowedTiles[1]);
-        allTilesinBoard.add(remowedTiles[0]);
-        allTilesinBoard.add(remowedTiles[1]);
-    }
-
-    public int[] setBounds(Tile tile) {
-        int[] tablica = new int[2];
-        int x = 0;
-        int y = 0;
-        if (tile.getZ() == 0) {
-            x = 100 + (50 * tile.getX());
-            y = 100 + (70 * tile.getY());
+        public void getBack () {
+            add(remowedTiles[0]);
+            add(remowedTiles[1]);
+            allTilesinBoard.add(remowedTiles[0]);
+            allTilesinBoard.add(remowedTiles[1]);
         }
+
+//        public int[] setBounds (Tile tile){
+//            int[] tablica = new int[2];
+//            int x = 0;
+//            int y = 0;
+//            if (tile.getZ() == 0) {
+//                x = 100 + (50 * tile.getX());
+//                y = 100 + (70 * tile.getY());
+//            }
 //        else if (tile.getZ()==1) {
 //            x = 260 + (40 * tile.getX());
 //            y = 210 + (60 * tile.getY());
@@ -279,41 +280,39 @@ public class Panel extends JPanel {
 //            x = 340 + (40 * tile.getX());
 //            y = 330 + (60 * tile.getY());
 //        }
-        tablica[0] = x;
-        tablica[1] = y;
-=======
-        public int[] setBounds (Tile tile){
-            int[] tablica = new int[2];
-            int x = 0;
-            int y = 0;
-            if (tile.getZ() == 0) {
-                x = 100 + (50 * tile.getX());
-                y = 100 + (70 * tile.getY());
+//            tablica[0] = x;
+//            tablica[1] = y;
+
+            public int[] setBounds (Tile tile){
+                int[] tablica = new int[2];
+                int x = 0;
+                int y = 0;
+                if (tile.getZ() == 0) {
+                    x = 100 + (50 * tile.getX());
+                    y = 100 + (70 * tile.getY());
+                } else if (tile.getZ() == 1) {
+                    x = 260 + (40 * tile.getX());
+                    y = 210 + (60 * tile.getY());
+                } else if (tile.getZ() == 2) {
+                    x = 300 + (40 * tile.getX());
+                    y = 270 + (60 * tile.getY());
+                } else if (tile.getZ() == 3) {
+                    x = 340 + (40 * tile.getX());
+                    y = 330 + (60 * tile.getY());
+                } else if (tile.getZ() == 4) {
+                    x = 340 + (40 * tile.getX());
+                    y = 330 + (60 * tile.getY());
+                }
+                tablica[0] = x;
+                tablica[1] = y;
+
+                return tablica;
             }
-        else if (tile.getZ()==1) {
-            x = 260 + (40 * tile.getX());
-            y = 210 + (60 * tile.getY());
-        }
-        else if (tile.getZ()==2) {
-            x = 300 + (40 * tile.getX());
-            y = 270 + (60 * tile.getY());
-        }
-        else if (tile.getZ()==3) {
-            x = 340 + (40 * tile.getX());
-            y = 330 + (60 * tile.getY());
-        }
-        else if (tile.getZ()==4) {
-            x = 340 + (40 * tile.getX());
-            y = 330 + (60 * tile.getY());
-        }
-            tablica[0] = x;
-            tablica[1] = y;
->>>>>>> c90b3ba936a6a99ba0cb5a91bd007fcbc3e2536f
-
-        return tablica;
-
-    }
-
-
 }
+
+
+
+
+
+
 

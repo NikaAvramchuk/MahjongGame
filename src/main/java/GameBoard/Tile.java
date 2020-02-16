@@ -75,6 +75,7 @@ public class Tile extends JButton {
     }
 
 
+
     /*statyczne pole do parowania kafelków (nie użyłem metody, bo jeżeli metoda parowania kafelków
     zostałaby użyta ponownie gdzieś w kodzie, to zepsułoby to całą aplikację, ponieważ lista z kafelkami
     będzie kilkukrotnie tasowana na początku i w trakcie gry*/
