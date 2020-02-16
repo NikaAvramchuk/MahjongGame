@@ -22,6 +22,9 @@ public class Panel extends JPanel {
     JButton jButton3;
     JButton jButton4;
 
+    int x = 20;
+    int y = 10;
+
 
     public Panel() {
         setLayout(null);
@@ -44,7 +47,7 @@ public class Panel extends JPanel {
             test4.setBounds(158, 10, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
             test3.setBounds(112, 10, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
             test2.setBounds(66, 10, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
-            test.setBounds(20, 10, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+            test.setBounds(x, y, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
             test.setBorderPainted(false);
             test2.setBorderPainted(false);
             test3.setBorderPainted(false);
@@ -103,7 +106,7 @@ public class Panel extends JPanel {
                             t.setEnable(true);
                         else
                             t.setEnable(false);
-                        t.setBounds(setBounds(t)[0], setBounds(t)[1], 50, 70);
+                        t.setBounds(setBounds(t)[0], setBounds(t)[1], 46, 60);
                         t.addActionListener(new ActionListener() {
                             public void actionPerformed(ActionEvent e) {
                                 boolean result = false;
@@ -138,8 +141,6 @@ public class Panel extends JPanel {
                 findTile(allTilesinBoard, firstSelected.getZ(), firstSelected.getY(), (firstSelected.getX() + 1)).setEnable(true);
             else if (Board.boardNew[firstSelected.getZ()][firstSelected.getY()][firstSelected.getX() - 1] == 0)
                 findTile(allTilesinBoard, firstSelected.getZ(), firstSelected.getY(), (firstSelected.getX() - 1)).setEnable(true);
-            repaint();
-            revalidate();
             return true;
         }
 
@@ -147,8 +148,13 @@ public class Panel extends JPanel {
         return false;
     }
 
+<<<<<<< HEAD
     public void paintComponent(Graphics g) {
         int y = 10;
+=======
+    public void paintComponent(Graphics g){
+
+>>>>>>> c90b3ba936a6a99ba0cb5a91bd007fcbc3e2536f
         for (int x = 20; x < 322; x += 46) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -184,6 +190,7 @@ public class Panel extends JPanel {
             //top layer
             Rectangle2D top = new Rectangle2D.Double(x, y, 46, 60);
         }
+        }
 //        Polygon ml2 = new Polygon();
 //        ml2.addPoint(66, 10);
 //        ml2.addPoint(61, 20);
@@ -210,7 +217,8 @@ public class Panel extends JPanel {
 //        //top layer
 //        Rectangle2D top2 = new Rectangle2D.Double(66, 10, 46, 60);
 //        g2.fill(top);
-    }
+
+//    }
 
     public void setEnabled(ArrayList<Tile> allTilesinBoard) {
         for (Tile tile : allTilesinBoard)
@@ -239,6 +247,7 @@ public class Panel extends JPanel {
 
     }
 
+<<<<<<< HEAD
     public void getBack() {
         add(remowedTiles[0]);
         add(remowedTiles[1]);
@@ -272,6 +281,34 @@ public class Panel extends JPanel {
 //        }
         tablica[0] = x;
         tablica[1] = y;
+=======
+        public int[] setBounds (Tile tile){
+            int[] tablica = new int[2];
+            int x = 0;
+            int y = 0;
+            if (tile.getZ() == 0) {
+                x = 100 + (50 * tile.getX());
+                y = 100 + (70 * tile.getY());
+            }
+        else if (tile.getZ()==1) {
+            x = 260 + (40 * tile.getX());
+            y = 210 + (60 * tile.getY());
+        }
+        else if (tile.getZ()==2) {
+            x = 300 + (40 * tile.getX());
+            y = 270 + (60 * tile.getY());
+        }
+        else if (tile.getZ()==3) {
+            x = 340 + (40 * tile.getX());
+            y = 330 + (60 * tile.getY());
+        }
+        else if (tile.getZ()==4) {
+            x = 340 + (40 * tile.getX());
+            y = 330 + (60 * tile.getY());
+        }
+            tablica[0] = x;
+            tablica[1] = y;
+>>>>>>> c90b3ba936a6a99ba0cb5a91bd007fcbc3e2536f
 
         return tablica;
 
