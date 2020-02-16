@@ -73,16 +73,6 @@ public class Tile extends JButton {
         }
     }
 
-    public static ArrayList<Tile> createAllTilesinBoard(){
-        ArrayList<Tile> tiles= new ArrayList<Tile>();
-        for (int i = 0; i < 144; i++){
-            Tile t = new Tile();
-            tiles.add(t);
-        }
-
-        return tiles;
-    }
-
 
     /*statyczne pole do parowania kafelków (nie użyłem metody, bo jeżeli metoda parowania kafelków
     zostałaby użyta ponownie gdzieś w kodzie, to zepsułoby to całą aplikację, ponieważ lista z kafelkami

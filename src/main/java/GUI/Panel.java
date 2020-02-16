@@ -22,6 +22,9 @@ public class Panel extends JPanel {
     JButton jButton3;
     JButton jButton4;
 
+    int x = 20;
+    int y = 10;
+
 
     public Panel() {
         setLayout(null);
@@ -44,7 +47,7 @@ public class Panel extends JPanel {
             test4.setBounds(158, 10, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
             test3.setBounds(112, 10, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
             test2.setBounds(66, 10, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
-            test.setBounds(20, 10, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+            test.setBounds(x, y, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
             test.setBorderPainted(false);
             test2.setBorderPainted(false);
             test3.setBorderPainted(false);
@@ -149,7 +152,7 @@ public class Panel extends JPanel {
     }
 
     public void paintComponent(Graphics g){
-        int y = 10;
+
         for (int x = 20; x < 322; x += 46) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -185,6 +188,7 @@ public class Panel extends JPanel {
             //top layer
             Rectangle2D top = new Rectangle2D.Double(x, y, 46, 60);
         }
+        }
 //        Polygon ml2 = new Polygon();
 //        ml2.addPoint(66, 10);
 //        ml2.addPoint(61, 20);
@@ -211,7 +215,8 @@ public class Panel extends JPanel {
 //        //top layer
 //        Rectangle2D top2 = new Rectangle2D.Double(66, 10, 46, 60);
 //        g2.fill(top);
-    }
+
+//    }
 
         public void setEnabled (ArrayList < Tile > allTilesinBoard) {
             for (Tile tile : allTilesinBoard)

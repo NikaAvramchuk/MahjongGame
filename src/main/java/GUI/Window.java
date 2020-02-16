@@ -5,9 +5,7 @@ import java.awt.*;
 
 public class Window extends JFrame {
     public Window (){
-        Dimension dimension = new Dimension(1000, 800);
-        setPreferredSize(dimension);
-        pack();
+        setSize(1000, 800);
         setTitle("Mahjong");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
