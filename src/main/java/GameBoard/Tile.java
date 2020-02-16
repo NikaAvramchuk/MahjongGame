@@ -57,6 +57,7 @@ public class Tile extends JButton {
         this.z = z;
         this.y = y;
         this.x = x;
+        setVisible(true);
     }
 
 
