@@ -107,7 +107,7 @@ public class Panel extends JPanel {
                             t.setEnable(true);
                         else
                             t.setEnable(false);
-                        t.setBounds(setBounds(t)[0], setBounds(t)[1], 50, 70);
+                        t.setBounds(setBounds(t)[0], setBounds(t)[1], 46, 60);
                         t.addActionListener(new ActionListener() {
                             public void actionPerformed(ActionEvent e) {
                                 boolean result = false;
@@ -142,8 +142,6 @@ public class Panel extends JPanel {
                 findTile(allTilesinBoard, firstSelected.getZ(), firstSelected.getY(), (firstSelected.getX() + 1)).setEnable(true);
             else if (Board.boardNew[firstSelected.getZ()][firstSelected.getY()][firstSelected.getX() - 1] == 0)
                 findTile(allTilesinBoard, firstSelected.getZ(), firstSelected.getY(), (firstSelected.getX() - 1)).setEnable(true);
-            repaint();
-            revalidate();
             return true;
         }
 
@@ -260,22 +258,22 @@ public class Panel extends JPanel {
                 x = 100 + (50 * tile.getX());
                 y = 100 + (70 * tile.getY());
             }
-//        else if (tile.getZ()==1) {
-//            x = 260 + (40 * tile.getX());
-//            y = 210 + (60 * tile.getY());
-//        }
-//        else if (tile.getZ()==2) {
-//            x = 300 + (40 * tile.getX());
-//            y = 270 + (60 * tile.getY());
-//        }
-//        else if (tile.getZ()==3) {
-//            x = 340 + (40 * tile.getX());
-//            y = 330 + (60 * tile.getY());
-//        }
-//        else if (tile.getZ()==4) {
-//            x = 340 + (40 * tile.getX());
-//            y = 330 + (60 * tile.getY());
-//        }
+        else if (tile.getZ()==1) {
+            x = 260 + (40 * tile.getX());
+            y = 210 + (60 * tile.getY());
+        }
+        else if (tile.getZ()==2) {
+            x = 300 + (40 * tile.getX());
+            y = 270 + (60 * tile.getY());
+        }
+        else if (tile.getZ()==3) {
+            x = 340 + (40 * tile.getX());
+            y = 330 + (60 * tile.getY());
+        }
+        else if (tile.getZ()==4) {
+            x = 340 + (40 * tile.getX());
+            y = 330 + (60 * tile.getY());
+        }
             tablica[0] = x;
             tablica[1] = y;
 

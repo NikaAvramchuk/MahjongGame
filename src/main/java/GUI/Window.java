@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Window extends JFrame {
     public Window (){
-        setSize(1000, 800);
+        setSize(1000, 700);
         setTitle("Mahjong");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
