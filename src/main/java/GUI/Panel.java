@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.Random;
 
 public class Panel extends JPanel {
-    Board board = new Board();
     ArrayList<Tile> allTilesinBoard = new ArrayList<Tile>();
     Tile[] remowedTiles = new Tile[2];
     ArrayList<Tile> compareTiles = new ArrayList<Tile>();
@@ -27,12 +26,13 @@ public class Panel extends JPanel {
 
 
     public Panel() {
+        compareTiles = new ArrayList<Tile>();
         setLayout(null);
         createBoard();
+        setLocationOnBoard(allTilesinBoard);
+        addActionListen(allTilesinBoard);
+
         setVisible(true);
-
-
-
         try {
             final JButton test = new JButton(new ImageIcon(ResizeImages.resizeImage("C:\\Users\\Marcin\\Desktop\\tilesfinally.png", "C:\\Users\\Marcin\\Desktop\\Cmd\\tilesfixed2.png")));
             JButton test2 = new JButton(new ImageIcon(ResizeImages.resizeImage("C:\\Users\\Marcin\\Desktop\\tile1.png", "C:\\Users\\Marcin\\Desktop\\Cmd\\tile1fixed.png")));
@@ -66,6 +66,7 @@ public class Panel extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -107,50 +108,70 @@ public class Panel extends JPanel {
                             t.setEnable(true);
                         else
                             t.setEnable(false);
-                        t.setBounds(setBounds(t)[0], setBounds(t)[1], 46, 60);
-                        t.addActionListener(new ActionListener() {
-                            public void actionPerformed(ActionEvent e) {
-                                boolean result = false;
-                                compareTiles.add(t);
-                                if (compareTiles.size() == 2) {
-                                    result = compareTilesMethod(compareTiles.get(0), compareTiles.get(1));
-                                    compareTiles.remove(1);
-                                    compareTiles.remove(0);
-                                }
-                            }
-                        });
-                        add(t);
                         allTilesinBoard.add(t);
                         Tile.allTiles.remove(t);
                     }
                 }
-//            setEnableds(allTilesinBoard);
         }
     }
 
-    public boolean compareTilesMethod(Tile firstSelected, Tile secondSelected) {
-        if (firstSelected.getId() == secondSelected.getId()) {
-            remowedTiles[0] = firstSelected;
-            remowedTiles[1] = secondSelected;
-            remove(firstSelected);
-            remove(secondSelected);
-            allTilesinBoard.remove(firstSelected);
-            allTilesinBoard.remove(secondSelected);
-            Board.boardNew[firstSelected.getZ()][firstSelected.getY()][firstSelected.getX()] = 0;
-            Board.boardNew[secondSelected.getZ()][secondSelected.getY()][secondSelected.getX()] = 0;
-            if (Board.boardNew[firstSelected.getZ()][firstSelected.getY()][firstSelected.getX() + 1] == 0)
-                findTile(allTilesinBoard, firstSelected.getZ(), firstSelected.getY(), (firstSelected.getX() + 1)).setEnable(true);
-            else if (Board.boardNew[firstSelected.getZ()][firstSelected.getY()][firstSelected.getX() - 1] == 0)
-                findTile(allTilesinBoard, firstSelected.getZ(), firstSelected.getY(), (firstSelected.getX() - 1)).setEnable(true);
-            return true;
+    public void setLocationOnBoard(ArrayList<Tile> allTilesinBoard){
+        int x=0;
+        int y=0;
+        int z =0;
+
+        for (Tile tile: allTilesinBoard) {
+            z = tile.getTileZ();
+            x = 100 + (SizeOfTiles.WIDTH.getValue() * tile.getTileX());
+            y = 100 + (SizeOfTiles.HEIGHT.getValue() * tile.getTileY());
+            tile.setBounds(x, y, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+            add(tile);
         }
 
-
-        return false;
     }
 
 
-    public void paintComponent(Graphics g) {
+
+
+    public void compareTilesMethod(ArrayList<Tile> compareTiles) {
+        Tile t1 = compareTiles.get(0);
+        Tile t2 = compareTiles.get(1);
+        System.out.println(t1.getTileX()+ " " +  t1.getTileY() + " " + t1.getTileZ());
+        System.out.println(t2.getTileX()+ " " +  t2.getTileY() + " " + t2.getTileZ());
+        if (t1.getTileID() == t2.getTileID()) {
+            remove(t1);
+            remove(t2);
+            allTilesinBoard.remove(t1);
+            allTilesinBoard.remove(t2);
+        }
+        compareTiles.clear();
+    }
+
+    public void addActionListen (final ArrayList<Tile> allTilesinBoard) {
+        for (final Tile tile : allTilesinBoard) {
+            tile.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    compareTiles.add(tile);
+                    if (compareTiles.size() == 2) {
+                        Tile t1 = compareTiles.get(0);
+                        Tile t2 = compareTiles.get(1);
+                        System.out.println(t1.getTileX()+ " " +  t1.getTileY() + " " + t1.getTileZ());
+                        System.out.println(t2.getTileX()+ " " +  t2.getTileY() + " " + t2.getTileZ());
+                        if (t1.getTileID() == t2.getTileID()) {
+                            remove(t1);
+                            remove(t2);
+                            allTilesinBoard.remove(t1);
+                            allTilesinBoard.remove(t2);
+                        }
+                        compareTiles.clear();
+                    }
+                }
+            });
+        }
+    }
+
+
+        public void paintComponent(Graphics g) {
         int y = 10;
 
         for (int x = 20; x < 322; x += 46) {
@@ -241,7 +262,7 @@ public class Panel extends JPanel {
         public Tile findTile (ArrayList < Tile > allTilesinBoard,int z, int y, int x){
             Tile findTile = new Tile();
             for (Tile tile : allTilesinBoard) {
-                if (tile.getX() == x && tile.getY() == y && tile.getZ() == z)
+                if (tile.getTileX() == x && tile.getTileY() == y && tile.getTileZ() == z)
                     findTile = tile;
             }
             return findTile;
@@ -260,25 +281,25 @@ public class Panel extends JPanel {
 //            int[] tablica = new int[2];
 //            int x = 0;
 //            int y = 0;
-//            if (tile.getZ() == 0) {
-//                x = 100 + (50 * tile.getX());
-//                y = 100 + (70 * tile.getY());
+//            if (tile.getTileZ() == 0) {
+//                x = 100 + (50 * tile.getTileX());
+//                y = 100 + (70 * tile.getTileY());
 //            }
-//        else if (tile.getZ()==1) {
-//            x = 260 + (40 * tile.getX());
-//            y = 210 + (60 * tile.getY());
+//        else if (tile.getTileZ()==1) {
+//            x = 260 + (40 * tile.getTileX());
+//            y = 210 + (60 * tile.getTileY());
 //        }
-//        else if (tile.getZ()==2) {
-//            x = 300 + (40 * tile.getX());
-//            y = 270 + (60 * tile.getY());
+//        else if (tile.getTileZ()==2) {
+//            x = 300 + (40 * tile.getTileX());
+//            y = 270 + (60 * tile.getTileY());
 //        }
-//        else if (tile.getZ()==3) {
-//            x = 340 + (40 * tile.getX());
-//            y = 330 + (60 * tile.getY());
+//        else if (tile.getTileZ()==3) {
+//            x = 340 + (40 * tile.getTileX());
+//            y = 330 + (60 * tile.getTileY());
 //        }
-//        else if (tile.getZ()==4) {
-//            x = 340 + (40 * tile.getX());
-//            y = 330 + (60 * tile.getY());
+//        else if (tile.getTileZ()==4) {
+//            x = 340 + (40 * tile.getTileX());
+//            y = 330 + (60 * tile.getTileY());
 //        }
 //            tablica[0] = x;
 //            tablica[1] = y;
@@ -287,21 +308,21 @@ public class Panel extends JPanel {
                 int[] tablica = new int[2];
                 int x = 0;
                 int y = 0;
-                if (tile.getZ() == 0) {
-                    x = 100 + (50 * tile.getX());
-                    y = 100 + (70 * tile.getY());
-                } else if (tile.getZ() == 1) {
-                    x = 260 + (40 * tile.getX());
-                    y = 210 + (60 * tile.getY());
-                } else if (tile.getZ() == 2) {
-                    x = 300 + (40 * tile.getX());
-                    y = 270 + (60 * tile.getY());
-                } else if (tile.getZ() == 3) {
-                    x = 340 + (40 * tile.getX());
-                    y = 330 + (60 * tile.getY());
-                } else if (tile.getZ() == 4) {
-                    x = 340 + (40 * tile.getX());
-                    y = 330 + (60 * tile.getY());
+                if (tile.getTileZ() == 0) {
+                    x = 100 + (50 * tile.getTileX());
+                    y = 100 + (70 * tile.getTileY());
+                } else if (tile.getTileZ() == 1) {
+                    x = 260 + (40 * tile.getTileX());
+                    y = 210 + (60 * tile.getTileY());
+                } else if (tile.getTileZ() == 2) {
+                    x = 300 + (40 * tile.getTileX());
+                    y = 270 + (60 * tile.getTileY());
+                } else if (tile.getTileZ() == 3) {
+                    x = 340 + (40 * tile.getTileX());
+                    y = 330 + (60 * tile.getTileY());
+                } else if (tile.getTileZ() == 4) {
+                    x = 340 + (40 * tile.getTileX());
+                    y = 330 + (60 * tile.getTileY());
                 }
                 tablica[0] = x;
                 tablica[1] = y;
