@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class Panel extends JPanel {
+public class Panel extends JLayeredPane {
     ArrayList<Tile> allTilesinBoard = new ArrayList<Tile>();
     Tile[] remowedTiles = new Tile[2];
     ArrayList<Tile> compareTiles = new ArrayList<Tile>();
@@ -25,6 +25,7 @@ public class Panel extends JPanel {
 
     int x = 20;
     int y = 10;
+    Tile t;
 
 
     public Panel() {
@@ -33,6 +34,7 @@ public class Panel extends JPanel {
         setLayout(null);
         createBoard();
         setLocationOnBoard(allTilesinBoard);
+<<<<<<< HEAD
         addActionListen(allTilesinBoard);
        jButton1 = new JButton();
        jButton1.setBounds(500, 20, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
@@ -43,6 +45,19 @@ public class Panel extends JPanel {
         jButton2.setBounds(552, 20, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
         jButton2.setBorder(border);
         add(jButton2);
+=======
+
+       for (final Tile t: allTilesinBoard){
+           t.addActionListener(new ActionListener() {
+               public void actionPerformed(ActionEvent e) {
+                   System.out.println(t.getTileX() + " " + t.getTileY() + " " + t.getTileZ());
+                   remove(t);
+                   repaint();
+               }
+           });
+       }
+
+>>>>>>> afa336d439ad7cece62b526cc614ac1dbab38133
 
         setVisible(true);
 //        try {
@@ -83,45 +98,50 @@ public class Panel extends JPanel {
 
 
     public void createBoard() {
+        int i=0;
         Random random = new Random();
         Tile.createAllTiles();
 
-        for (int z = 0; z < Board.zCoord; z++) {
-            for (int y = 0; y < Board.yCoord; y++)
-                for (int x = 0; x < Board.xCoord; x++) {
+        for (int z = 0; z<Board.zCoord; z++) {
+            for (int y = 0; y<Board.yCoord; y++)
+                for (int x = Board.xCoord-1; x >=0; x--) {
                     if (Board.boardNew[z][y][x] == 1 && !(Tile.allTiles.isEmpty())) {
                         final Tile t = Tile.allTiles.get(random.nextInt(Tile.allTiles.size()));
-                        t.setCoords(z, y, x);
+                        t.setTileZ(z);
+                        t.setTileY(y);
+                        t.setTileX(x);
+                        t.setLevel(i++);
                         if ((x == 1 && y == 0 && z == 0) || (x == 12 && y == 0 && z == 0))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 3 && y == 1 && z == 0) || (x == 10 && y == 1 && z == 0))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 2 && y == 2 && z == 0) || (x == 11 && y == 2 && z == 0))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 1 && y == 3 && z == 0) || (x == 12 && y == 3 && z == 0))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 0 && y == 4 && z == 0) || (x == 14 && y == 4 && z == 0))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 2 && y == 5 && z == 0) || (x == 11 && y == 5 && z == 0))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 3 && y == 6 && z == 0) || (x == 10 && y == 6 && z == 0))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 1 && y == 7 && z == 0) || (x == 12 && y == 7 && z == 0))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 4 && y == 1 && z == 1) || (x == 4 && y == 2 && z == 1) || (x == 4 && y == 3 && z == 1) || (x == 4 && y == 4 && z == 1) || (x == 4 && y == 5 && z == 1) || (x == 4 && y == 6 && z == 1))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 9 && y == 1 && z == 1) || (x == 9 && y == 2 && z == 1) || (x == 9 && y == 3 && z == 1) || (x == 9 && y == 4 && z == 1) || (x == 9 && y == 5 && z == 1) || (x == 9 && y == 6 && z == 1))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 5 && y == 2 && z == 2) || (x == 5 && y == 3 && z == 2) || (x == 5 && y == 4 && z == 2) || (x == 5 && y == 5 && z == 2))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if ((x == 8 && y == 2 && z == 2) || (x == 8 && y == 3 && z == 2) || (x == 8 && y == 4 && z == 2) || (x == 8 && y == 5 && z == 2))
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else if (x == 6 && y == 3 && z == 4)
-                            t.setEnable(true);
+                            t.tileSetEnable(true);
                         else
-                            t.setEnable(false);
+                            t.tileSetEnable(false);
                         allTilesinBoard.add(t);
                         Tile.allTiles.remove(t);
+                        System.out.println(t.getTileZ() + " " + i);
                     }
                 }
         }
@@ -132,15 +152,18 @@ public class Panel extends JPanel {
         int y=0;
         int z =0;
 
-        for (Tile tile: allTilesinBoard) {
-            z = tile.getTileZ();
-            x = 100 + (SizeOfTiles.WIDTH.getValue() * tile.getTileX());
-            y = 100 + (SizeOfTiles.HEIGHT.getValue() * tile.getTileY());
-            tile.setBounds(x, y, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
-            add(tile);
+        int i =0;
+
+            for (Tile tile : allTilesinBoard) {
+                z= tile.getTileZ();
+                    x = (SizeOfTiles.WIDTH.getValue() * tile.getTileX()) -SizeOfTiles.BOARD_lEFT.getValue()*tile.getTileX() + z*6;
+                    y = (SizeOfTiles.HEIGHT.getValue() * tile.getTileY()) - SizeOfTiles.BOARD_DOWN.getValue()*tile.getTileY() -z*10;
+                    tile.setBounds(x, y, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+                    tile.setBorder(new TileBorder(4));
+                    add(tile, new Integer (tile.getLevel()));
+            }
         }
 
-    }
 
 
 
@@ -221,8 +244,13 @@ public class Panel extends JPanel {
 //            //top layer
 //            Rectangle2D top = new Rectangle2D.Double(x, y, 46, 60);
 //        }
+<<<<<<< HEAD
 
 
+=======
+//        }
+//
+>>>>>>> afa336d439ad7cece62b526cc614ac1dbab38133
 
 //        Polygon ml2 = new Polygon();
 //        ml2.addPoint(66, 10);
@@ -254,21 +282,21 @@ public class Panel extends JPanel {
 
 
 
-        public void setEnabled (ArrayList < Tile > allTilesinBoard) {
+        public void tileSetEnabled (ArrayList < Tile > allTilesinBoard) {
             for (Tile tile : allTilesinBoard)
-                if (tile.isEnable())
-                    tile.setEnabled(true);
+                if (tile.tileIsEnable())
+                    tile.tileSetEnable(true);
                 else
-                    tile.setEnabled(false);
+                    tile.tileSetEnable(false);
 
         }
 
-//    public void setEnableds (ArrayList<Tile> allTilesinBoard) {
+//    public void tileSetEnableds (ArrayList<Tile> allTilesinBoard) {
 //        for (Tile tile: allTilesinBoard)
-//            if (tile.isEnable())
-//                tile.setEnabled(true);
+//            if (tile.tileIsEnable())
+//                tile.tileSetEnabled(true);
 //            else
-//                tile.setEnabled(false);
+//                tile.tileSetEnabled(false);
 //    }
 
         public Tile findTile (ArrayList < Tile > allTilesinBoard,int z, int y, int x){

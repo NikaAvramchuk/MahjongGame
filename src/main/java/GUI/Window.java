@@ -1,9 +1,12 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
 import java.awt.*;
 
 public class Window extends JFrame {
+    Container contentPane = new Container();
+
     public Window (){
         setSize(1000, 700);
         setTitle("Mahjong");
@@ -11,7 +14,8 @@ public class Window extends JFrame {
         setResizable(false);
 
         Panel panel = new Panel();
-        add(panel, BorderLayout.CENTER);
+        getContentPane().add(panel);
+        getContentPane().validate();
 
 
     }
