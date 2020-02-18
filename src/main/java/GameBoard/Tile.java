@@ -9,7 +9,7 @@ public class Tile extends JButton {
     private int z;
 
 
-    private int Id;
+    private int IDTile;
 
     private boolean isEnable;
 
@@ -21,36 +21,36 @@ public class Tile extends JButton {
         isEnable = enable;
     }
 
-    public int getX() {
+    public int getTileX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setTileX(int x) {
         this.x = x;
     }
 
-    public int getY() {
+    public int getTileY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setTileY(int y) {
         this.y = y;
     }
 
-    public int getZ() {
+    public int getTileZ() {
         return z;
     }
 
-    public void setZ(int z) {
+    public void setTileZ(int z) {
         this.z = z;
     }
 
-    public int getId() {
-        return Id;
+    public int getTileID() {
+        return IDTile;
     }
 
-    public void setId(int id) {
-        Id = id;
+    public void setTileId(int id) {
+        IDTile = id;
     }
 
     public void setCoords (int z, int y, int x) {
@@ -68,9 +68,9 @@ public class Tile extends JButton {
             Tile t = new Tile();
             allTiles.add(t);
             if(i%2==0)
-                t.setId(0);
+                t.setTileId(0);
             else
-                t.setId(1);
+                t.setTileId(1);
         }
     }
 

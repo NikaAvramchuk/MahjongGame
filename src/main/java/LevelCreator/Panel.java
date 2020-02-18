@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Panel extends JPanel {
     static Panel panel = new Panel();
 
-    ArrayList<JButton> collect = new ArrayList<>();
+    ArrayList<JButton> collect = new ArrayList<JButton>();
 
 
     public Panel() {
