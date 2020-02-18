@@ -100,15 +100,15 @@ public class TileBorder extends AbstractBorder
         ml.addPoint(x - 1, y + 15);
         g2d.fillPolygon(ml);
         g2d.setColor(Color.GRAY);
-        g2d.drawLine(x + 7, y, x, y + 15);
-        g2d.drawLine(x + 7, y + 68, x, y + 79);
-        g2d.drawLine(x + 61, y, x + 61, y + 68);
-        g2d.drawLine(x + 7, y, x + 60, y);
-        g2d.drawLine(x + 53, y + 79, x + 61, y + 68);
-        g2d.drawLine(x, y + 14, x, y + 100);
-        g2d.drawLine(x, y + 79, x + 60, y + 79);
-        g2d.drawLine(x + 7, y, x + 7, y + 68);
-        g2d.drawLine(x + 7, y + 68, x + 100, y + 68);
+        g2d.drawLine(x + 7, y, x, y + 14);
+        g2d.drawLine(x + 7, y + 58, x, y + 69);
+        g2d.drawLine(x + 51, y, x + 51, y + 58);
+        g2d.drawLine(x + 7, y, x + 50, y);
+        g2d.drawLine(x + 45, y + 69, x + 51, y + 58);
+        g2d.drawLine(x, y + 14, x, y + 90);
+        g2d.drawLine(x, y + 69, x + 60, y + 69);
+        g2d.drawLine(x + 7, y, x + 7, y + 58);
+        g2d.drawLine(x + 7, y + 58, x + 100, y + 58);
 
 
         if (c.getX() < 130) {
@@ -123,9 +123,9 @@ public class TileBorder extends AbstractBorder
         }
 
         Polygon mb = new Polygon();
-        mb.addPoint(x + 54, y + 79 + right);
-        mb.addPoint(x + 62, y + 79 + right);
-        mb.addPoint(x + 63, y + 67);
+        mb.addPoint(x + 45, y + 69 + right);
+        mb.addPoint(x + 52, y + 69 + right);
+        mb.addPoint(x + 53, y + 57);
         g2d.fillPolygon(mb);
 
 

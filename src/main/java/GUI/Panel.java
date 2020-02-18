@@ -2,8 +2,10 @@ package GUI;
 
 import GameBoard.SizeOfTiles;
 import GameBoard.*;
+import javafx.css.Size;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,10 +29,20 @@ public class Panel extends JPanel {
 
     public Panel() {
         compareTiles = new ArrayList<Tile>();
+        Border border = new TileBorder(3);
         setLayout(null);
         createBoard();
         setLocationOnBoard(allTilesinBoard);
         addActionListen(allTilesinBoard);
+       jButton1 = new JButton();
+       jButton1.setBounds(500, 20, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+       jButton1.setBorder(border);
+       add(jButton1);
+
+        jButton2 = new JButton();
+        jButton2.setBounds(552, 20, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+        jButton2.setBorder(border);
+        add(jButton2);
 
         setVisible(true);
 //        try {
@@ -171,45 +183,45 @@ public class Panel extends JPanel {
     }
 
 
-        public void paintComponent(Graphics g) {
-        int y = 10;
+//        public void paintComponent(Graphics g) {
+//        int y = 10;
+//
+//        for (int x = 20; x < 322; x += 46) {
+//            Graphics2D g2d = (Graphics2D) g;
+//            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+//            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+//            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+//            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+//            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+//            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+//            //left
+//            Polygon ml = new Polygon();
+//            ml.addPoint(x, y);
+//            ml.addPoint(x - 5, y + 10);
+//            ml.addPoint(x - 5, y + 70);
+//            ml.addPoint(x, y + 60);
+//            g2d.setPaint(Color.LIGHT_GRAY);
+//            g2d.fillPolygon(ml);
+//            g2d.setPaint(Color.GRAY);
+//            g2d.drawLine(x, y + 60, x - 5, y + 69);
+//
+//
+//            //Middle-bottom
+//            Polygon mb = new Polygon();
+//            mb.addPoint(x, y + 60);
+//            mb.addPoint(x - 5, y + 70);
+//            mb.addPoint(x + 41, y + 70);
+//            mb.addPoint(x + 46, y + 60);
+//            g2d.setPaint(Color.LIGHT_GRAY);
+//            g2d.fillPolygon(mb);
+//
+//
+//            //top layer
+//            Rectangle2D top = new Rectangle2D.Double(x, y, 46, 60);
+//        }
 
-        for (int x = 20; x < 322; x += 46) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-            //left
-            Polygon ml = new Polygon();
-            ml.addPoint(x, y);
-            ml.addPoint(x - 5, y + 10);
-            ml.addPoint(x - 5, y + 70);
-            ml.addPoint(x, y + 60);
-            g2d.setPaint(Color.LIGHT_GRAY);
-            g2d.fillPolygon(ml);
-            g2d.setPaint(Color.GRAY);
-            g2d.drawLine(x, y + 60, x - 5, y + 69);
-
-
-            //Middle-bottom
-            Polygon mb = new Polygon();
-            mb.addPoint(x, y + 60);
-            mb.addPoint(x - 5, y + 70);
-            mb.addPoint(x + 41, y + 70);
-            mb.addPoint(x + 46, y + 60);
-            g2d.setPaint(Color.LIGHT_GRAY);
-            g2d.fillPolygon(mb);
-
-
-            //top layer
-            Rectangle2D top = new Rectangle2D.Double(x, y, 46, 60);
-        }
-        }
 
 
 //        Polygon ml2 = new Polygon();
