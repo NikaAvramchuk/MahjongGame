@@ -8,17 +8,26 @@ public class Tile extends JButton {
     private int y;
     private int z;
 
+    private int level;
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
     private int IDTile;
 
-    private boolean isEnable;
+    private boolean tileIsEnable;
 
-    public boolean isEnable() {
-        return isEnable;
+    public boolean tileIsEnable() {
+        return tileIsEnable;
     }
 
-    public void setEnable(boolean enable) {
-        isEnable = enable;
+    public void tileSetEnable(boolean enable) {
+        tileIsEnable = enable;
     }
 
     public int getTileX() {
