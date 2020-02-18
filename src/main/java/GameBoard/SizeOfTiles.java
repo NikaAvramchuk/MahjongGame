@@ -1,7 +1,7 @@
 package GameBoard;
 
 public enum SizeOfTiles {
-    WIDTH (46), HEIGHT (60);
+    WIDTH (62), HEIGHT (80);
 
     private final int value;
 
