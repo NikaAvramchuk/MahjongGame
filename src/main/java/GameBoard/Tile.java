@@ -9,6 +9,7 @@ public class Tile extends JButton {
     private int z;
 
     private int level;
+    public static ArrayList<Tile> allTiles = new ArrayList<Tile>(Tile.createAllTilesInBoard((new ImageIcon("C:\\Users\\Nika\\Downloads\\button.png")),new ImageIcon("C:\\Users\\Nika\\Downloads\\button1.png")));
 
     public int getLevel() {
         return level;
@@ -62,25 +63,24 @@ public class Tile extends JButton {
         IDTile = id;
     }
 
-    public void setCoords (int z, int y, int x) {
-        this.z = z;
-        this.y = y;
-        this.x = x;
-        setVisible(true);
-    }
 
 
-    public static ArrayList<Tile> allTiles = new ArrayList<Tile>();
-
-    public static void createAllTiles(){
+    public static ArrayList<Tile> createAllTilesInBoard (ImageIcon imageIcon, ImageIcon imageIcon1){
+        ArrayList<Tile> allTiles = new ArrayList<Tile>();
         for (int i = 0; i < 144; i++){
             Tile t = new Tile();
             allTiles.add(t);
-            if(i%2==0)
+            if(i%2==0) {
                 t.setTileId(0);
-            else
+                t.setIcon(imageIcon);
+            }
+
+            else {
                 t.setTileId(1);
+                t.setIcon(imageIcon1);
+            }
         }
+        return allTiles;
     }
 
 
