@@ -43,7 +43,7 @@ import java.util.HashMap;
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        g2d.drawImage(inputImage, 0, 0, 46, 60, null);
+        g2d.drawImage(inputImage, 0, 0, 46, 60,null);
         g2d.dispose();
 
         String formatName = outputImagePath.substring(outputImagePath

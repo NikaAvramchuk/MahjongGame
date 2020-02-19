@@ -4,6 +4,8 @@ import javafx.scene.layout.Pane;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class Panel extends JPanel {
@@ -15,6 +17,18 @@ public class Panel extends JPanel {
     public Panel() {
         setLayout(null);
         setSize(1000, 700);
+        CustomComponent custom = new CustomComponent();
+        custom.setBounds(500, 200, 52, 70);
+        custom.setBorderPainted(true);
+        custom.setIcon(new ImageIcon("C:\\Users\\Marcin\\Desktop\\Cmd\\tilesnew.png"));
+        add(custom);
+        custom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Kliknąłeś w przycisk");
+
+            }
+        });
 
     }
 
@@ -86,10 +100,10 @@ public class Panel extends JPanel {
 
 
 
-    public void paintComponent(Graphics g){
-        if (collect.size() < 126) {
-            drawLevel1(g);
-        }
+//    public void paintComponent(Graphics g){
+//        if (collect.size() < 126) {
+//            drawLevel1(g);
+//        }
 
 
 //        drawLevel2(g);
@@ -101,7 +115,7 @@ public class Panel extends JPanel {
 
 
 
-    }
+//    }
 
 
 

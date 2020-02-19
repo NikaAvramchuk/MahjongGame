@@ -1,6 +1,10 @@
 package GameBoard;
 
+import GUI.ResizeImages;
+
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Tile extends JButton {
@@ -62,7 +66,7 @@ public class Tile extends JButton {
         IDTile = id;
     }
 
-    public void setCoords (int z, int y, int x) {
+    public void setCoords(int z, int y, int x) {
         this.z = z;
         this.y = y;
         this.x = x;
@@ -70,45 +74,26 @@ public class Tile extends JButton {
     }
 
 
+
     public static ArrayList<Tile> allTiles = new ArrayList<Tile>();
 
-    public static void createAllTiles(){
-        for (int i = 0; i < 144; i++){
+
+    public static void createAllTiles() {
+        for (int i = 0; i < 144; i++) {
             Tile t = new Tile();
+            t.setContentAreaFilled(false);
+            t.setIcon(new ImageIcon("C:\\Users\\Marcin\\Desktop\\Cmd\\tilesnew.png"));
             allTiles.add(t);
-            if(i%2==0)
+            if (i % 2 == 0)
                 t.setTileId(0);
             else
                 t.setTileId(1);
         }
     }
 
-
-
-    /*statyczne pole do parowania kafelków (nie użyłem metody, bo jeżeli metoda parowania kafelków
-    zostałaby użyta ponownie gdzieś w kodzie, to zepsułoby to całą aplikację, ponieważ lista z kafelkami
-    będzie kilkukrotnie tasowana na początku i w trakcie gry*/
-//    static {
-//        int counter = 0;
-//        int counterForPairs = 1;
-//        createAllTiles();
-//        for (Tile tile : allTiles){
-//            if (counter < 2){
-//                tile.setName("Pair " + Integer.toString(counterForPairs));
-//            }
-//            if (counter == 1) {
-//                counterForPairs++;
-//                counter = 0;
-//            }
-//            else if (counter == 0){
-//                counter++;
-//            }
-////        }
-//
-//    }
+    }
 
 
 
 
 
-}
