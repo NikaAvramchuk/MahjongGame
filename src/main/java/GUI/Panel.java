@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -20,10 +22,22 @@ public class Panel extends JLayeredPane {
     JButton help;
     JButton shuffle;
     Tile [] helpPare;
+    BufferedImage img = null;
 
     public Panel() {
         setLayout(null);
         Font font1 = new Font("base", Font.BOLD,14);
+
+        try {
+            File dir = new File("C:\\Users\\Marcin\\Desktop\\TilesOrigin");
+            File[] listOfFiles = dir.listFiles();
+            for (File file : listOfFiles) {
+                ResizeImages.resizeImage(file.getAbsolutePath(), "C:\\Users\\Marcin\\IdeaProjects\\Mahjong\\src\\main\\resources\\" + file.getName());
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
         JSeparator separator = new JSeparator();
         separator.setBounds(0, 65, 1000, 30);
@@ -115,17 +129,17 @@ public class Panel extends JLayeredPane {
         int y=0;
         int z =0;
 
-            for (Tile tile : allTilesinBoard) {
-                z= tile.getTileZ();
-                x = 180+ (SizeOfTiles.WIDTH.getValue() * tile.getTileX()) -SizeOfTiles.BOARD_lEFT.getValue()*tile.getTileX() + z*6;
-                y = 100 + (SizeOfTiles.HEIGHT.getValue() * tile.getTileY()) - SizeOfTiles.BOARD_DOWN.getValue()*tile.getTileY() -z*10;
-                tile.setBounds(x, y, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
-                tile.setBorder(new TileBorder(4));
-                add(tile, new Integer (tile.getLevel()));
-            }
-            checkIfTileIsEnable(allTilesinBoard);
-            tileSetEnableOnBoard(allTilesinBoard);
+        for (Tile tile : allTilesinBoard) {
+            z= tile.getTileZ();
+            x = 180+ (SizeOfTiles.WIDTH.getValue() * tile.getTileX()) -SizeOfTiles.BOARD_lEFT.getValue()*tile.getTileX() + z*6;
+            y = 100 + (SizeOfTiles.HEIGHT.getValue() * tile.getTileY()) - SizeOfTiles.BOARD_DOWN.getValue()*tile.getTileY() -z*10;
+            tile.setBounds(x, y, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+            tile.setBorder(new TileBorder(4));
+            add(tile, new Integer (tile.getLevel()));
         }
+        checkIfTileIsEnable(allTilesinBoard);
+        tileSetEnableOnBoard(allTilesinBoard);
+    }
 
 
     public void addActionListen () {
@@ -166,30 +180,30 @@ public class Panel extends JLayeredPane {
 //
 //        }
 
-        public boolean isSuchTileOnBoard (ArrayList < Tile > allTilesinBoard,int z, int y, int x){
-            for (Tile tile : allTilesinBoard) {
-                if (tile.getTileX() == x && tile.getTileY() == y && tile.getTileZ() == z)
-                    return true;
-                }
-            return false;
+    public boolean isSuchTileOnBoard (ArrayList < Tile > allTilesinBoard,int z, int y, int x){
+        for (Tile tile : allTilesinBoard) {
+            if (tile.getTileX() == x && tile.getTileY() == y && tile.getTileZ() == z)
+                return true;
+        }
+        return false;
     }
 
 
-        public void getBack () {
-            add(remowedTiles[0]);
-            add(remowedTiles[1]);
-            allTilesinBoard.add(remowedTiles[0]);
-            allTilesinBoard.add(remowedTiles[1]);
-        }
+    public void getBack () {
+        add(remowedTiles[0]);
+        add(remowedTiles[1]);
+        allTilesinBoard.add(remowedTiles[0]);
+        allTilesinBoard.add(remowedTiles[1]);
+    }
 
-        public boolean tileHasTwoNeighbors (Tile tile, ArrayList<Tile> allTilesinBoard) {
-            int x = tile.getTileX();
-            int y= tile.getTileY();
-            int z = tile.getTileZ();
+    public boolean tileHasTwoNeighbors (Tile tile, ArrayList<Tile> allTilesinBoard) {
+        int x = tile.getTileX();
+        int y= tile.getTileY();
+        int z = tile.getTileZ();
 
-            return isSuchTileOnBoard(allTilesinBoard, z, y, x + 1) && isSuchTileOnBoard(allTilesinBoard, z, y, x - 1);
+        return isSuchTileOnBoard(allTilesinBoard, z, y, x + 1) && isSuchTileOnBoard(allTilesinBoard, z, y, x - 1);
 
-        }
+    }
 
     public boolean tileHasAnotherTileOnIt (Tile tile, ArrayList<Tile> allTilesinBoard) {
         int x = tile.getTileX();
@@ -269,7 +283,7 @@ public class Panel extends JLayeredPane {
             else
                 numberOfId2++;
         }
-
+        
         System.out.println(numberOfId1/2 + ""+ numberOfId2/2);
 
        return numberOfId1/2 + numberOfId2/2;
@@ -306,17 +320,10 @@ public class Panel extends JLayeredPane {
                 }
                 numberOfId2++;
             }
-            return para;
+        return para;
 
 
     }
 
 
 }
-
-
-
-
-
-
-

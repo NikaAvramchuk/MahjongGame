@@ -1,6 +1,9 @@
 package GUI;
 
+import GameBoard.Tile;
+
 import java.awt.*;
+import java.io.File;
 
 public class Main {
 
@@ -10,6 +13,8 @@ public class Main {
             public void run() {
                 Window window = new Window();
                 window.setVisible(true);
+
+
             }
         });
 

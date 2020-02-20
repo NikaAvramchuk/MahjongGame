@@ -1,5 +1,7 @@
 package GUI;
 
+import GameBoard.Tile;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -32,7 +34,7 @@ import java.util.HashMap;
     public static String resizeImage(String inputImagePath, String outputImagePath) throws IOException {
         BufferedImage inputImage = ImageIO.read(new File(inputImagePath));
         BufferedImage outputImage = new BufferedImage(46, 60, inputImage.getType());
-
+//57 wysokosc
 
         Graphics2D g2d = outputImage.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -43,13 +45,14 @@ import java.util.HashMap;
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        g2d.drawImage(inputImage, 0, 0, 46, 60, null);
+        g2d.drawImage(inputImage, 0, -2, 46, 60,null);
         g2d.dispose();
 
         String formatName = outputImagePath.substring(outputImagePath
                 .lastIndexOf(".") + 1);
 
         ImageIO.write(outputImage, formatName, new File(outputImagePath));
+
 
         return outputImagePath;
 
