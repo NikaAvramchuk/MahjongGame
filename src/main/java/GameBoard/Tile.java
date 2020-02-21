@@ -97,7 +97,7 @@ public class Tile extends JButton {
     public static ArrayList<Tile> createAllTilesInBoard() {
 
             putImagesOnTiles();
-            
+
             ArrayList<Tile> allTiles = new ArrayList<Tile>();
             for (int i = 0; i < 144; i++) {
                 Tile t = new Tile();
