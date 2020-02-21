@@ -215,7 +215,7 @@ public class Panel extends JLayeredPane {
 
     public void checkIfTileIsEnable (ArrayList < Tile > allTilesinBoard) {
         for (Tile tile: allTilesinBoard)
-            if (tileHasTwoNeighbors(tile, allTilesinBoard)) {
+            if (tileHasTwoNeighbors(tile, allTilesinBoard) || tileHasAnotherTileOnIt(tile, allTilesinBoard)) {
                 tile.tileSetEnable(false);
 //                tile.setDisabledIcon(new ImageIcon("C:\\Users\\Nika\\Downloads\\button.png"));
             }
@@ -232,9 +232,8 @@ public class Panel extends JLayeredPane {
     public void shuflleAllTilesOnBoard () {
         deleteBoard();
         Collections.shuffle(allTilesinBoard);
-        System.out.println(allTilesinBoard.size());
-        System.out.println(allTilesinBoardCopy.size());
         allTilesinBoardCopy.addAll(allTilesinBoard);
+        System.out.println(allTilesinBoard.size());
         int i=0;
         Random random = new Random();
         for (int z = 0; z<Board.zCoord; z++) {
@@ -268,16 +267,16 @@ public class Panel extends JLayeredPane {
         for (Tile tile: allTilesinBoard)
             if(tile.tileIsEnable())
                 allAvailableTilesOnBoard.add(tile);
-
-        System.out.println(allAvailableTilesOnBoard.size());
-        for (Tile tile: allTilesinBoard) {
+        for (Tile tile: allAvailableTilesOnBoard) {
             if(tile.getTileID()==1)
                 numberOfId1++;
             else
                 numberOfId2++;
         }
+        
+        System.out.println(numberOfId1/2 + ""+ numberOfId2/2);
 
-        return numberOfId1/2 + numberOfId2/2;
+       return numberOfId1/2 + numberOfId2/2;
 
     }
 
