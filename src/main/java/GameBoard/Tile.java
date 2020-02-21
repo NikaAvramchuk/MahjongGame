@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Tile extends JButton {
@@ -18,9 +20,11 @@ public class Tile extends JButton {
 
     public static ArrayList<String> imagesPaths = new ArrayList<>();
 
+//    File file = new File(getClass().getClassLoader().getResource("TilesOrigin").getFile());
+
     private int level;
 
-    public static ArrayList<Tile> allTiles = new ArrayList<Tile>(Tile.createAllTilesInBoard((new ImageIcon("C:\\Users\\Marcin\\Desktop\\Cmd\\tile2.png")), new ImageIcon("C:\\Users\\Marcin\\Desktop\\Cmd\\tilesnew.png")));
+    public static ArrayList<Tile> allTiles = new ArrayList<Tile>(Tile.createAllTilesInBoard());
 
     public int getLevel() {
         return level;
@@ -75,23 +79,25 @@ public class Tile extends JButton {
     }
 
 
-
-
-
-    public static ArrayList<Tile> createAllTilesInBoard(ImageIcon imageIcon, ImageIcon imageIcon1) {
-
+    public static void putImagesOnTiles(){
         try {
-            File dir = new File("C:\\Users\\Marcin\\Desktop\\TilesOrigin");
+            File dir = new File(Tile.class.getClassLoader().getResource("TilesOrigin").getFile());
             File[] listOfFiles = dir.listFiles();
             for (File file : listOfFiles) {
-                ResizeImages.resizeImage(file.getAbsolutePath(), "C:\\Users\\Marcin\\IdeaProjects\\Mahjong\\src\\main\\resources\\" + file.getName());
-                Tile.imagesPaths.add("C:\\Users\\Marcin\\IdeaProjects\\Mahjong\\src\\main\\resources\\" + file.getName());
+                imagesPaths.add(dir.getParent() + "\\TilesFixed\\" + file.getName());
+                ResizeImages.resizeImage(file.getAbsolutePath(), dir.getParent() + "\\TilesFixed\\" + file.getName());
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
+    }
 
+
+    public static ArrayList<Tile> createAllTilesInBoard() {
+
+            putImagesOnTiles();
+            
             ArrayList<Tile> allTiles = new ArrayList<Tile>();
             for (int i = 0; i < 144; i++) {
                 Tile t = new Tile();
@@ -99,7 +105,6 @@ public class Tile extends JButton {
                 allTiles.add(t);
                 if (i % 9 == 0) {
                     t.setTileId(0);
-                    System.out.println(imagesPaths.size());
                     t.setIcon(new ImageIcon(imagesPaths.get(0)));
                 }
                 else if (i % 9 == 1) {

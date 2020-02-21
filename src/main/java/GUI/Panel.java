@@ -28,16 +28,6 @@ public class Panel extends JLayeredPane {
         setLayout(null);
         Font font1 = new Font("base", Font.BOLD,14);
 
-        try {
-            File dir = new File("C:\\Users\\Marcin\\Desktop\\TilesOrigin");
-            File[] listOfFiles = dir.listFiles();
-            for (File file : listOfFiles) {
-                ResizeImages.resizeImage(file.getAbsolutePath(), "C:\\Users\\Marcin\\IdeaProjects\\Mahjong\\src\\main\\resources\\" + file.getName());
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
 
         JSeparator separator = new JSeparator();
         separator.setBounds(0, 65, 1000, 30);
