@@ -3,12 +3,14 @@ package GUI;
 import GameBoard.SizeOfTiles;
 import GameBoard.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -22,17 +24,25 @@ public class Panel extends JLayeredPane {
     JButton help;
     JButton shuffle;
     Tile [] helpPare;
-    BufferedImage img = null;
+    BufferedImage flames;
+
 
     public Panel() {
         setLayout(null);
         Font font1 = new Font("base", Font.BOLD,14);
 
+        try {
+            flames = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\flames.png"));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         JSeparator separator = new JSeparator();
         separator.setBounds(0, 65, 1000, 30);
         separator.setOrientation(SwingConstants.HORIZONTAL);
-        separator.setBackground(Color.BLUE);
+        separator.setBackground(Color.BLACK);
         add(separator);
 
 
@@ -217,7 +227,7 @@ public class Panel extends JLayeredPane {
         for (Tile tile: allTilesinBoard)
             if (tileHasTwoNeighbors(tile, allTilesinBoard) || tileHasAnotherTileOnIt(tile, allTilesinBoard)) {
                 tile.tileSetEnable(false);
-//                tile.setDisabledIcon(new ImageIcon("C:\\Users\\Nika\\Downloads\\button.png"));
+                tile.setDisabledIcon(tile.getIcon());
             }
             else
                 tile.tileSetEnable(true);
@@ -311,8 +321,18 @@ public class Panel extends JLayeredPane {
                 numberOfId2++;
             }
         return para;
-
-
+    }
+    public void paintComponent(Graphics g){
+        Graphics2D g2d = (Graphics2D)g;
+        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        g2d.drawImage(flames, 0, 0, 1200, 680, null);
     }
 
 
