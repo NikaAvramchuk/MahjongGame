@@ -29,10 +29,13 @@ public class TilesChooseMenu extends JLayeredPane {
             e.printStackTrace();
         }
 
+        Arrow arrow = new Arrow();
+        arrow.setBounds(20, 500, 260, 100);
+        add(arrow);
 
         JLabel back = new JLabel("Back");
         back.setForeground(new Color(255, 102, 0));
-        back.setBounds(20, 580, 260, 65);
+        back.setBounds(20, 500, 160, 240);
         back.setFont(new Font("Showcard Gothic", Font.PLAIN, 50));
         add(back);
         back.addMouseListener(new MouseListener() {
@@ -58,6 +61,11 @@ public class TilesChooseMenu extends JLayeredPane {
             @Override
             public void mouseEntered(MouseEvent e) {
                 back.setFont(new Font("Showcard Gothic", Font.PLAIN, 60));
+                arrow.setWidthImg(640);
+                arrow.setHeightImg(250);
+                arrow.setxOfImg(-250);
+                arrow.setyOfImg(-80);
+                repaint();
 
 
             }
@@ -65,6 +73,11 @@ public class TilesChooseMenu extends JLayeredPane {
             @Override
             public void mouseExited(MouseEvent e) {
                 back.setFont(new Font("Showcard Gothic", Font.PLAIN, 50));
+                arrow.setWidthImg(560);
+                arrow.setHeightImg(200);
+                arrow.setxOfImg(-215);
+                arrow.setyOfImg(-45);
+                repaint();
 
 
             }
@@ -197,11 +210,6 @@ public class TilesChooseMenu extends JLayeredPane {
             text.setFont(new Font("Showcard Gothic", Font.PLAIN, 25));
             add(text);
         }
-
-        Arrow arrow = new Arrow();
-        arrow.setBounds(20, 500, 260, 100);
-        add(arrow);
-
     }
 
     public void paintBlackText() {
@@ -230,7 +238,49 @@ public class TilesChooseMenu extends JLayeredPane {
         g2d.drawImage(bf, 0, 0, 1200, 680, null);
     }
 
+
+
+//-------------------------------------------------------------------------------------------------------
+
+
     class Arrow extends JLabel {
+
+        private int xOfImg = -215;
+        private int yOfImg = -45;
+        private int widthImg = 560;
+        private int heightImg = 200;
+
+        public int getxOfImg() {
+            return xOfImg;
+        }
+
+        public void setxOfImg(int xOfImg) {
+            this.xOfImg = xOfImg;
+        }
+
+        public int getyOfImg() {
+            return yOfImg;
+        }
+
+        public void setyOfImg(int yOfImg) {
+            this.yOfImg = yOfImg;
+        }
+
+        public int getWidthImg() {
+            return widthImg;
+        }
+
+        public void setWidthImg(int widthImg) {
+            this.widthImg = widthImg;
+        }
+
+        public int getHeightImg() {
+            return heightImg;
+        }
+
+        public void setHeightImg(int heightImg) {
+            this.heightImg = heightImg;
+        }
 
         BufferedImage arrow;
         public Arrow(){
@@ -253,7 +303,7 @@ public class TilesChooseMenu extends JLayeredPane {
             g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-            g2d.drawImage(arrow, -215, -45, 560, 200, null);
+            g2d.drawImage(arrow, xOfImg, yOfImg, widthImg, heightImg, null);
 
         }
 

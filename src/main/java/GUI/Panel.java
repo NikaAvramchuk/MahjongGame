@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Panel extends JLayeredPane {
     ArrayList<Tile> allTilesinBoard = new ArrayList<Tile>();
@@ -94,6 +95,7 @@ public class Panel extends JLayeredPane {
             }
         });
         add(start);
+
 
         createBoard();
         setLocationOnBoard(allTilesinBoard);
