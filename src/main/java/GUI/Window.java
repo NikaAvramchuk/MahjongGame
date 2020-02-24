@@ -7,15 +7,21 @@ import java.awt.*;
 public class Window extends JFrame {
     Container contentPane = new Container();
 
+    static Window window;
+
+    public static void showGameBoard(){
+        window.add(new Panel());
+    }
+
     public Window (){
-        setSize(1000, 700);
+        setSize(1200, 680);
         setTitle("Mahjong");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-
-        Panel panel = new Panel();
-        getContentPane().add(panel);
+        getContentPane().add(new GameMenu());
         getContentPane().validate();
+
+//        Panel panel = new Panel();
 
 
     }
