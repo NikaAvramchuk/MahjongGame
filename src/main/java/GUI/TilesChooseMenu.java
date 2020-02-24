@@ -83,6 +83,8 @@ public class TilesChooseMenu extends JLayeredPane {
             }
         });
 
+
+
         JLabel chooseTheme = new JLabel("Choose your board");
         chooseTheme.setForeground(new Color(255, 102, 0));
         chooseTheme.setBounds(250, 30, 700, 60);
@@ -114,6 +116,15 @@ public class TilesChooseMenu extends JLayeredPane {
         vertCenter.setBounds(550, 100, 20, 450 );
         add(vertCenter);
 
+        Tick tick = new Tick();
+        tick.setBounds(280, 150, 100, 100);
+        tick.setVisible(false);
+        add(tick);
+
+        StandardTheme standardTheme = new StandardTheme();
+        standardTheme.setBounds(280, 115, 160, 160);
+        add(standardTheme);
+
         BlackTheme blackTheme = new BlackTheme();
         blackTheme.setBounds(650, 115, 160, 160);
         add(blackTheme);
@@ -121,6 +132,9 @@ public class TilesChooseMenu extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 theme = 1;
+                tick.setBounds(680, 300, 100, 100);
+                tick.setVisible(true);
+                repaint();
 
 
             }
@@ -138,8 +152,8 @@ public class TilesChooseMenu extends JLayeredPane {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                blackTheme.setWidthImg(250);
-                blackTheme.setHeighImg(250);
+                blackTheme.setWidthImg(200);
+                blackTheme.setHeighImg(200);
                 blackTheme.setBounds(650, 115, blackTheme.getWidthImg(), blackTheme.getHeighImg());
                 repaint();
 
@@ -154,13 +168,15 @@ public class TilesChooseMenu extends JLayeredPane {
             }
         });
 
-        StandardTheme standardTheme = new StandardTheme();
-        standardTheme.setBounds(280, 115, 160, 160);
-        add(standardTheme);
+
+
         standardTheme.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 theme = 2;
+                tick.setBounds(310, 300, 100, 100);
+                tick.setVisible(true);
+                repaint();
 
 
 
@@ -178,8 +194,8 @@ public class TilesChooseMenu extends JLayeredPane {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                standardTheme.setWidthStdImg(250);
-                standardTheme.setHeightStdImg(250);
+                standardTheme.setWidthStdImg(200);
+                standardTheme.setHeightStdImg(200);
                 standardTheme.setBounds(280, 115, standardTheme.getWidthStdImg(), standardTheme.getHeightStdImg());
                 repaint();
 
@@ -309,6 +325,41 @@ public class TilesChooseMenu extends JLayeredPane {
 
 
     }
+
+    //-------------------------------------------------------------------------------------
+
+    class Tick extends JLabel{
+        BufferedImage tick;
+
+        public Tick(){
+
+            try {
+                tick = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Tick.PNG"));
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+        }
+
+        public void paintComponent(Graphics g){
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2d.drawImage(tick, 0, 0, 100, 100, null);
+
+
+        }
+
+    }
+
 
 }
 
