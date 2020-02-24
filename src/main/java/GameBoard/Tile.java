@@ -112,7 +112,7 @@ public class Tile extends JButton {
             putImagesOnTiles("TilesStandard", "\\TilesFixStandard\\");
         }
 
-            ArrayList<Tile> allTiles = new ArrayList<Tile>();
+        final ArrayList<Tile> allTiles = new ArrayList<Tile>();
             int lastID = 35;
             for (int i = 0; i < 144; i++) {
                 Tile t = new Tile();

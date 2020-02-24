@@ -29,11 +29,11 @@ public class TilesChooseMenu extends JLayeredPane {
             e.printStackTrace();
         }
 
-        Arrow arrow = new Arrow();
+        final Arrow arrow = new Arrow();
         arrow.setBounds(20, 500, 260, 100);
         add(arrow);
 
-        JLabel back = new JLabel("Back");
+        final JLabel back = new JLabel("Back");
         back.setForeground(new Color(255, 102, 0));
         back.setBounds(20, 500, 160, 240);
         back.setFont(new Font("Showcard Gothic", Font.PLAIN, 50));
@@ -114,7 +114,7 @@ public class TilesChooseMenu extends JLayeredPane {
         vertCenter.setBounds(550, 100, 20, 450 );
         add(vertCenter);
 
-        BlackTheme blackTheme = new BlackTheme();
+        final BlackTheme blackTheme = new BlackTheme();
         blackTheme.setBounds(650, 115, 160, 160);
         add(blackTheme);
         blackTheme.addMouseListener(new MouseListener() {
@@ -154,7 +154,7 @@ public class TilesChooseMenu extends JLayeredPane {
             }
         });
 
-        StandardTheme standardTheme = new StandardTheme();
+        final StandardTheme standardTheme = new StandardTheme();
         standardTheme.setBounds(280, 115, 160, 160);
         add(standardTheme);
         standardTheme.addMouseListener(new MouseListener() {

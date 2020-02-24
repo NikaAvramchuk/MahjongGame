@@ -19,7 +19,7 @@ public class Panel extends JPanel {
 
     public Panel() {
         setLayout(null);
-        JButton custom = new JButton("New Game");
+        final JButton custom = new JButton("New Game");
         custom.setContentAreaFilled(false);
 
         custom.setBorder(null);

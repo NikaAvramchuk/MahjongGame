@@ -26,7 +26,7 @@ public class GameMenu extends JLayeredPane {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JLabel newGame = new JLabel("New Game");
+        final JLabel newGame = new JLabel("New Game");
         newGame.setForeground(new Color(255, 102, 0));
         newGame.setBounds(700, 460, 260, 40);
         newGame.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
@@ -65,7 +65,7 @@ public class GameMenu extends JLayeredPane {
             }
         });
 
-        JLabel tilesChooser = new JLabel("Tiles Chooser");
+        final JLabel tilesChooser = new JLabel("Tiles Chooser");
         tilesChooser.setForeground(new Color(255, 102, 0));
         tilesChooser.setBounds(700, 510, 350, 40);
         tilesChooser.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
@@ -112,7 +112,7 @@ public class GameMenu extends JLayeredPane {
         fire.setFont(new Font("Showcard Gothic", Font.PLAIN, 70));
         add(fire);
 
-        JLabel timeLabel = new JLabel();
+        final JLabel timeLabel = new JLabel();
         timeLabel.setBounds(900, 40, 180, 40);
 //        timeLabel.setText(String.valueOf(timer.getInitialDelay()));
         timeLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));

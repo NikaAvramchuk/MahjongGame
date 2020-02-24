@@ -273,22 +273,22 @@ public class Panel extends JLayeredPane {
 
     public int checkMovesNumber () {
         ArrayList<Tile> allAvailableTilesOnBoard = new ArrayList<Tile>();
+        int numberOfId0=0;
         int numberOfId1=0;
-        int numberOfId2=0;
         checkIfTileIsEnable(allTilesinBoard);
         for (Tile tile: allTilesinBoard)
             if(tile.tileIsEnable())
                 allAvailableTilesOnBoard.add(tile);
         for (Tile tile: allAvailableTilesOnBoard) {
             if(tile.getTileID()==1)
-                numberOfId1++;
+                numberOfId0++;
             else
-                numberOfId2++;
+                numberOfId1++;
         }
 
-        System.out.println(numberOfId1/2 + ""+ numberOfId2/2);
+        System.out.println(numberOfId0/2 + ""+ numberOfId1/2);
 
-       return numberOfId1/2 + numberOfId2/2;
+       return numberOfId0/2 + numberOfId1/2;
 
     }
 
@@ -296,6 +296,8 @@ public class Panel extends JLayeredPane {
         ArrayList<Tile> allAvailableTilesOnBoard = new ArrayList<Tile>();
         int numberOfId1=1;
         int numberOfId2=1;
+        int i=0;
+        boolean found = true;
 
         Tile [] para = new Tile[2];
 
@@ -303,25 +305,21 @@ public class Panel extends JLayeredPane {
             if(tile.tileIsEnable())
                 allAvailableTilesOnBoard.add(tile);
 
-        for (Tile tile: allAvailableTilesOnBoard)
-            if (tile.getTileID()==1) {
-                if(numberOfId1==1)
-                    para[0] =tile;
-                else if (numberOfId1==2) {
-                    para[1] = tile;
+        for (Tile tile1: allAvailableTilesOnBoard) {
+            i = tile1.getTileID();
+            para[0] = tile1;
+            allAvailableTilesOnBoard.remove(tile1);
+            for (Tile tile2: allAvailableTilesOnBoard) {
+                if (tile2.getTileID() == i) {
+                    para[1] = tile2;
+                    found=true;
                     break;
                 }
-                numberOfId1++;
+                else
+                    found=false;
+
             }
-            else {
-                if (numberOfId2 == 1)
-                    para[0] = tile;
-                else if (numberOfId2 == 2) {
-                    para[1] = tile;
-                    break;
-                }
-                numberOfId2++;
-            }
+        }
         return para;
     }
     public void paintComponent(Graphics g){
