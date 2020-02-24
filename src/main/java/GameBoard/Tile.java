@@ -16,7 +16,7 @@ public class Tile extends JButton {
     private int y;
     private int z;
 
-    public static ArrayList<String> imagesPaths = new ArrayList<>();
+    public static ArrayList<String> imagesPaths = new ArrayList<String>();
 
     private int level;
 

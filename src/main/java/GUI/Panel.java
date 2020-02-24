@@ -283,7 +283,7 @@ public class Panel extends JLayeredPane {
             else
                 numberOfId2++;
         }
-        
+
         System.out.println(numberOfId1/2 + ""+ numberOfId2/2);
 
        return numberOfId1/2 + numberOfId2/2;
