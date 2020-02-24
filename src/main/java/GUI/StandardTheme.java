@@ -15,6 +15,12 @@ public class StandardTheme extends JLabel {
     BufferedImage standardTheme;
     private int widthStdImg;
     private int heightStdImg;
+    private Color color = Color.LIGHT_GRAY;
+
+    public void setColor(Color color) {
+        this.color = color;
+        repaint();
+    }
 
     public int getWidthStdImg() {
         return widthStdImg;
@@ -41,8 +47,8 @@ public class StandardTheme extends JLabel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Border bevel1 = BorderFactory.createBevelBorder(LOWERED, Color.LIGHT_GRAY, Color.LIGHT_GRAY);
-        Border bevel2 = BorderFactory.createBevelBorder(LOWERED, Color.LIGHT_GRAY, Color.LIGHT_GRAY);
+        Border bevel1 = BorderFactory.createBevelBorder(LOWERED, color, color);
+        Border bevel2 = BorderFactory.createBevelBorder(LOWERED, color, color);
         Border border = BorderFactory.createCompoundBorder(bevel1, bevel2);
         setBorder(border);
         setWidthStdImg(160);
