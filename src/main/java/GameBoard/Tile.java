@@ -22,7 +22,7 @@ public class Tile extends JButton {
     private int y;
     private int z;
 
-    public static ArrayList<String> imagesPaths = new ArrayList<>();
+    public static ArrayList<String> imagesPaths = new ArrayList<String>();
 
 //    File file = new File(getClass().getClassLoader().getResource("TilesOrigin").getFile());
 
