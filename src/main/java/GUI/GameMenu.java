@@ -2,6 +2,7 @@ package GUI;
 
 import GameBoard.Tile;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.Pane;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,6 +18,10 @@ import java.io.InputStream;
 
 public class GameMenu extends JLayeredPane {
     BufferedImage bf;
+    static boolean isHardModeOn;
+    int challangeNumber = 0;
+
+
 
     public GameMenu() {
         setLayout(null);
@@ -112,6 +117,55 @@ public class GameMenu extends JLayeredPane {
         fire.setFont(new Font("Showcard Gothic", Font.PLAIN, 70));
         add(fire);
 
+        JLabel hardModeChooser = new JLabel("Challange: ON");
+        hardModeChooser.setBounds(700, 560, 370, 40);
+        hardModeChooser.setForeground(new Color(255, 102, 0));
+        hardModeChooser.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
+        add(hardModeChooser);
+
+        hardModeChooser.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (challangeNumber == 0) {
+                    hardModeChooser.setText("Challange: OFF");
+                    isHardModeOn = false;
+                    challangeNumber = 1;
+                }
+                else if (challangeNumber == 1){
+                    hardModeChooser.setText("Challange: ON");
+                    isHardModeOn = true;
+                    challangeNumber = 0;
+                }
+                hardModeChooser.repaint();
+                System.out.println(isHardModeOn);
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                hardModeChooser.setFont(new Font("Showcard Gothic", Font.PLAIN, 45));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                hardModeChooser.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
+
+
+            }
+        });
+
+
+
 
     }
 
@@ -151,6 +205,37 @@ public class GameMenu extends JLayeredPane {
 
     //--------------------------------------------------------------------------------------
 
+
+class Infinity extends JLabel {
+
+    BufferedImage infinity;
+
+    public Infinity() {
+
+        try {
+            infinity = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\infinity.PNG"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        g2d.drawImage(infinity, 0, 0, 100, 100, null);
+
+
+    }
+}
 
 
 

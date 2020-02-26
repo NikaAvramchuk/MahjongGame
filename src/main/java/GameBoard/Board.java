@@ -66,7 +66,7 @@ public class Board {
             },
     };
 
-    public static int[][][] boardNewSecond = {
+    public static int[][][] originalBoard = {
             {
                     {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
                     {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},

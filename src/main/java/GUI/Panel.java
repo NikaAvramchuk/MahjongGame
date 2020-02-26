@@ -34,12 +34,12 @@ public class Panel extends JLayeredPane {
     boolean isListenerToBeAdded = true;
     Timer timer = new Timer(400, null);
     public static Timer timerHard = new Timer(30000, null);
-    boolean isHardModeOn = true;
     Timer timeForMove = new Timer(1000, null);
     int secondsToMove = timerHard.getDelay() / 1000;
     boolean isListenerforHardTimerToBeAdded = true;
     JLabel timeToMove;
-    Timer clueClicked = new Timer(1500, null);
+    Timer clueClicked = new Timer(600, null);
+    int tooManyClues = 0;
 
 
     public Panel() {
@@ -82,6 +82,7 @@ public class Panel extends JLayeredPane {
         help.setBounds(485,20,50,30);
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                tooManyClues++;
                 helpPare = findPare();
                 clueClicked.start();
                 for (Tile t : helpPare) {
@@ -94,11 +95,14 @@ public class Panel extends JLayeredPane {
                         clueClicked.stop();
                     }
                 });
+                helpPare[0].setBackground(Color.orange);
+                helpPare[1].setBackground(Color.orange);
+                repaint();
             }
         });
         add(help);
 
-        if (isHardModeOn){
+        if (GameMenu.isHardModeOn){
             timeToMove = new JLabel(String.valueOf(secondsToMove));
             timeToMove.setBounds(1060, 120, 50, 50);
             timeToMove.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
@@ -123,7 +127,13 @@ public class Panel extends JLayeredPane {
         shuffle.setBounds(545,20,60,30);
         shuffle.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                shuflleAllTilesOnBoard();
+                shuflleAllTilesOnBoard(allTilesinBoard);
+                setLocationOnBoard(allTilesinBoard);
+                for (Tile tile: allTilesinBoard) {
+                    for(ActionListener actionListener: tile.getActionListeners())
+                        tile.removeActionListener(actionListener);
+                }
+                addActionListen();
                 repaint();
             }
         });
@@ -145,10 +155,10 @@ public class Panel extends JLayeredPane {
                         tile.removeActionListener(actionListener);
                 }
                 addActionListen();
+                repaint();
             }
         });
         add(start);
-
 
         createBoard();
         setLocationOnBoard(allTilesinBoard);
@@ -158,6 +168,11 @@ public class Panel extends JLayeredPane {
 
 
     public void createBoard() {
+        for (int q=0; q<Board.zCoord; q++) {
+            for (int w = 0; w<Board.yCoord; w++)
+                System.arraycopy(Board.originalBoard[q][w], 0, Board.boardNewFirst[q][w], 0, Board.xCoord);
+        }
+
         allTilesinBoardCopy.addAll(Tile.allTiles);
         int i=0;
         Random random = new Random();
@@ -176,7 +191,6 @@ public class Panel extends JLayeredPane {
                 }
         }
 
-
     }
 
     public void setLocationOnBoard(ArrayList<Tile> allTilesinBoard){
@@ -187,7 +201,7 @@ public class Panel extends JLayeredPane {
         for (Tile tile : allTilesinBoard) {
             System.out.println(tile.getIconPath());
             z= tile.getTileZ();
-            x = 180+ (SizeOfTiles.WIDTH.getValue() * tile.getTileX()) -SizeOfTiles.BOARD_lEFT.getValue()*tile.getTileX() + z*6;
+            x = 180 + (SizeOfTiles.WIDTH.getValue() * tile.getTileX()) -SizeOfTiles.BOARD_lEFT.getValue()*tile.getTileX() + z*6;
             y = 100 + (SizeOfTiles.HEIGHT.getValue() * tile.getTileY()) - SizeOfTiles.BOARD_DOWN.getValue()*tile.getTileY() -z*10;
             tile.setBounds(x, y, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
             tile.setBorder(new TileBorder(4));
@@ -266,7 +280,7 @@ public class Panel extends JLayeredPane {
                         isListenerToBeAdded = false;
                     }
 
-                    if (isHardModeOn && isListenerforHardTimerToBeAdded) {
+                    if (GameMenu.isHardModeOn && isListenerforHardTimerToBeAdded) {
                         isListenerforHardTimerToBeAdded = false;
                         timerHard.addActionListener(forHardMode);
                         timerHard.start();
@@ -284,8 +298,8 @@ public class Panel extends JLayeredPane {
                             remove(compareTiles.get(1));
                             allTilesinBoard.remove(compareTiles.get(0));
                             allTilesinBoard.remove(compareTiles.get(1));
-                            Board.boardNewSecond[compareTiles.get(0).getTileZ()][compareTiles.get(0).getTileY()][compareTiles.get(0).getTileX()] = 0;
-                            Board.boardNewSecond[compareTiles.get(1).getTileZ()][compareTiles.get(1).getTileY()][compareTiles.get(1).getTileX()] = 0;
+                            Board.boardNewFirst[compareTiles.get(0).getTileZ()][compareTiles.get(0).getTileY()][compareTiles.get(0).getTileX()] = 0;
+                            Board.boardNewFirst[compareTiles.get(1).getTileZ()][compareTiles.get(1).getTileY()][compareTiles.get(1).getTileX()] = 0;
                             checkIfTileIsEnable(allTilesinBoard);
                             tileSetEnableOnBoard(allTilesinBoard);
 
@@ -296,8 +310,19 @@ public class Panel extends JLayeredPane {
 
 
 
-                        if (checkMovesNumber() == 0)
-                            shuflleAllTilesOnBoard();
+
+                        System.out.println(checkMovesNumber());
+                        if (checkMovesNumber()==0) {
+                            shuflleAllTilesOnBoard(allTilesinBoard);
+                            setLocationOnBoard(allTilesinBoard);
+                            for (Tile tile: allTilesinBoard) {
+                                for(ActionListener actionListener: tile.getActionListeners())
+                                    tile.removeActionListener(actionListener);
+                            }
+                            addActionListen();
+                            repaint();
+                        }
+
                     }
 
 
@@ -377,17 +402,17 @@ public class Panel extends JLayeredPane {
             remove(tile);
     }
 
-    public void shuflleAllTilesOnBoard () {
+    public void shuflleAllTilesOnBoard (ArrayList<Tile> allTilesinBoard) {
         deleteBoard();
+        allTilesinBoardCopy.clear();
         Collections.shuffle(allTilesinBoard);
         allTilesinBoardCopy.addAll(allTilesinBoard);
-        System.out.println(allTilesinBoard.size());
         int i=0;
         Random random = new Random();
         for (int z = 0; z<Board.zCoord; z++) {
             for (int y = 0; y<Board.yCoord; y++)
                 for (int x = Board.xCoord-1; x >=0; x--) {
-                    if (Board.boardNewSecond[z][y][x] == 1 && !(allTilesinBoardCopy.isEmpty())) {
+                    if (Board.boardNewFirst[z][y][x] == 1 && !(allTilesinBoardCopy.isEmpty())) {
                         Tile t = allTilesinBoardCopy.get(random.nextInt(allTilesinBoardCopy.size()));
                         t.setTileZ(z);
                         t.setTileY(y);
@@ -398,40 +423,38 @@ public class Panel extends JLayeredPane {
                 }
         }
 
-        setLocationOnBoard(allTilesinBoard);
-        for (Tile tile: allTilesinBoard) {
-            for(ActionListener actionListener: tile.getActionListeners())
-                tile.removeActionListener(actionListener);
-        }
-        addActionListen();
-
     }
 
     public int checkMovesNumber () {
         ArrayList<Tile> allAvailableTilesOnBoard = new ArrayList<Tile>();
-        int numberOfId0=0;
-        int numberOfId1=0;
+        int identicalId = 1;
+        int movesNumber = 0;
+        int i;
         checkIfTileIsEnable(allTilesinBoard);
+
         for (Tile tile: allTilesinBoard)
             if(tile.tileIsEnable())
                 allAvailableTilesOnBoard.add(tile);
-        for (Tile tile: allAvailableTilesOnBoard) {
-            if(tile.getTileID()==1)
-                numberOfId0++;
-            else
-                numberOfId1++;
+
+        ArrayList<Tile> allAvailableTilesminusOne = new ArrayList<Tile>(allAvailableTilesOnBoard);
+
+        for (Tile tile1: allAvailableTilesOnBoard) {
+            i = tile1.getTileID();
+            for (Tile tile2: allAvailableTilesminusOne) {
+                if (tile2.getTileID() == i) {
+                   identicalId++;
+                }
+            }
+            movesNumber=movesNumber+(identicalId%2);
+            identicalId=1;
         }
-
-        System.out.println(numberOfId0/2 + ""+ numberOfId1/2);
-
-       return numberOfId0/2 + numberOfId1/2;
+        return movesNumber;
 
     }
 
     public Tile[] findPare () {
         ArrayList<Tile> allAvailableTilesOnBoard = new ArrayList<Tile>();
-        int numberOfId1=1;
-        int numberOfId2=1;
+        ArrayList<Tile> allAvailableTilesminusOne = new ArrayList<Tile>();
         int i=0;
         boolean found = true;
 
@@ -441,23 +464,26 @@ public class Panel extends JLayeredPane {
             if(tile.tileIsEnable())
                 allAvailableTilesOnBoard.add(tile);
 
+        allAvailableTilesminusOne.addAll(allAvailableTilesOnBoard);
+
         for (Tile tile1: allAvailableTilesOnBoard) {
             i = tile1.getTileID();
             para[0] = tile1;
-            allAvailableTilesOnBoard.remove(tile1);
-            for (Tile tile2: allAvailableTilesOnBoard) {
+            allAvailableTilesminusOne.remove(tile1);
+            for (Tile tile2: allAvailableTilesminusOne) {
                 if (tile2.getTileID() == i) {
                     para[1] = tile2;
-                    found=true;
+                    found = true;
                     break;
                 }
-                else
-                    found=false;
-
+                found=false;
             }
-        }
+            if(found)
+                break;
+            }
         return para;
     }
+
     public void paintComponent(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
