@@ -117,8 +117,12 @@ public class TilesChooseMenu extends JLayeredPane {
         add(vertCenter);
 
         final Tick tick = new Tick();
-        tick.setBounds(280, 150, 100, 100);
-        tick.setVisible(false);
+        if (theme == 1) {
+            tick.setBounds(680, 300, 100, 100);
+        }
+        else if (theme == 2){
+            tick.setBounds(310, 300, 100, 100);
+        }
         add(tick);
 
         final StandardTheme standardTheme = new StandardTheme();
@@ -328,12 +332,13 @@ public class TilesChooseMenu extends JLayeredPane {
     //-------------------------------------------------------------------------------------
 
     class Tick extends JLabel{
+
         BufferedImage tick;
 
         public Tick(){
 
             try {
-                tick = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Tick.PNG"));
+                tick = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Tick2.PNG"));
             }
             catch (Exception e){
                 e.printStackTrace();

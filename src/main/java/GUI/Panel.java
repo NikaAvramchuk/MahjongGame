@@ -10,11 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import java.util.TimerTask;
+
+
 
 public class Panel extends JLayeredPane {
     ArrayList<Tile> allTilesinBoard = new ArrayList<Tile>();
@@ -24,14 +25,26 @@ public class Panel extends JLayeredPane {
     JButton start;
     JButton help;
     JButton shuffle;
+    Bunny bunny3;
+    Bunny bunny2;
+    Bunny bunny;
     Tile [] helpPare;
     BufferedImage flames;
+    int numberOfLives = 3;
+    boolean isListenerToBeAdded = true;
+    Timer timer = new Timer(400, null);
+    public static Timer timerHard = new Timer(30000, null);
+    boolean isHardModeOn = true;
+    Timer timeForMove = new Timer(1000, null);
+    int secondsToMove = timerHard.getDelay() / 1000;
+    boolean isListenerforHardTimerToBeAdded = true;
+    JLabel timeToMove;
+    Timer clueClicked = new Timer(1500, null);
 
 
     public Panel() {
         setLayout(null);
         Font font1 = new Font("base", Font.BOLD,14);
-
         try {
             flames = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\flames.png"));
         }
@@ -39,12 +52,27 @@ public class Panel extends JLayeredPane {
             e.printStackTrace();
         }
 
+        Heart heart = new Heart();
+        heart.setBounds(850, 20, 100, 100);
+        add(heart);
 
-        JSeparator separator = new JSeparator();
-        separator.setBounds(0, 65, 1000, 30);
-        separator.setOrientation(SwingConstants.HORIZONTAL);
-        separator.setBackground(Color.BLACK);
-        add(separator);
+        JLabel timeToAct = new JLabel("Time to act:");
+        timeToAct.setBounds(860, 130, 250, 30);
+        timeToAct.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
+        timeToAct.setForeground(new Color(255, 102, 0));
+        add(timeToAct);
+
+        bunny = new Bunny();
+        bunny.setBounds(1040, 20, 120, 120);
+        add(bunny);
+
+        bunny2 = new Bunny();
+        bunny2.setBounds(980, 20, 120, 120);
+        add(bunny2);
+
+        bunny3 = new Bunny();
+        bunny3.setBounds(920, 20, 120, 120);
+        add(bunny3);
 
 
         help = new JButton("?");
@@ -55,15 +83,40 @@ public class Panel extends JLayeredPane {
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 helpPare = findPare();
-                helpPare[0].setBackground(Color.red);
-                helpPare[1].setBackground(Color.red);
-                helpPare[0].setForeground(Color.pink);
-                helpPare[1].setForeground(Color.pink);
+                clueClicked.start();
+                for (Tile t : helpPare) {
+                    t.setIcon(new QualityIcon(replacePath(t.getIconPath())));
+                }
+                clueClicked.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        setNormalIconsInTable(helpPare);
+                        clueClicked.stop();
+                    }
+                });
             }
         });
         add(help);
 
-        shuffle = new JButton("S");;
+        if (isHardModeOn){
+            timeToMove = new JLabel(String.valueOf(secondsToMove));
+            timeToMove.setBounds(1060, 120, 50, 50);
+            timeToMove.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
+            timeToMove.setForeground(new Color(255, 102, 0));
+            add(timeToMove);
+
+            timeForMove.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    secondsToMove--;
+                    timeToMove.setText(String.valueOf(secondsToMove));
+                    timeToMove.repaint();
+                }
+            });
+
+        }
+
+        shuffle = new JButton("S");
         shuffle.setFont(font1);
         shuffle.setForeground(Color.WHITE);
         shuffle.setBackground(Color.BLUE);
@@ -132,6 +185,7 @@ public class Panel extends JLayeredPane {
         int z =0;
 
         for (Tile tile : allTilesinBoard) {
+            System.out.println(tile.getIconPath());
             z= tile.getTileZ();
             x = 180+ (SizeOfTiles.WIDTH.getValue() * tile.getTileX()) -SizeOfTiles.BOARD_lEFT.getValue()*tile.getTileX() + z*6;
             y = 100 + (SizeOfTiles.HEIGHT.getValue() * tile.getTileY()) - SizeOfTiles.BOARD_DOWN.getValue()*tile.getTileY() -z*10;
@@ -143,14 +197,89 @@ public class Panel extends JLayeredPane {
         tileSetEnableOnBoard(allTilesinBoard);
     }
 
+    public String replacePath(String path){
+        StringBuilder sb = new StringBuilder(path);
+        sb.replace(path.length() - 4, path.length(), "L.PNG");
+        String chosenPath = String.valueOf(sb);
+        return chosenPath;
+    }
+
+    public void setNormalIcons(ArrayList<Tile> al){
+        for (Tile t : al){
+            t.setIcon(new QualityIcon(t.getIconPath()));
+        }
+    }
+
+    public void setNormalIconsInTable(Tile table[]){
+        for (Tile tile : table){
+            tile.setIcon(new QualityIcon(tile.getIconPath()));
+        }
+    }
+    ActionListener forHardMode = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e2) {
+                    numberOfLives--;
+                    timeForMove.restart();
+                    secondsToMove = 30;
+                    timeToMove.setText(String.valueOf(secondsToMove));
+                    timeToMove.repaint();
+
+                    if (numberOfLives == 2) {
+                        bunny.setVisible(false);
+                        repaint();
+                    }
+                    if (numberOfLives == 1) {
+                        bunny2.setVisible(false);
+                        repaint();
+                    }
+                    if (numberOfLives == 0) {
+                        bunny3.setVisible(false);
+                        repaint();
+
+                    }
+            }
+        };
+
 
     public void addActionListen () {
         for (final Tile t: allTilesinBoard){
             t.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
+                    timeForMove.start();
                     compareTiles.add(t);
-                    if (compareTiles.size()==2) {
-                        if (compareTiles.get(0).getTileID()==compareTiles.get(1).getTileID() && (compareTiles.get(0).getTileX() != compareTiles.get(1).getTileX() || compareTiles.get(0).getTileY()!=compareTiles.get(1).getTileY() || compareTiles.get(0).getTileZ() != compareTiles.get(1).getTileZ())) {
+                    t.setIcon(new QualityIcon(replacePath(t.getIconPath())));
+
+                    if (compareTiles.size() == 2) {
+                        timer.start();
+                    }
+                    ActionListener action = new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e1) {
+                            setNormalIcons(allTilesinBoard);
+                            repaint();
+                            timer.stop();
+                        }
+                    };
+                    if (isListenerToBeAdded) {
+                        timer.addActionListener(action);
+                        isListenerToBeAdded = false;
+                    }
+
+                    if (isHardModeOn && isListenerforHardTimerToBeAdded) {
+                        isListenerforHardTimerToBeAdded = false;
+                        timerHard.addActionListener(forHardMode);
+                        timerHard.start();
+                    }
+
+
+                    if (compareTiles.size() == 2) {
+                        if (compareTiles.get(0).getTileID() == compareTiles.get(1).getTileID() && (compareTiles.get(0).getTileX() != compareTiles.get(1).getTileX() || compareTiles.get(0).getTileY() != compareTiles.get(1).getTileY() || compareTiles.get(0).getTileZ() != compareTiles.get(1).getTileZ())) {
+                            secondsToMove = 30;
+                            timeToMove.setText(String.valueOf(secondsToMove));
+                            timeForMove.restart();
+                            timeToMove.repaint();
+                            timerHard.restart();
                             remove(compareTiles.get(0));
                             remove(compareTiles.get(1));
                             allTilesinBoard.remove(compareTiles.get(0));
@@ -159,17 +288,24 @@ public class Panel extends JLayeredPane {
                             Board.boardNewSecond[compareTiles.get(1).getTileZ()][compareTiles.get(1).getTileY()][compareTiles.get(1).getTileX()] = 0;
                             checkIfTileIsEnable(allTilesinBoard);
                             tileSetEnableOnBoard(allTilesinBoard);
+
                             repaint();
                             revalidate();
                         }
                         compareTiles.clear();
-                        if (checkMovesNumber()==0)
+
+
+
+                        if (checkMovesNumber() == 0)
                             shuflleAllTilesOnBoard();
                     }
+
+
                 }
             });
         }
     }
+
 
 
 //        public Tile findTile (ArrayList < Tile > allTilesinBoard,int z, int y, int x){
@@ -335,5 +471,88 @@ public class Panel extends JLayeredPane {
         g2d.drawImage(flames, 0, 0, 1200, 680, null);
     }
 
+    //-----------------------------------------------------------------------------------------
+    class Heart extends JLabel implements ActionListener {
+        BufferedImage heart;
+        int numberOfImage = 1;
 
+        @Override
+        public void actionPerformed(ActionEvent e){
+            try {
+                numberOfImage++;
+                heart = ImageIO.read(new File(Tile.class.getClassLoader().getResource("Heart").getFile() + "\\Heart" + numberOfImage + ".PNG"));
+                if (numberOfImage == 12)
+                    numberOfImage = 1;
+                repaint();
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+        }
+
+        public Heart() {
+            int delay = 100;
+
+
+            try {
+                Timer timer = new Timer(delay, this);
+                timer.start();
+
+                heart = ImageIO.read(new File(Tile.class.getClassLoader().getResource("Heart").getFile() + "\\Heart" + numberOfImage + ".PNG"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2d.drawImage(heart, 0, 0, 100, 100, null);
+
+        }
+    }
+    //--------------------------------------------------------------------------------------------------
+    class Bunny extends JLabel{
+
+        BufferedImage bunny;
+
+        public Bunny(){
+
+            try {
+                bunny = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Bunny2.PNG"));
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+        }
+
+        public void paintComponent(Graphics g){
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2d.drawImage(bunny, 0, 0, 120, 120, null);
+
+
+        }
+
+    }
 }
+

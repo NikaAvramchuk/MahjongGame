@@ -14,6 +14,16 @@ public class QualityIcon extends ImageIcon implements Icon {
     private int whichImage;
     BufferedImage iconQ;
 
+
+    public QualityIcon(String imagePath){
+        try {
+            iconQ = ImageIO.read(new File(imagePath));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public QualityIcon(int whichImage) {
         try {
             iconQ = ImageIO.read(new File(Tile.imagesPaths.get(whichImage)));
