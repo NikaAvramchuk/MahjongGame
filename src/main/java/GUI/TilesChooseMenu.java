@@ -46,6 +46,8 @@ public class TilesChooseMenu extends JLayeredPane {
                 Window.window.getContentPane().add(new GameMenu());
                 Window.window.getContentPane().validate();
                 repaint();
+                GameMenu.clip.close();
+                Music.playSound("Click");
             }
 
             @Override
@@ -66,6 +68,7 @@ public class TilesChooseMenu extends JLayeredPane {
                 arrow.setxOfImg(-250);
                 arrow.setyOfImg(-80);
                 repaint();
+                Music.playSound("Tick");
 
 
             }
@@ -139,6 +142,7 @@ public class TilesChooseMenu extends JLayeredPane {
                 tick.setBounds(680, 300, 100, 100);
                 tick.setVisible(true);
                 repaint();
+                Music.playSound("Click");
 
 
             }
@@ -160,6 +164,7 @@ public class TilesChooseMenu extends JLayeredPane {
                 blackTheme.setHeighImg(200);
                 blackTheme.setBounds(650, 115, blackTheme.getWidthImg(), blackTheme.getHeighImg());
                 repaint();
+                Music.playSound("Tick");
 
             }
 
@@ -180,6 +185,7 @@ public class TilesChooseMenu extends JLayeredPane {
                 tick.setBounds(310, 300, 100, 100);
                 tick.setVisible(true);
                 repaint();
+                Music.playSound("Click");
 
 
 
@@ -201,6 +207,7 @@ public class TilesChooseMenu extends JLayeredPane {
                 standardTheme.setHeightStdImg(200);
                 standardTheme.setBounds(280, 115, standardTheme.getWidthStdImg(), standardTheme.getHeightStdImg());
                 repaint();
+                Music.playSound("Tick");
 
             }
 
@@ -338,7 +345,7 @@ public class TilesChooseMenu extends JLayeredPane {
         public Tick(){
 
             try {
-                tick = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Tick2.PNG"));
+                tick = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Tick.PNG"));
             }
             catch (Exception e){
                 e.printStackTrace();
