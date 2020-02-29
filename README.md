@@ -4,7 +4,7 @@
 
 -------
 ### About:
---------
+
 
 Our project is variation of a game called "Solitaire Mahjong". Your task in this game is to find a pair of matching tiles as fast
 as you can and put them out of board by clicking on them. There is a total of 144 tiles. Our game is implementing all funcionalities
@@ -13,7 +13,7 @@ getting a clue, and restarting a game. But there is more. We wanted this game to
 
 -------
 ### Functionalities:
---------
+
 1) Tiles Choose Menu: "You can choose a board on which you want to play on. For now there are 2 boards: black and standard. Black board
 makes the tiles black, while standard makes it white.
 2) Challange game mode: In challange mode, you will only have 30 seconds to find a pair and put it out of the board. If you won't, you will
@@ -29,13 +29,13 @@ move.
 
 --------
 ### Plans for the future:
---------
+
 1) Level builder: We are planning to implement a "level builder" function, that will give you the option to create new board tile
 by tile.
 2) Scores: There will be a table, showing up top 5 best scores, updating itself dynamically, just when you finish your game.
 
 --------
 ### Authors:
---------
+
 Marcin Obuszyński
 Weronika Avramchuk
