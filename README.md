@@ -26,7 +26,6 @@ press it. Clue button will highlight a pair of mathing tiles for you. But it wil
 Restart will restart your curreng game, building up new board, resetting your lives to 3, if you lost any and also resets your timer
 move.
 5) Music: For now there are a total of 4 songs, played randomly, but you can choose to silent the music.
---------
 
 --------
 ### Plans for the future:
