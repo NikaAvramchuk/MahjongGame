@@ -34,7 +34,8 @@ move.
 by tile.
 2) Scores: There will be a table, showing up top 5 best scores, updating itself dynamically, just when you finish your game.
 
+--------
 ### Authors:
-
+--------
 Marcin Obuszyński
 Weronika Avramchuk
