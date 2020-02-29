@@ -1,6 +1,6 @@
 # Mahjong
-Game of Mahjong
-<a href="https://en.wikipedia.org/wiki/Mahjong_solitaire"><img src="https://i.imgur.com/CNCRwXa.png" alt="amazong" border="0" /></a>
+<HEAD>Fire Mahjong</HEAD>
+<a href="https://en.wikipedia.org/wiki/Mahjong_solitaire"><img src="https://i.imgur.com/CNCRwXa.png" alt="amazong" height="400" width="500" border="0" /></a>
 
 -------
 ### About:
