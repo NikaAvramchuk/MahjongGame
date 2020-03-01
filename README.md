@@ -12,7 +12,7 @@ as you can and put them out of board by clicking on them. There is a total of 14
 getting a clue, and restarting a game. But there is more. We wanted this game to be fun and we hope, that it will give it to you.
 
 -------
-### Functionalities:
+### Features:
 
 1) Tiles Choose Menu: "You can choose a board on which you want to play on. For now there are 2 boards: black and standard. Black board
 makes the tiles black, while standard makes it white.
