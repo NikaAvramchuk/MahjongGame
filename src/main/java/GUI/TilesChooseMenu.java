@@ -10,8 +10,6 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import static GameBoard.Tile.putImagesOnTiles;
-
 public class TilesChooseMenu extends JLayeredPane {
     BufferedImage bf;
     public static int theme = 1;
@@ -46,7 +44,6 @@ public class TilesChooseMenu extends JLayeredPane {
                 Window.window.getContentPane().add(new GameMenu());
                 Window.window.getContentPane().validate();
                 repaint();
-                GameMenu.clip.close();
                 Music.playSound("Click");
             }
 

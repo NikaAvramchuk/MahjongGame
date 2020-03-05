@@ -14,15 +14,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
 
+import static GUI.Window.*;
+
 public class GameMenu extends JLayeredPane {
     BufferedImage bf;
-    static boolean isHardModeOn = true;
-    int challangeNumber = 0;
-    public static AudioInputStream input;
-    public static Clip clip;
-    int moreMusic;
     Random random = new Random();
-    public static JLabel musicOn;
     public static String name;
 
 
@@ -36,19 +32,7 @@ public class GameMenu extends JLayeredPane {
             e.printStackTrace();
         }
 
-        try {
-            Music.moveMusic();
-            clip = AudioSystem.getClip();
-            if (!clip.isRunning() && !clip.isOpen() && !clip.isActive()) {
-                input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get(random.nextInt(4))));
 
-                clip.open(input);
-                clip.loop(2);
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
 
         NameField name = new NameField();
         name.setBounds(400, 100, 600, 350);
@@ -126,7 +110,14 @@ public class GameMenu extends JLayeredPane {
             }
         });
 
-        musicOn = new JLabel("Music: On");
+
+        JLabel musicOn = new JLabel();
+        if (musicNumber == 1){
+            musicOn.setText("Music: Off");
+        }
+        else {
+            musicOn.setText("Music: On");
+        }
         musicOn.setBounds(700, 580, 250, 40);
         musicOn.setForeground(new Color(255, 102, 0));
         musicOn.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
@@ -138,11 +129,11 @@ public class GameMenu extends JLayeredPane {
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
                 System.out.println(Music.musicPaths);
-                if (clip.isRunning()) {
+                if (musicNumber == 0) {
                     try {
                         clip.stop();
                         clip.close();
-
+                        musicNumber = 1;
                         musicOn.setText("Music: Off");
                         musicOn.repaint();
                         clip.addLineListener(new LineListener() {
@@ -157,13 +148,12 @@ public class GameMenu extends JLayeredPane {
                     }
 
                 }
-                else if (!clip.isRunning()){
+                else if (musicNumber == 1){
                     try {
+                        musicNumber = 0;
                         musicOn.setText("Music: On");
                         musicOn.repaint();
                         input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get(random.nextInt(4))));
-                        System.out.println(random.nextInt(4));
-
                         clip.open(input);
                         clip.start();
                     }
@@ -286,24 +276,19 @@ public class GameMenu extends JLayeredPane {
             }
         });
 
-//        JTextField testfield = new JTextField();
-//        testfield.setBounds(128, 270, 100, 30);
-//        add(testfield);
-        JLabel trophyName = new JLabel("Weronika");
-        trophyName.setVerticalAlignment(SwingConstants.CENTER);
-        trophyName.setHorizontalAlignment(SwingConstants.CENTER);
-        trophyName.setForeground(new Color(255, 102, 0));
-        trophyName.setFont(new Font("Showcard Gothic", Font.PLAIN, 18));
-        trophyName.setBounds(128, 270, 100, 30);
-        add(trophyName);
-
         JLabel fire = new JLabel("Fire Mahjong");
         fire.setForeground(new Color(255, 102, 0));
         fire.setBounds(350, 30, 550, 70);
         fire.setFont(new Font("Showcard Gothic", Font.PLAIN, 70));
         add(fire);
 
-        JLabel hardModeChooser = new JLabel("Challange: ON");
+        JLabel hardModeChooser = new JLabel();
+        if (Window.challangeNumber == 1){
+            hardModeChooser.setText("Challenge: Off");
+        }
+        else {
+            hardModeChooser.setText("Challenge: On");
+        }
         hardModeChooser.setBounds(700, 530, 370, 40);
         hardModeChooser.setForeground(new Color(255, 102, 0));
         hardModeChooser.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
@@ -313,15 +298,17 @@ public class GameMenu extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
-                if (challangeNumber == 0) {
-                    hardModeChooser.setText("Challange: OFF");
+                if (Window.challangeNumber == 0) {
+                    hardModeChooser.setText("Challenge: Off");
+                    hardModeChooser.repaint();
                     isHardModeOn = false;
-                    challangeNumber = 1;
+                    Window.challangeNumber = 1;
                 }
-                else if (challangeNumber == 1){
-                    hardModeChooser.setText("Challange: ON");
+                else if (Window.challangeNumber == 1){
+                    hardModeChooser.setText("Challenge: On");
+                    hardModeChooser.repaint();
                     isHardModeOn = true;
-                    challangeNumber = 0;
+                    Window.challangeNumber = 0;
                 }
                 hardModeChooser.repaint();
                 System.out.println(isHardModeOn);
@@ -351,9 +338,187 @@ public class GameMenu extends JLayeredPane {
 
             }
         });
-        Trophy trophy = new Trophy();
-        trophy.setBounds(50, -40, 300, 400);
-        add(trophy);
+
+
+        BestScores bestScores = new BestScores();
+        bestScores.setBounds(30, 90, 300, 350);
+        add(bestScores);
+
+        JLabel info = new JLabel();
+        info.setHorizontalAlignment(SwingConstants.LEFT);
+        info.setVerticalAlignment(SwingConstants.CENTER);
+        info.setBounds(30, 50, 240, 40);
+        bestScores.add(info);
+
+        JLabel infoRank = new JLabel("Rank:");
+        infoRank.setVerticalAlignment(SwingConstants.CENTER);
+        infoRank.setHorizontalAlignment(SwingConstants.CENTER);
+        infoRank.setBounds(2, 0, 50, 40);
+        infoRank.setForeground(new Color(255, 102, 0));
+        infoRank.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        info.add(infoRank);
+
+        JLabel infoPoints = new JLabel("Points:");
+        infoPoints.setVerticalAlignment(SwingConstants.CENTER);
+        infoPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        infoPoints.setBounds(155, 0, 80, 40);
+        infoPoints.setForeground(new Color(255, 102, 0));
+        infoPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        info.add(infoPoints);
+
+        JLabel infoName = new JLabel("Name:");
+        infoName.setVerticalAlignment(SwingConstants.CENTER);
+        infoName.setHorizontalAlignment(SwingConstants.CENTER);
+        infoName.setBounds(35, 0, 135, 40);
+        infoName.setForeground(new Color(255, 102, 0));
+        infoName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        info.add(infoName);
+
+        JLabel first = new JLabel();
+        first.setBounds(30, 92, 240, 40);
+        bestScores.add(first);
+
+        JLabel firstName = new JLabel("Weronika1");
+        firstName.setVerticalAlignment(SwingConstants.CENTER);
+        firstName.setHorizontalAlignment(SwingConstants.CENTER);
+        firstName.setBounds(35, 0, 135, 40);
+        firstName.setForeground(new Color(255, 102, 0));
+        firstName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        first.add(firstName);
+
+        JLabel firstPoints = new JLabel("1752");
+        firstPoints.setVerticalAlignment(SwingConstants.CENTER);
+        firstPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        firstPoints.setBounds(160, 0, 75, 40);
+        firstPoints.setForeground(new Color(255, 102, 0));
+        firstPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        first.add(firstPoints);
+
+        Golden golden = new Golden();
+        golden.setBounds(0, 2, 40, 40);
+        first.add(golden);
+
+        JLabel second = new JLabel();
+        second.setBounds(30, 134, 240, 40);
+        bestScores.add(second);
+
+        JLabel secondName = new JLabel("Weronika1");
+        secondName.setVerticalAlignment(SwingConstants.CENTER);
+        secondName.setHorizontalAlignment(SwingConstants.CENTER);
+        secondName.setBounds(35, 0, 135, 40);
+        secondName.setForeground(new Color(255, 102, 0));
+        secondName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        second.add(secondName);
+
+        JLabel secondPoints = new JLabel("1752");
+        secondPoints.setVerticalAlignment(SwingConstants.CENTER);
+        secondPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        secondPoints.setBounds(160, 0, 75, 40);
+        secondPoints.setForeground(new Color(255, 102, 0));
+        secondPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        second.add(secondPoints);
+
+        Silver silver = new Silver();
+        silver.setBounds(0, 2, 35, 35);
+        second.add(silver);
+
+        JLabel third = new JLabel();
+        third.setBounds(30, 176, 240, 40);
+        bestScores.add(third);
+
+        JLabel thirdName = new JLabel("Weronika1");
+        thirdName.setVerticalAlignment(SwingConstants.CENTER);
+        thirdName.setHorizontalAlignment(SwingConstants.CENTER);
+        thirdName.setBounds(35, 0, 135, 40);
+        thirdName.setForeground(new Color(255, 102, 0));
+        thirdName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        third.add(thirdName);
+
+        JLabel thirdPoints = new JLabel("1752");
+        thirdPoints.setVerticalAlignment(SwingConstants.CENTER);
+        thirdPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        thirdPoints.setBounds(160, 0, 75, 40);
+        thirdPoints.setForeground(new Color(255, 102, 0));
+        thirdPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        third.add(thirdPoints);
+
+        Bronze bronze = new Bronze();
+        bronze.setBounds(3, 4, 30, 30);
+        third.add(bronze);
+
+        JLabel forth = new JLabel("  4");
+        forth.setBounds(30, 218, 240, 40);
+        forth.setForeground(new Color(255, 102, 0));
+        forth.setFont(new Font("Showcard Gothic", Font.PLAIN, 22));
+        bestScores.add(forth);
+
+        JLabel forthPoints = new JLabel("1752");
+        forthPoints.setVerticalAlignment(SwingConstants.CENTER);
+        forthPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        forthPoints.setBounds(160, 0, 75, 40);
+        forthPoints.setForeground(new Color(255, 102, 0));
+        forthPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        forth.add(forthPoints);
+
+        JLabel forthName = new JLabel("Weronika1");
+        forthName.setBackground(Color.LIGHT_GRAY);
+        forthName.setVerticalAlignment(SwingConstants.CENTER);
+        forthName.setHorizontalAlignment(SwingConstants.CENTER);
+        forthName.setBounds(35, 0, 135, 40);
+        forthName.setForeground(new Color(255, 102, 0));
+        forthName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        forth.add(forthName);
+
+        JLabel fifth = new JLabel("  5");
+        fifth.setBounds(30, 260, 240, 40);
+        fifth.setForeground(new Color(255, 102, 0));
+        fifth.setFont(new Font("Showcard Gothic", Font.PLAIN, 22));
+        bestScores.add(fifth);
+
+        JLabel fifthPoints = new JLabel("1752");
+        fifthPoints.setVerticalAlignment(SwingConstants.CENTER);
+        fifthPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        fifthPoints.setBounds(160, 0, 75, 40);
+        fifthPoints.setForeground(new Color(255, 102, 0));
+        fifthPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        fifth.add(fifthPoints);
+
+        JLabel fifthName = new JLabel("Weronika1");
+        fifthName.setBackground(Color.LIGHT_GRAY);
+        fifthName.setVerticalAlignment(SwingConstants.CENTER);
+        fifthName.setHorizontalAlignment(SwingConstants.CENTER);
+        fifthName.setBounds(35, 0, 135, 40);
+        fifthName.setForeground(new Color(255, 102, 0));
+        fifthName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        fifth.add(fifthName);
+
+        JSeparator sep1 = new JSeparator();
+        sep1.setBackground(Color.WHITE);
+
+        sep1.setBounds(30, 91, 235, 10);
+        bestScores.add(sep1);
+
+        JSeparator sep2 = new JSeparator();
+        sep2.setBounds(30, 133, 235, 10);
+        bestScores.add(sep2);
+
+        JSeparator sep3 = new JSeparator();
+        sep3.setBounds(30, 175, 235, 10);
+        bestScores.add(sep3);
+
+        JSeparator sep4 = new JSeparator();
+        sep4.setBounds(30, 217, 235, 10);
+        bestScores.add(sep4);
+
+        JSeparator sep5 = new JSeparator();
+        sep5.setBounds(30, 259, 235, 10);
+        bestScores.add(sep5);
+
+        JSeparator sep6 = new JSeparator();
+        sep6.setBounds(30, 301, 235, 10);
+        bestScores.add(sep6);
+
+
     }
     public static void setNameForWinner(String nameForWinner){
         name = nameForWinner;
@@ -433,11 +598,142 @@ public class GameMenu extends JLayeredPane {
             g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-            g2d.drawImage(nameField, 0, 0, 400, 100, null);
+            g2d.drawImage(nameField, 0, 0, 395, 100, null);
+        }
+    }
+
+    class BestScores extends JLabel{
+
+        BufferedImage bestScores;
+
+        public BestScores(){
+
+            try {
+                bestScores = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Top5Best2.PNG"));
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
 
 
         }
+
+        public void paintComponent(Graphics g){
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2d.drawImage(bestScores, 0, 0, 300, 350, null);
+
+
+        }
+
     }
+
+    class Golden extends JLabel{
+
+        BufferedImage golden;
+
+        public Golden(){
+
+            try {
+                golden = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Gold.PNG"));
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+        }
+
+        public void paintComponent(Graphics g){
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2d.drawImage(golden, 0, 0, 40, 40, null);
+
+
+        }
+
+    }
+
+    class Silver extends JLabel{
+
+        BufferedImage silver;
+
+        public Silver(){
+
+            try {
+                silver = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Silver.PNG"));
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+        }
+
+        public void paintComponent(Graphics g){
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2d.drawImage(silver, 0, 0, 35, 35, null);
+
+
+        }
+
+    }
+
+    class Bronze extends JLabel{
+
+        BufferedImage bronze;
+
+        public Bronze(){
+
+            try {
+                bronze = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Bronze.PNG"));
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+        }
+
+        public void paintComponent(Graphics g){
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2d.drawImage(bronze, 0, 0, 30, 30, null);
+
+
+        }
+
+    }
+
 
 
 }

@@ -7,15 +7,15 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+
+import static GUI.Window.numberOfLives;
+import static GUI.Window.window;
 
 
 public class Panel extends JLayeredPane {
@@ -31,10 +31,12 @@ public class Panel extends JLayeredPane {
     Bunny bunny;
     Tile [] helpPare;
     BufferedImage flames;
-    int numberOfLives = 3;
+    Restart restart;
+    static JLabel movesNumber;
+
     boolean isListenerToBeAdded = true;
     Timer timer = new Timer(400, null);
-    public static Timer timerHard = new Timer(30000, null);
+    public static Timer timerHard = new Timer(3000, null);
     Timer timeForMove = new Timer(1000, null);
     int secondsToMove = timerHard.getDelay() / 1000;
     boolean isListenerforHardTimerToBeAdded = true;
@@ -45,7 +47,6 @@ public class Panel extends JLayeredPane {
     int tenTimesSecond = 0;
     int secondsPassedFromStart = 0;
     int minutes = 0;
-    int tenTimesMinutes = 0;
     int automaticShuffles = 0;
     JLabel startGame;
     JLabel winTrophy;
@@ -63,41 +64,63 @@ public class Panel extends JLayeredPane {
             e.printStackTrace();
         }
 
-        JLabel musicOn = new JLabel(GameMenu.musicOn.getText());
-        musicOn.setBounds(30, 50, 250, 40);
-        musicOn.setForeground(new Color(255, 102, 0));
-        musicOn.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
-        add(musicOn);
+        SoundOn soundOn = new SoundOn();
+        SoundOff soundOff = new SoundOff();
+        soundOn.setBounds(30, 25, 60, 60);
+        soundOff.setBounds(30, 25, 60, 60);
+        add(soundOn);
+        add(soundOff);
+        soundOn.setVisible(false);
+        soundOff.setVisible(false);
+        if (!Window.clip.isOpen()){
+            soundOff.setVisible(true);
+            soundOn.setVisible(false);
+        }
+        else {
+            soundOn.setVisible(true);
+            soundOff.setVisible(false);
+        }
+        repaint();
+        JLabel infoMusicOn = new JLabel("Turn music off");
+        infoMusicOn.setHorizontalAlignment(SwingConstants.CENTER);
+        infoMusicOn.setBounds(110, 40, 250, 30);
+        infoMusicOn.setFont(new Font("Showcard Gothic", Font.PLAIN, 20));
+        infoMusicOn.setForeground(new Color(255, 102, 0));
+        add(infoMusicOn);
+        infoMusicOn.setVisible(false);
 
+        JLabel infoMusicOff = new JLabel("Turn music on");
+        infoMusicOff.setHorizontalAlignment(SwingConstants.CENTER);
+        infoMusicOff.setBounds(110, 40, 250, 30);
+        infoMusicOff.setFont(new Font("Showcard Gothic", Font.PLAIN, 20));
+        infoMusicOff.setForeground(new Color(255, 102, 0));
+        add(infoMusicOff);
+        infoMusicOff.setVisible(false);
 
-        musicOn.addMouseListener(new MouseListener() {
+        soundOn.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
-                if (GameMenu.clip.isRunning()) {
+                if (Window.clip.isRunning()) {
                     try {
-                        GameMenu.clip.stop();
-                        GameMenu.clip.close();
-                        musicOn.setText("Music: Off");
-                        musicOn.repaint();
+                        Window.clip.stop();
+                        Window.clip.close();
+                        soundOff.setVisible(true);
+                        soundOn.setVisible(false);
                     }
                     catch (Exception ex1){
                         ex1.printStackTrace();
                     }
 
                 }
-                else if (!GameMenu.clip.isRunning()){
+                else if (!Window.clip.isRunning()){
                     try {
-                        musicOn.setText("Music: On");
-                        musicOn.repaint();
-                        if ((int) (Math.random() * 100) > 14) {
-                            GameMenu.input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get((int) (Math.random() * 3))));
-                        }
-                        else {
-                            GameMenu.input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get(0)));
-                        }
-                        GameMenu.clip.open(GameMenu.input);
-                        GameMenu.clip.start();
+                        soundOff.setVisible(false);
+                        soundOn.setVisible(true);
+                        Window.input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get((new Random()).nextInt(4))));
+
+                        Window.clip.open(Window.input);
+                        Window.clip.start();
                     }
                     catch (Exception ex){
                         ex.printStackTrace();
@@ -119,15 +142,70 @@ public class Panel extends JLayeredPane {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                musicOn.setFont(new Font("Showcard Gothic", Font.PLAIN, 45));
                 Music.playSound("Tick");
+                infoMusicOn.setVisible(true);
 
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                musicOn.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
+                infoMusicOn.setVisible(false);
+            }
+        });
 
+        soundOff.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Music.playSound("Click");
+                if (Window.clip.isRunning()) {
+                    try {
+                        Window.clip.stop();
+                        Window.clip.close();
+                        soundOff.setVisible(true);
+                        soundOn.setVisible(false);
+                    }
+                    catch (Exception ex1){
+                        ex1.printStackTrace();
+                    }
+
+                }
+                else if (!Window.clip.isRunning()){
+                    try {
+                        soundOff.setVisible(false);
+                        soundOn.setVisible(true);
+                        Window.input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get((new Random()).nextInt(4))));
+
+                        Window.clip.open(Window.input);
+                        Window.clip.start();
+                    }
+                    catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Music.playSound("Tick");
+                infoMusicOff.setVisible(true);
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                infoMusicOff.setVisible(false);
             }
         });
 
@@ -174,9 +252,17 @@ public class Panel extends JLayeredPane {
         bunny3.setBounds(920, 20, 120, 120);
         add(bunny3);
 
-
         Clue clue = new Clue();
         clue.setBounds(485,20,60,60);
+
+        JLabel infoClue = new JLabel("Get a clue (+30sec)");
+        infoClue.setHorizontalAlignment(SwingConstants.CENTER);
+        infoClue.setBounds(110, 40, 250, 30);
+        infoClue.setFont(new Font("Showcard Gothic", Font.PLAIN, 20));
+        infoClue.setForeground(new Color(255, 102, 0));
+        add(infoClue);
+        infoClue.setVisible(false);
+
         clue.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -222,12 +308,13 @@ public class Panel extends JLayeredPane {
             @Override
             public void mouseEntered(MouseEvent e) {
                 Music.playSound("Tick");
+                infoClue.setVisible(true);
 
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-
+                infoClue.setVisible(false);
             }
         });
         add(clue);
@@ -242,22 +329,22 @@ public class Panel extends JLayeredPane {
             @Override
             public void actionPerformed(ActionEvent e) {
                 secondsPassedFromStart++;
-                    if (secondsPassedFromStart < 10) {
-                        startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(tenTimesSecond) + String.valueOf(secondsPassedFromStart));
+                if (secondsPassedFromStart < 10) {
+                    startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(tenTimesSecond) + String.valueOf(secondsPassedFromStart));
+                    startGame.repaint();
+                }
+                else {
+                    startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(secondsPassedFromStart));
+                    if (secondsPassedFromStart > 59){
+                        secondsPassedFromStart = 0;
+                        minutes++;
                         startGame.repaint();
                     }
-                    else {
-                        startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(secondsPassedFromStart));
-                        if (secondsPassedFromStart > 59){
-                            secondsPassedFromStart = 0;
-                            minutes++;
-                            startGame.repaint();
-                        }
-                    }
                 }
+            }
         });
 
-        if (GameMenu.isHardModeOn){
+        if (Window.isHardModeOn){
             timeToMove = new JLabel(String.valueOf(secondsToMove));
             timeToMove.setBounds(1060, 120, 50, 50);
             timeToMove.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
@@ -270,9 +357,8 @@ public class Panel extends JLayeredPane {
                     secondsToMove--;
                     timeToMove.setText(String.valueOf(secondsToMove));
                     timeToMove.repaint();
-                    if (tooManyClues == 3){
-                        numberOfLives--;
-                        tooManyClues = 0;
+                    if (numberOfLives == 0){
+                        showLosingMassage();
                     }
                 }
             });
@@ -286,17 +372,28 @@ public class Panel extends JLayeredPane {
 
         Shuffle shuffle = new Shuffle();
         shuffle.setBounds(545,20,60,60);
+
+        JLabel infoShuffle = new JLabel("Shuffle the board");
+        infoShuffle.setHorizontalAlignment(SwingConstants.CENTER);
+        infoShuffle.setBounds(110, 40, 250, 30);
+        infoShuffle.setFont(new Font("Showcard Gothic", Font.PLAIN, 20));
+        infoShuffle.setForeground(new Color(255, 102, 0));
+        add(infoShuffle);
+        infoShuffle.setVisible(false);
+
         shuffle.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
                 shuflleAllTilesOnBoard(allTilesinBoard);
+                movesNumber.setText("(" + checkMovesNumber() + ")");
                 setLocationOnBoard(allTilesinBoard);
                 for (Tile tile: allTilesinBoard) {
                     for(ActionListener actionListener: tile.getActionListeners())
                         tile.removeActionListener(actionListener);
                 }
                 addActionListen();
+
                 repaint();
             }
 
@@ -314,83 +411,109 @@ public class Panel extends JLayeredPane {
             @Override
             public void mouseEntered(MouseEvent e) {
                 Music.playSound("Tick");
+                infoShuffle.setVisible(true);
 
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
+                infoShuffle.setVisible(false);
 
             }
         });
         add(shuffle);
 
-        Restart restart = new Restart();
+        if (numberOfLives == 0){
+
+        }
+
+        restart = new Restart();
         restart.setBounds(400,20,60,60);
+
+        JLabel infoRestart = new JLabel("Restart the game");
+        infoRestart.setHorizontalAlignment(SwingConstants.CENTER);
+        infoRestart.setBounds(110, 40, 250, 30);
+        infoRestart.setFont(new Font("Showcard Gothic", Font.PLAIN, 20));
+        infoRestart.setForeground(new Color(255, 102, 0));
+        add(infoRestart);
+        infoRestart.setVisible(false);
+
+        JLabel cautionRestart = new JLabel("Use with caution!");
+        cautionRestart.setBounds(110, 70, 250, 20);
+        cautionRestart.setHorizontalAlignment(SwingConstants.CENTER);
+        cautionRestart.setFont(new Font("Showcard Gothic", Font.PLAIN, 15));
+        cautionRestart.setForeground(new Color(255, 102, 0));
+        add(cautionRestart);
+        cautionRestart.setVisible(false);
+
         restart.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println(GameMenu.name);
-                timeForMove.restart();
-                timerHard.restart();
-                pointsTimer.restart();
-                secondsPassedFromStart = 0;
-                minutes = 0;
-                numberOfLives = 3;
-                secondsToMove = 30;
-                winTrophy.setVisible(false);
-                youRWinner.setVisible(false);
-                youWin.setVisible(false);
-                repaint();
-
-
-
-                if (!bunny.isVisible()){
-                    bunny.setVisible(true);
+                if (numberOfLives != 0) {
+                    timeForMove.restart();
+                    timerHard.restart();
+                    pointsTimer.restart();
+                    secondsPassedFromStart = 0;
+                    minutes = 0;
+                    numberOfLives = 3;
+                    secondsToMove = 30;
+                    winTrophy.setVisible(false);
+                    youRWinner.setVisible(false);
+                    youWin.setVisible(false);
+                    movesNumber.setText("");
+                    repaint();
+                    if (!bunny.isVisible()) {
+                        bunny.setVisible(true);
+                    }
+                    if (!bunny2.isVisible()) {
+                        bunny2.setVisible(true);
+                    }
+                    if (!bunny3.isVisible()) {
+                        bunny3.setVisible(true);
+                    }
+                    Music.playSound("Click");
+                    deleteBoard();
+                    allTilesinBoard.clear();
+                    createBoard();
+                    setLocationOnBoard(allTilesinBoard);
+                    for (Tile tile : allTilesinBoard) {
+                        for (ActionListener actionListener : tile.getActionListeners())
+                            tile.removeActionListener(actionListener);
+                    }
+                    addActionListen();
+                    repaint();
                 }
-                else if (!bunny2.isVisible()){
-                    bunny2.setVisible(true);
-                }
-                else if (!bunny3.isVisible()){
-                    bunny3.setVisible(true);
-                }
-                Music.playSound("Click");
-                deleteBoard();
-                allTilesinBoard.clear();
-                createBoard();
-                setLocationOnBoard(allTilesinBoard);
-                for (Tile tile: allTilesinBoard) {
-                    for(ActionListener actionListener: tile.getActionListeners())
-                        tile.removeActionListener(actionListener);
-                }
-                addActionListen();
-                repaint();
             }
 
-            @Override
-            public void mousePressed(MouseEvent e) {
+                @Override
+                public void mousePressed (MouseEvent e){
 
-            }
+                }
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
+                @Override
+                public void mouseReleased (MouseEvent e){
 
-            }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                Music.playSound("Tick");
+                }
 
-            }
+                @Override
+                public void mouseEntered (MouseEvent e){
+                    Music.playSound("Tick");
+                    infoRestart.setVisible(true);
+                    cautionRestart.setVisible(true);
 
-            @Override
-            public void mouseExited(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseExited (MouseEvent e){
+                infoRestart.setVisible(false);
+                cautionRestart.setVisible(false);
+
 
             }
         });
         add(restart);
 
-        //78, 310
-        ////450, 150
 
 
 
@@ -424,7 +547,13 @@ public class Panel extends JLayeredPane {
                     }
                 }
         }
-
+        movesNumber = new JLabel();
+        movesNumber.setText("(" + checkMovesNumber() + ")");
+        movesNumber.setHorizontalAlignment(SwingConstants.CENTER);
+        movesNumber.setBounds(600, 40, 50, 30);
+        movesNumber.setFont(new Font("Showcard Gothic", Font.PLAIN, 20));
+        movesNumber.setForeground(new Color(255, 102, 0));
+        add(movesNumber);
     }
 
     public void setLocationOnBoard(ArrayList<Tile> allTilesinBoard){
@@ -466,27 +595,28 @@ public class Panel extends JLayeredPane {
     ActionListener forHardMode = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e2) {
-                    numberOfLives--;
-                    timeForMove.restart();
-                    secondsToMove = 30;
-                    timeToMove.setText(String.valueOf(secondsToMove));
-                    timeToMove.repaint();
+            numberOfLives--;
+            timeForMove.restart();
+            secondsToMove = timerHard.getDelay()/1000;
+            timeToMove.setText(String.valueOf(secondsToMove));
+            timeToMove.repaint();
+            System.out.println(numberOfLives);
 
-                    if (numberOfLives == 2) {
-                        bunny.setVisible(false);
-                        repaint();
-                    }
-                    if (numberOfLives == 1) {
-                        bunny2.setVisible(false);
-                        repaint();
-                    }
-                    if (numberOfLives == 0) {
-                        bunny3.setVisible(false);
-                        repaint();
-
-                    }
+            if (numberOfLives == 2) {
+                bunny.setVisible(false);
+                repaint();
             }
-        };
+            if (numberOfLives == 1) {
+                bunny2.setVisible(false);
+                repaint();
+            }
+            if (numberOfLives == 0) {
+                bunny3.setVisible(false);
+                repaint();
+
+            }
+        }
+    };
 
 
     public void addActionListen () {
@@ -517,7 +647,7 @@ public class Panel extends JLayeredPane {
                         isListenerToBeAdded = false;
                     }
 
-                    if (GameMenu.isHardModeOn && isListenerforHardTimerToBeAdded) {
+                    if (Window.isHardModeOn && isListenerforHardTimerToBeAdded) {
                         isListenerforHardTimerToBeAdded = false;
                         timerHard.addActionListener(forHardMode);
                         timerHard.start();
@@ -526,23 +656,26 @@ public class Panel extends JLayeredPane {
 
                     if (compareTiles.size() == 2) {
                         if (compareTiles.get(0).getTileID() == compareTiles.get(1).getTileID() && (compareTiles.get(0).getTileX() != compareTiles.get(1).getTileX() || compareTiles.get(0).getTileY() != compareTiles.get(1).getTileY() || compareTiles.get(0).getTileZ() != compareTiles.get(1).getTileZ())) {
-                            secondsToMove = 30;
-                            timeToMove.setText(String.valueOf(secondsToMove));
-                            timeForMove.restart();
-                            timeToMove.repaint();
-                            timerHard.restart();
+                            if (Window.challangeNumber == 0) {
+                                secondsToMove = 30;
+                                timeToMove.setText(String.valueOf(secondsToMove));
+                                timeForMove.restart();
+                                timeToMove.repaint();
+                                timerHard.restart();
+                            }
                             setNormalIcons(compareTiles);
                             remove(compareTiles.get(0));
                             remove(compareTiles.get(1));
                             allTilesinBoard.remove(compareTiles.get(0));
                             allTilesinBoard.remove(compareTiles.get(1));
+                            movesNumber.setText("(" + checkMovesNumber() + ")");
+                            movesNumber.repaint();
                             Board.boardNewFirst[compareTiles.get(0).getTileZ()][compareTiles.get(0).getTileY()][compareTiles.get(0).getTileX()] = 0;
                             Board.boardNewFirst[compareTiles.get(1).getTileZ()][compareTiles.get(1).getTileY()][compareTiles.get(1).getTileX()] = 0;
                             checkIfTileIsEnable(allTilesinBoard);
                             tileSetEnableOnBoard(allTilesinBoard);
                             if (allTilesinBoard.size() == 0){
                                 showWinningMassage();
-                                timeForMove.stop();
                             }
                             repaint();
                             revalidate();
@@ -551,8 +684,6 @@ public class Panel extends JLayeredPane {
 
 
 
-
-                        System.out.println(checkMovesNumber());
                         automaticShuffles = 0;
                         while (checkMovesNumber()==0) {
                             automaticShuffles++;
@@ -564,9 +695,8 @@ public class Panel extends JLayeredPane {
                             }
                             addActionListen();
                             repaint();
-                            if (automaticShuffles == 20){
+                            if (automaticShuffles == 50){
                                 showWinningMassage();
-                                timeForMove.stop();
                                 break;
                             }
                         }
@@ -579,17 +709,6 @@ public class Panel extends JLayeredPane {
         }
     }
 
-
-
-//        public Tile findTile (ArrayList < Tile > allTilesinBoard,int z, int y, int x){
-//            Tile findTile = new Tile();
-//            for (Tile tile : allTilesinBoard) {
-//                if (tile.getTileX() == x && tile.getTileY() == y && tile.getTileZ() == z)
-//                    findTile = tile;
-//            }
-//            return findTile;
-//
-//        }
 
     public boolean isSuchTileOnBoard (ArrayList < Tile > allTilesinBoard,int z, int y, int x){
         for (Tile tile : allTilesinBoard) {
@@ -690,7 +809,7 @@ public class Panel extends JLayeredPane {
             i = tile1.getTileID();
             for (Tile tile2: allAvailableTilesminusOne) {
                 if (tile2.getTileID() == i) {
-                   identicalId++;
+                    identicalId++;
                 }
             }
             movesNumber=movesNumber+(identicalId%2);
@@ -728,15 +847,327 @@ public class Panel extends JLayeredPane {
             }
             if(found)
                 break;
-            }
+        }
         return para;
     }
 
     public void showWinningMassage() {
+        restart.setEnabled(false);
         youWin.setVisible(true);
         youRWinner.setVisible(true);
         winTrophy.setVisible(true);
+        timerHard.stop();
+        timer.stop();
+        timeForMove.stop();
+        pointsTimer.stop();
+        if (allTilesinBoard.size() > 0){
+            for (Tile t : allTilesinBoard){
+                t.setVisible(false);
+            }
+        }
+        JLabel tryAgainText = new JLabel("Try again?");
+        tryAgainText.setBounds(580, 340, 300, 50);
+        tryAgainText.setHorizontalAlignment(SwingConstants.CENTER);
+        tryAgainText.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
+        tryAgainText.setForeground(new Color(255, 102, 0));
+        add(tryAgainText);
 
+        JLabel exitText = new JLabel("Exit?");
+        exitText.setBounds(350, 340, 300, 50);
+        exitText.setHorizontalAlignment(SwingConstants.CENTER);
+        exitText.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
+        exitText.setForeground(new Color(255, 102, 0));
+        add(exitText);
+
+        Exit exit = new Exit();
+        exit.setBounds(450, 408, 100, 100);
+        add(exit);
+        exit.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                restart.setEnabled(true);
+                Window.window.getContentPane().removeAll();
+                Window.window.getContentPane().add(new GameMenu());
+                Window.window.getContentPane().validate();
+                repaint();
+                timeForMove.restart();
+                timeForMove.stop();
+                timerHard.restart();
+                timerHard.stop();
+                pointsTimer.restart();
+                pointsTimer.stop();
+                secondsPassedFromStart = 0;
+                minutes = 0;
+                numberOfLives = 3;
+                secondsToMove = timerHard.getDelay()/1000;
+                winTrophy.setVisible(false);
+                youRWinner.setVisible(false);
+                youWin.setVisible(false);
+                bunny.setVisible(true);
+                bunny2.setVisible(true);
+                bunny3.setVisible(true);
+                setNormalIcons(allTilesinBoard);
+                timerHard.removeActionListener(forHardMode);
+                timer.removeActionListener(timer.getActionListeners()[0]);
+                Music.playSound("Click");
+                for (Tile t : allTilesinBoard){
+                    t.setVisible(true);
+                }
+                repaint();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Music.playSound("Tick");
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+
+        TryAgain tryAgain = new TryAgain();
+        tryAgain.setBounds(680, 400, 100, 100);
+        add(tryAgain);
+        tryAgain.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                restart.setEnabled(true);
+                timeForMove.restart();
+                timerHard.restart();
+                pointsTimer.restart();
+                secondsPassedFromStart = 0;
+                startGame.setText(String.valueOf(secondsPassedFromStart));
+                minutes = 0;
+                numberOfLives = 3;
+                secondsToMove = 30;
+                winTrophy.setVisible(false);
+                youRWinner.setVisible(false);
+                youWin.setVisible(false);
+                repaint();
+                if (!bunny.isVisible()) {
+                    bunny.setVisible(true);
+                }
+                if (!bunny2.isVisible()) {
+                    bunny2.setVisible(true);
+                }
+                if (!bunny3.isVisible()) {
+                    bunny3.setVisible(true);
+                }
+                Music.playSound("Click");
+                deleteBoard();
+                allTilesinBoard.clear();
+                createBoard();
+                setLocationOnBoard(allTilesinBoard);
+                for (Tile tile : allTilesinBoard) {
+                    tile.setVisible(true);
+                    for (ActionListener actionListener : tile.getActionListeners())
+                        tile.removeActionListener(actionListener);
+                }
+                addActionListen();
+                repaint();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Music.playSound("Tick");
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+        for (Tile t : allTilesinBoard){
+            t.setVisible(false);
+        }
+        repaint();
+    }
+
+    public void showLosingMassage(){
+        JLabel gameover = new JLabel("Game Over");
+        gameover.setBounds(450, 260, 500, 60);
+        gameover.setFont(new Font("Showcard Gothic", Font.PLAIN, 60));
+        gameover.setForeground(new Color(255, 102, 0));
+        add(gameover);
+        setNormalIcons(allTilesinBoard);
+
+        pointsTimer.stop();
+        timeForMove.stop();
+        timerHard.stop();
+        timer.stop();
+
+        JLabel tryAgainText = new JLabel("Try again?");
+        tryAgainText.setBounds(580, 340, 300, 50);
+        tryAgainText.setHorizontalAlignment(SwingConstants.CENTER);
+        tryAgainText.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
+        tryAgainText.setForeground(new Color(255, 102, 0));
+        add(tryAgainText);
+
+        JLabel exitText = new JLabel("Exit?");
+        exitText.setBounds(350, 340, 300, 50);
+        exitText.setHorizontalAlignment(SwingConstants.CENTER);
+        exitText.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
+        exitText.setForeground(new Color(255, 102, 0));
+        add(exitText);
+
+        Exit exit = new Exit();
+        exit.setBounds(450, 408, 100, 100);
+        add(exit);
+        exit.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Window.window.getContentPane().removeAll();
+                Window.window.getContentPane().add(new GameMenu());
+                Window.window.getContentPane().validate();
+                repaint();
+                timeForMove.restart();
+                timeForMove.stop();
+                timerHard.restart();
+                timerHard.stop();
+                pointsTimer.restart();
+                pointsTimer.stop();
+                secondsPassedFromStart = 0;
+                minutes = 0;
+                numberOfLives = 3;
+                secondsToMove = timerHard.getDelay()/1000;
+                winTrophy.setVisible(false);
+                youRWinner.setVisible(false);
+                youWin.setVisible(false);
+                bunny.setVisible(true);
+                bunny2.setVisible(true);
+                bunny3.setVisible(true);
+                setNormalIcons(allTilesinBoard);
+                timerHard.removeActionListener(forHardMode);
+                timer.removeActionListener(timer.getActionListeners()[0]);
+                Music.playSound("Click");
+                for (Tile t : allTilesinBoard){
+                    t.setVisible(true);
+                }
+                repaint();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Music.playSound("Tick");
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+
+        TryAgain tryAgain = new TryAgain();
+        tryAgain.setBounds(680, 400, 100, 100);
+        add(tryAgain);
+        tryAgain.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                timeForMove.restart();
+                timerHard.restart();
+                pointsTimer.restart();
+                timeForMove.stop();
+                timerHard.stop();
+                pointsTimer.stop();
+                secondsPassedFromStart = 0;
+                minutes = 0;
+                startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(tenTimesSecond) + String.valueOf(secondsPassedFromStart));
+                numberOfLives = 3;
+                secondsToMove = 30;
+                winTrophy.setVisible(false);
+                youRWinner.setVisible(false);
+                youWin.setVisible(false);
+                exit.setVisible(false);
+                tryAgain.setVisible(false);
+                exitText.setVisible(false);
+                tryAgainText.setVisible(false);
+                gameover.setVisible(false);
+                repaint();
+                if (!bunny.isVisible()) {
+                    bunny.setVisible(true);
+                }
+                if (!bunny2.isVisible()) {
+                    bunny2.setVisible(true);
+                }
+                if (!bunny3.isVisible()) {
+                    bunny3.setVisible(true);
+                }
+                Music.playSound("Click");
+                deleteBoard();
+                allTilesinBoard.clear();
+                createBoard();
+                setLocationOnBoard(allTilesinBoard);
+                for (Tile tile : allTilesinBoard) {
+                    tile.setVisible(true);
+                    for (ActionListener actionListener : tile.getActionListeners())
+                        tile.removeActionListener(actionListener);
+                }
+                addActionListen();
+                repaint();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Music.playSound("Tick");
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+        for (Tile t : allTilesinBoard){
+            t.setVisible(false);
+        }
+        repaint();
     }
 
 
@@ -921,6 +1352,57 @@ public class Panel extends JLayeredPane {
         }
     }
 
+    class TryAgain extends JLabel {
+
+        BufferedImage tryAgain;
+
+        public TryAgain() {
+
+            try {
+                tryAgain = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Restart.PNG"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2d.drawImage(tryAgain, 0, 0, 100, 100, null);
+        }
+    }
+
+    class Exit extends JLabel {
+
+        BufferedImage exit;
+
+        public Exit() {
+
+            try {
+                exit = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Exit.PNG"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2d.drawImage(exit, 0, 0, 87, 92, null);
+        }
+    }
     class Clue extends JLabel {
 
         BufferedImage clue;
@@ -1011,6 +1493,7 @@ public class Panel extends JLayeredPane {
                 e.printStackTrace();
             }
         }
+
         public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -1026,8 +1509,4 @@ public class Panel extends JLayeredPane {
     }
 
 
-
-
-
 }
-

@@ -7,6 +7,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Music {
     public static ArrayList<String> musicPaths = new ArrayList<>();
@@ -14,7 +15,7 @@ public class Music {
     public static int musicManipulation = 0;
 
     public static void moveMusic(){
-        for (File file : new File(Tile.class.getClassLoader().getResource("Music").getFile()).listFiles()){
+        for (File file : Objects.requireNonNull(new File(Tile.class.getClassLoader().getResource("Music").getFile()).listFiles())){
             musicPaths.add(file.getAbsolutePath());
 
         }

@@ -13,7 +13,7 @@ public class TileBorder extends AbstractBorder
     protected int thickness;
     protected Color shadowInner;
     protected Color shadowOuter;
-    int right;
+
 
 
     public TileBorder(int thickness) {
@@ -21,18 +21,7 @@ public class TileBorder extends AbstractBorder
     }
 
 
-    public TileBorder(int thickness, Color shadow)
-    {
-        this(thickness, shadow, shadow.brighter());
-    }
 
-
-    public TileBorder(int thickness, Color shadowOuterColor, Color shadowInnerColor)
-    {
-        this(thickness);
-        this.shadowOuter = shadowOuterColor;
-        this.shadowInner = shadowInnerColor;
-    }
 
 
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height)
@@ -54,11 +43,12 @@ public class TileBorder extends AbstractBorder
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         g2d.translate(x, y);
 
-        // Highlight border edge
-
-        g2d.setColor(Color.LIGHT_GRAY);
-
-//52, 70
+        if (TilesChooseMenu.theme == 1) {
+            g2d.setColor(new Color(0x989898));
+        }
+        else {
+            g2d.setColor(new Color(0x4E4E4E));
+        }
         Polygon ml = new Polygon();
         ml.addPoint(x + 6, y + 2);
         ml.addPoint(x, y + 13);
@@ -69,7 +59,13 @@ public class TileBorder extends AbstractBorder
         ml.addPoint(x + 6, y + 2);
         g2d.fillPolygon(ml);
 
-        g2d.setColor(Color.GRAY);
+        if (TilesChooseMenu.theme == 1) {
+            g2d.setColor(new Color(0xFAFBFF));
+        }
+        else {
+            g2d.setColor(new Color(0x000000));
+        }
+
         g2d.drawLine(x + 6, y + 2, x, y + 13);
         g2d.drawLine(x + 6, y + 61, x, y + 70);
         g2d.drawLine(x + 52, y + 2, x + 52, y + 61);
