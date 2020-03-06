@@ -34,6 +34,8 @@ public class Window extends JFrame {
     static String playerScore;
     static String playersToMove;
     public static int numberOfLives = 3;
+    public static String playerName = "";
+
 
     public static void showGameBoard(){
         window.add(new Panel());

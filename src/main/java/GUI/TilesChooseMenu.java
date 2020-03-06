@@ -342,7 +342,7 @@ public class TilesChooseMenu extends JLayeredPane {
         public Tick(){
 
             try {
-                tick = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Tick.PNG"));
+                tick = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Tick2.PNG"));
             }
             catch (Exception e){
                 e.printStackTrace();

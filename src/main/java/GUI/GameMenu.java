@@ -6,10 +6,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
@@ -19,7 +16,7 @@ import static GUI.Window.*;
 public class GameMenu extends JLayeredPane {
     BufferedImage bf;
     Random random = new Random();
-    public static String name;
+    Timer timerWrongName = new Timer(1500, null);
 
 
 
@@ -38,14 +35,20 @@ public class GameMenu extends JLayeredPane {
         name.setBounds(400, 100, 600, 350);
         add(name, 4);
 
-        JTextField setName = new JTextField("Type your name here...");
+        JTextField setName = new JTextField();
+        if (playerName.isEmpty()){
+            setName.setText("Type your name here...");
+        }
+        else {
+            setName.setText(Window.playerName);
+
+        }
         setName.setBounds(92, 28, 225, 48);
         setName.setOpaque(false);
         setName.setBorder(null);
         setName.setForeground(new Color(255, 102, 0));
         setName.setFont(new Font("Showcard Gothic", Font.PLAIN, 18));
         name.add(setName);
-        int test = 1;
 
         setName.addMouseListener(new MouseListener() {
             @Override
@@ -53,11 +56,9 @@ public class GameMenu extends JLayeredPane {
                 if (setName.getText().equalsIgnoreCase("Type your name here...")){
                     setName.setText("");
                     setName.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
-
                 }
 
             }
-
             @Override
             public void mousePressed(MouseEvent e) {
 
@@ -90,6 +91,8 @@ public class GameMenu extends JLayeredPane {
                     }
                 }
 
+
+
             }
 
             @Override
@@ -99,7 +102,7 @@ public class GameMenu extends JLayeredPane {
                     setName.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
-                    GameMenu.name = setName.getText();
+                    Window.playerName = setName.getText();
                 }
 
             }
@@ -110,6 +113,45 @@ public class GameMenu extends JLayeredPane {
             }
         });
 
+        JLabel quit = new JLabel("Quit");
+        quit.setBounds(770, 580, 250, 40);
+        quit.setForeground(new Color(255, 102, 0));
+        quit.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
+        add(quit);
+
+        quit.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Music.playSound("Click");
+                window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                quit.setFont(new Font("Showcard Gothic", Font.PLAIN, 45));
+                Music.playSound("Tick");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                quit.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
+
+            }
+        });
+
+
+
 
         JLabel musicOn = new JLabel();
         if (musicNumber == 1){
@@ -118,7 +160,7 @@ public class GameMenu extends JLayeredPane {
         else {
             musicOn.setText("Music: On");
         }
-        musicOn.setBounds(700, 580, 250, 40);
+        musicOn.setBounds(770, 530, 250, 40);
         musicOn.setForeground(new Color(255, 102, 0));
         musicOn.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
         add(musicOn);
@@ -189,24 +231,46 @@ public class GameMenu extends JLayeredPane {
             }
         });
 
+        JLabel wrongName = new JLabel("Type correct name");
+        wrongName.setBounds(430, 200, 350, 48);
+        wrongName.setForeground(new Color(85, 85, 85));
+        wrongName.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
+        wrongName.setVisible(false);
+        add(wrongName);
+
         final JLabel newGame = new JLabel("New Game");
         newGame.setForeground(new Color(255, 102, 0));
-        newGame.setBounds(700, 430, 260, 40);
+        newGame.setBounds(770, 380, 260, 40);
         newGame.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
         add(newGame);
 
         newGame.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Music.playSound("Click");
-                setNameForWinner(setName.getText());
-                Window.window.getContentPane().removeAll();
-                repaint();
-                Window.window.getContentPane().add(new Panel());
-                Window.window.getContentPane().validate();
-                repaint();
+                if (!setName.getText().equalsIgnoreCase("Type your name here...") && !setName.getText().contains(" ")) {
+                    Music.playSound("Click");
+                    setNameForWinner(setName.getText());
+                    window.getContentPane().removeAll();
+                    repaint();
+                    window.getContentPane().add(new Panel());
+                    window.getContentPane().validate();
+                    repaint();
+                }
+                else {
+                    timerWrongName.start();
+                    wrongName.setVisible(true);
+                    timerWrongName.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            wrongName.setVisible(false);
+                            timerWrongName.stop();
+                        }
+                    });
 
 
+
+
+                }
             }
 
             @Override
@@ -236,7 +300,7 @@ public class GameMenu extends JLayeredPane {
 
         final JLabel tilesChooser = new JLabel("Tiles Chooser");
         tilesChooser.setForeground(new Color(255, 102, 0));
-        tilesChooser.setBounds(700, 480, 350, 40);
+        tilesChooser.setBounds(770, 430, 350, 40);
         tilesChooser.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
         add(tilesChooser);
 
@@ -244,10 +308,10 @@ public class GameMenu extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
-                Window.window.getContentPane().removeAll();
+                window.getContentPane().removeAll();
                 repaint();
-                Window.window.getContentPane().add(new TilesChooseMenu());
-                Window.window.getContentPane().validate();
+                window.getContentPane().add(new TilesChooseMenu());
+                window.getContentPane().validate();
                 repaint();
 
             }
@@ -283,13 +347,13 @@ public class GameMenu extends JLayeredPane {
         add(fire);
 
         JLabel hardModeChooser = new JLabel();
-        if (Window.challangeNumber == 1){
+        if (challangeNumber == 1){
             hardModeChooser.setText("Challenge: Off");
         }
         else {
             hardModeChooser.setText("Challenge: On");
         }
-        hardModeChooser.setBounds(700, 530, 370, 40);
+        hardModeChooser.setBounds(770, 480, 370, 40);
         hardModeChooser.setForeground(new Color(255, 102, 0));
         hardModeChooser.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
         add(hardModeChooser);
@@ -298,17 +362,17 @@ public class GameMenu extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
-                if (Window.challangeNumber == 0) {
+                if (challangeNumber == 0) {
                     hardModeChooser.setText("Challenge: Off");
                     hardModeChooser.repaint();
                     isHardModeOn = false;
-                    Window.challangeNumber = 1;
+                    challangeNumber = 1;
                 }
-                else if (Window.challangeNumber == 1){
+                else if (challangeNumber == 1){
                     hardModeChooser.setText("Challenge: On");
                     hardModeChooser.repaint();
                     isHardModeOn = true;
-                    Window.challangeNumber = 0;
+                    challangeNumber = 0;
                 }
                 hardModeChooser.repaint();
                 System.out.println(isHardModeOn);
@@ -521,7 +585,7 @@ public class GameMenu extends JLayeredPane {
 
     }
     public static void setNameForWinner(String nameForWinner){
-        name = nameForWinner;
+        Window.playerName = nameForWinner;
     }
 
 

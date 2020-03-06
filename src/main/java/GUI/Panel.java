@@ -15,9 +15,8 @@ import java.util.Collections;
 import java.util.Random;
 
 import static GUI.Window.numberOfLives;
-import static GUI.Window.window;
 
-
+//396 line cheat
 public class Panel extends JLayeredPane {
     ArrayList<Tile> allTilesinBoard = new ArrayList<Tile>();
     ArrayList<Tile> allTilesinBoardCopy = new ArrayList<Tile>();
@@ -34,7 +33,6 @@ public class Panel extends JLayeredPane {
     Restart restart;
     static JLabel movesNumber;
 
-    boolean isListenerToBeAdded = true;
     Timer timer = new Timer(400, null);
     public static Timer timerHard = new Timer(3000, null);
     Timer timeForMove = new Timer(1000, null);
@@ -210,7 +208,7 @@ public class Panel extends JLayeredPane {
         });
 
         youWin = new JLabel("Congratulations, you win!!!");
-        youWin.setBounds(380, 140, 500, 100);
+        youWin.setBounds(350, 130, 500, 100);
         youWin.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         youWin.setForeground(new Color(255, 102, 0));
         add(youWin);
@@ -221,7 +219,7 @@ public class Panel extends JLayeredPane {
         add(winTrophy);
         winTrophy.setVisible(false);
 
-        youRWinner = new JLabel(GameMenu.name);
+        youRWinner = new JLabel(Window.playerName);
         youRWinner.setBounds(79, 311, 100, 30);
         youRWinner.setFont(new Font("Showcard Gothic", Font.PLAIN, 18));
         youRWinner.setForeground(new Color(255, 102, 0));
@@ -266,33 +264,33 @@ public class Panel extends JLayeredPane {
         clue.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Music.playSound("Click");
-                tooManyClues++;
-                if (secondsPassedFromStart >= 30) {
-                    secondsPassedFromStart -= 30;
-                    minutes++;
-                    startGame.repaint();
-                }
-                else {
-                    secondsPassedFromStart += 30;
-                    startGame.repaint();
-                }
-                helpPare = findPare();
-                clueClicked.start();
-                for (Tile t : helpPare) {
-                    t.setIcon(new QualityIcon(replacePath(t.getIconPath())));
-                }
-                clueClicked.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        setNormalIconsInTable(helpPare);
-                        clueClicked.stop();
+                if (numberOfLives != 0 && !winTrophy.isVisible()) {
+                    Music.playSound("Click");
+                    tooManyClues++;
+                    if (secondsPassedFromStart >= 30) {
+                        secondsPassedFromStart -= 30;
+                        minutes++;
+                        startGame.repaint();
+                    } else {
+                        secondsPassedFromStart += 30;
+                        startGame.repaint();
                     }
-                });
-                helpPare[0].setBackground(Color.orange);
-                helpPare[1].setBackground(Color.orange);
-                repaint();
-
+                    helpPare = findPare();
+                    clueClicked.start();
+                    for (Tile t : helpPare) {
+                        t.setIcon(new QualityIcon(replacePath(t.getIconPath())));
+                    }
+                    clueClicked.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setNormalIconsInTable(helpPare);
+                            clueClicked.stop();
+                        }
+                    });
+                    helpPare[0].setBackground(Color.orange);
+                    helpPare[1].setBackground(Color.orange);
+                    repaint();
+                }
             }
 
             @Override
@@ -320,7 +318,7 @@ public class Panel extends JLayeredPane {
         add(clue);
 
         startGame = new JLabel(String.valueOf(minutes) + " : " + String.valueOf(tenTimesSecond) + String.valueOf(secondsPassedFromStart));
-        startGame.setBounds(650, 40, 200, 30);
+        startGame.setBounds(700, 40, 200, 30);
         startGame.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         startGame.setForeground(new Color(255, 102, 0));
         add(startGame);
@@ -384,17 +382,23 @@ public class Panel extends JLayeredPane {
         shuffle.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Music.playSound("Click");
-                shuflleAllTilesOnBoard(allTilesinBoard);
-                movesNumber.setText("(" + checkMovesNumber() + ")");
-                setLocationOnBoard(allTilesinBoard);
-                for (Tile tile: allTilesinBoard) {
-                    for(ActionListener actionListener: tile.getActionListeners())
-                        tile.removeActionListener(actionListener);
-                }
-                addActionListen();
+                if (numberOfLives != 0 && !winTrophy.isVisible()) {
+                    Music.playSound("Click");
+                    shuflleAllTilesOnBoard(allTilesinBoard);
+                    movesNumber.setText("(" + checkMovesNumber() + ")");
+                    setLocationOnBoard(allTilesinBoard);
+                    for (Tile tile : allTilesinBoard) {
+                        for (ActionListener actionListener : tile.getActionListeners())
+                            tile.removeActionListener(actionListener);
+                    }
+                    for (Tile t : allTilesinBoard) {
+                        t.setVisible(false);
+                    }
+                    addActionListen();
+                    showWinningMassage();
 
-                repaint();
+                    repaint();
+                }
             }
 
 
@@ -430,6 +434,7 @@ public class Panel extends JLayeredPane {
         restart = new Restart();
         restart.setBounds(400,20,60,60);
 
+
         JLabel infoRestart = new JLabel("Restart the game");
         infoRestart.setHorizontalAlignment(SwingConstants.CENTER);
         infoRestart.setBounds(110, 40, 250, 30);
@@ -449,7 +454,7 @@ public class Panel extends JLayeredPane {
         restart.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (numberOfLives != 0) {
+                if (numberOfLives != 0 && !winTrophy.isVisible()) {
                     timeForMove.restart();
                     timerHard.restart();
                     pointsTimer.restart();
@@ -550,8 +555,8 @@ public class Panel extends JLayeredPane {
         movesNumber = new JLabel();
         movesNumber.setText("(" + checkMovesNumber() + ")");
         movesNumber.setHorizontalAlignment(SwingConstants.CENTER);
-        movesNumber.setBounds(600, 40, 50, 30);
-        movesNumber.setFont(new Font("Showcard Gothic", Font.PLAIN, 20));
+        movesNumber.setBounds(600, 40, 100, 30);
+        movesNumber.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         movesNumber.setForeground(new Color(255, 102, 0));
         add(movesNumber);
     }
@@ -624,8 +629,6 @@ public class Panel extends JLayeredPane {
             t.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
-
                     pointsTimer.start();
                     timeForMove.start();
                     compareTiles.add(t);
@@ -642,10 +645,8 @@ public class Panel extends JLayeredPane {
                             timer.stop();
                         }
                     };
-                    if (isListenerToBeAdded) {
                         timer.addActionListener(action);
-                        isListenerToBeAdded = false;
-                    }
+
 
                     if (Window.isHardModeOn && isListenerforHardTimerToBeAdded) {
                         isListenerforHardTimerToBeAdded = false;
@@ -852,7 +853,7 @@ public class Panel extends JLayeredPane {
     }
 
     public void showWinningMassage() {
-        restart.setEnabled(false);
+
         youWin.setVisible(true);
         youRWinner.setVisible(true);
         winTrophy.setVisible(true);
@@ -866,26 +867,25 @@ public class Panel extends JLayeredPane {
             }
         }
         JLabel tryAgainText = new JLabel("Try again?");
-        tryAgainText.setBounds(580, 340, 300, 50);
+        tryAgainText.setBounds(650, 220, 300, 50);
         tryAgainText.setHorizontalAlignment(SwingConstants.CENTER);
         tryAgainText.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         tryAgainText.setForeground(new Color(255, 102, 0));
         add(tryAgainText);
 
         JLabel exitText = new JLabel("Exit?");
-        exitText.setBounds(350, 340, 300, 50);
+        exitText.setBounds(220, 220, 300, 50);
         exitText.setHorizontalAlignment(SwingConstants.CENTER);
         exitText.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         exitText.setForeground(new Color(255, 102, 0));
         add(exitText);
 
         Exit exit = new Exit();
-        exit.setBounds(450, 408, 100, 100);
+        exit.setBounds(320, 288, 100, 100);
         add(exit);
         exit.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                restart.setEnabled(true);
                 Window.window.getContentPane().removeAll();
                 Window.window.getContentPane().add(new GameMenu());
                 Window.window.getContentPane().validate();
@@ -940,23 +940,30 @@ public class Panel extends JLayeredPane {
 
 
         TryAgain tryAgain = new TryAgain();
-        tryAgain.setBounds(680, 400, 100, 100);
+        tryAgain.setBounds(750, 280, 100, 100);
         add(tryAgain);
         tryAgain.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                restart.setEnabled(true);
                 timeForMove.restart();
                 timerHard.restart();
                 pointsTimer.restart();
+                timerHard.stop();
+                pointsTimer.stop();
+                timeForMove.stop();
                 secondsPassedFromStart = 0;
-                startGame.setText(String.valueOf(secondsPassedFromStart));
+                startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(tenTimesSecond) + String.valueOf(secondsPassedFromStart));
+                movesNumber.setText("");
                 minutes = 0;
                 numberOfLives = 3;
                 secondsToMove = 30;
                 winTrophy.setVisible(false);
                 youRWinner.setVisible(false);
                 youWin.setVisible(false);
+                exit.setVisible(false);
+                exitText.setVisible(false);
+                tryAgain.setVisible(false);
+                tryAgainText.setVisible(false);
                 repaint();
                 if (!bunny.isVisible()) {
                     bunny.setVisible(true);
@@ -1015,6 +1022,7 @@ public class Panel extends JLayeredPane {
         gameover.setForeground(new Color(255, 102, 0));
         add(gameover);
         setNormalIcons(allTilesinBoard);
+        compareTiles.clear();
 
         pointsTimer.stop();
         timeForMove.stop();
@@ -1052,6 +1060,7 @@ public class Panel extends JLayeredPane {
                 pointsTimer.restart();
                 pointsTimer.stop();
                 secondsPassedFromStart = 0;
+                movesNumber.setText("");
                 minutes = 0;
                 numberOfLives = 3;
                 secondsToMove = timerHard.getDelay()/1000;
@@ -1103,11 +1112,15 @@ public class Panel extends JLayeredPane {
                 timeForMove.restart();
                 timerHard.restart();
                 pointsTimer.restart();
+                timer.restart();
+                timer.stop();
                 timeForMove.stop();
                 timerHard.stop();
                 pointsTimer.stop();
                 secondsPassedFromStart = 0;
                 minutes = 0;
+                movesNumber.setText("");
+                timeToMove.setText(String.valueOf(timerHard.getDelay()/1000));
                 startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(tenTimesSecond) + String.valueOf(secondsPassedFromStart));
                 numberOfLives = 3;
                 secondsToMove = 30;
