@@ -9,7 +9,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import static GUI.Window.*;
 
@@ -28,8 +31,6 @@ public class GameMenu extends JLayeredPane {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
 
         NameField name = new NameField();
         name.setBounds(400, 100, 600, 350);
@@ -438,11 +439,29 @@ public class GameMenu extends JLayeredPane {
         infoName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
         info.add(infoName);
 
+
+        String scoreInfo = null;
+        String [] scoreTable;
+        ArrayList<Integer> time = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+
+        try {
+            Scanner sc = new Scanner(Panel.file);
+            while (sc.hasNextLine()) {
+                scoreInfo = sc.nextLine();
+                scoreTable = scoreInfo.split(" ");
+                time.add(Integer.parseInt(scoreTable[1]));
+                names.add(scoreTable[0]);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         JLabel first = new JLabel();
         first.setBounds(30, 92, 240, 40);
         bestScores.add(first);
 
-        JLabel firstName = new JLabel("Weronika1");
+        JLabel firstName = new JLabel(names.get(0));
         firstName.setVerticalAlignment(SwingConstants.CENTER);
         firstName.setHorizontalAlignment(SwingConstants.CENTER);
         firstName.setBounds(35, 0, 135, 40);
@@ -450,7 +469,7 @@ public class GameMenu extends JLayeredPane {
         firstName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
         first.add(firstName);
 
-        JLabel firstPoints = new JLabel("1752");
+        JLabel firstPoints = new JLabel(String.valueOf(time.get(0)));
         firstPoints.setVerticalAlignment(SwingConstants.CENTER);
         firstPoints.setHorizontalAlignment(SwingConstants.CENTER);
         firstPoints.setBounds(160, 0, 75, 40);
@@ -466,7 +485,7 @@ public class GameMenu extends JLayeredPane {
         second.setBounds(30, 134, 240, 40);
         bestScores.add(second);
 
-        JLabel secondName = new JLabel("Weronika1");
+        JLabel secondName = new JLabel(names.get(1));
         secondName.setVerticalAlignment(SwingConstants.CENTER);
         secondName.setHorizontalAlignment(SwingConstants.CENTER);
         secondName.setBounds(35, 0, 135, 40);
@@ -474,7 +493,7 @@ public class GameMenu extends JLayeredPane {
         secondName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
         second.add(secondName);
 
-        JLabel secondPoints = new JLabel("1752");
+        JLabel secondPoints = new JLabel(String.valueOf(time.get(1)));
         secondPoints.setVerticalAlignment(SwingConstants.CENTER);
         secondPoints.setHorizontalAlignment(SwingConstants.CENTER);
         secondPoints.setBounds(160, 0, 75, 40);
@@ -490,7 +509,7 @@ public class GameMenu extends JLayeredPane {
         third.setBounds(30, 176, 240, 40);
         bestScores.add(third);
 
-        JLabel thirdName = new JLabel("Weronika1");
+        JLabel thirdName = new JLabel(names.get(2));
         thirdName.setVerticalAlignment(SwingConstants.CENTER);
         thirdName.setHorizontalAlignment(SwingConstants.CENTER);
         thirdName.setBounds(35, 0, 135, 40);
@@ -498,7 +517,7 @@ public class GameMenu extends JLayeredPane {
         thirdName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
         third.add(thirdName);
 
-        JLabel thirdPoints = new JLabel("1752");
+        JLabel thirdPoints = new JLabel(String.valueOf(time.get(2)));
         thirdPoints.setVerticalAlignment(SwingConstants.CENTER);
         thirdPoints.setHorizontalAlignment(SwingConstants.CENTER);
         thirdPoints.setBounds(160, 0, 75, 40);
@@ -516,7 +535,7 @@ public class GameMenu extends JLayeredPane {
         forth.setFont(new Font("Showcard Gothic", Font.PLAIN, 22));
         bestScores.add(forth);
 
-        JLabel forthPoints = new JLabel("1752");
+        JLabel forthPoints = new JLabel(String.valueOf(time.get(3)));
         forthPoints.setVerticalAlignment(SwingConstants.CENTER);
         forthPoints.setHorizontalAlignment(SwingConstants.CENTER);
         forthPoints.setBounds(160, 0, 75, 40);
@@ -524,7 +543,7 @@ public class GameMenu extends JLayeredPane {
         forthPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
         forth.add(forthPoints);
 
-        JLabel forthName = new JLabel("Weronika1");
+        JLabel forthName = new JLabel(names.get(3));
         forthName.setBackground(Color.LIGHT_GRAY);
         forthName.setVerticalAlignment(SwingConstants.CENTER);
         forthName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -539,7 +558,7 @@ public class GameMenu extends JLayeredPane {
         fifth.setFont(new Font("Showcard Gothic", Font.PLAIN, 22));
         bestScores.add(fifth);
 
-        JLabel fifthPoints = new JLabel("1752");
+        JLabel fifthPoints = new JLabel(String.valueOf(time.get(4)));
         fifthPoints.setVerticalAlignment(SwingConstants.CENTER);
         fifthPoints.setHorizontalAlignment(SwingConstants.CENTER);
         fifthPoints.setBounds(160, 0, 75, 40);
@@ -547,7 +566,7 @@ public class GameMenu extends JLayeredPane {
         fifthPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
         fifth.add(fifthPoints);
 
-        JLabel fifthName = new JLabel("Weronika1");
+        JLabel fifthName = new JLabel(names.get(4));
         fifthName.setBackground(Color.LIGHT_GRAY);
         fifthName.setVerticalAlignment(SwingConstants.CENTER);
         fifthName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -583,7 +602,9 @@ public class GameMenu extends JLayeredPane {
         bestScores.add(sep6);
 
 
+
     }
+
     public static void setNameForWinner(String nameForWinner){
         Window.playerName = nameForWinner;
     }

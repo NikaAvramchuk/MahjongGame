@@ -1,6 +1,6 @@
 package LevelCreator;
 
-import javafx.scene.layout.Pane;
+//import javafx.scene.layout.Pane;
 
 import javax.swing.*;
 import java.awt.Panel;
