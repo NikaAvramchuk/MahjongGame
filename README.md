@@ -38,4 +38,5 @@ by tile.
 ### Authors:
 
 Marcin Obuszyński
+
 Weronika Avramchuk

@@ -1,5 +1,5 @@
-Score: 950 Name: Milena
-Score: 1100 Name: Piotrek
-Score: 1200 Name: Monika
-Score: 1250 Name: Marcin
-Score: 1250 Name: Weronika
+Mama 322
+Wojtek 373
+Nika 587
+Piotr 970
+Milena 1320

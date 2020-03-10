@@ -10,9 +10,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.Scanner;
 
 import static GUI.Window.*;
 
@@ -51,6 +54,11 @@ public class Panel extends JLayeredPane {
     JLabel winTrophy;
     JLabel youRWinner;
     JLabel youWin;
+
+    int worstresult = findWorstResult();
+    int endGameTime;
+    public static final String bestScoresPath = Tile.class.getClassLoader().getResource("BestScores").getFile() + "\\TopScores.txt";
+    static File file = new File(bestScoresPath);
 
 
     public Panel() {
@@ -395,6 +403,7 @@ public class Panel extends JLayeredPane {
                     addActionListen();
 
 
+                    showWinningMassage();
                     repaint();
                 }
             }
@@ -517,9 +526,6 @@ public class Panel extends JLayeredPane {
         });
         add(restart);
 
-
-
-
         createBoard();
         setLocationOnBoard(allTilesinBoard);
         addActionListen();
@@ -557,6 +563,7 @@ public class Panel extends JLayeredPane {
         movesNumber.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         movesNumber.setForeground(new Color(255, 102, 0));
         add(movesNumber);
+
     }
 
     public void setLocationOnBoard(ArrayList<Tile> allTilesinBoard){
@@ -569,8 +576,17 @@ public class Panel extends JLayeredPane {
             x = 180 + (SizeOfTiles.WIDTH.getValue() * tile.getTileX()) -SizeOfTiles.BOARD_lEFT.getValue()*tile.getTileX() + z*6;
             y = 100 + (SizeOfTiles.HEIGHT.getValue() * tile.getTileY()) - SizeOfTiles.BOARD_DOWN.getValue()*tile.getTileY() -z*10;
             tile.setBounds(x, y, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+            if (tile.getTileZ()==4) {
+                tile.setBounds(490, 260, 54, 70);
+            }
+            else {
+                z = tile.getTileZ();
+                x = 180 + (SizeOfTiles.WIDTH.getValue() * tile.getTileX()) - SizeOfTiles.BOARD_lEFT.getValue() * tile.getTileX() + z * 6;
+                y = 100 + (SizeOfTiles.HEIGHT.getValue() * tile.getTileY()) - SizeOfTiles.BOARD_DOWN.getValue() * tile.getTileY() - z * 10;
+                tile.setBounds(x, y, SizeOfTiles.WIDTH.getValue(), SizeOfTiles.HEIGHT.getValue());
+            }
             tile.setBorder(new TileBorder(4));
-            add(tile, new Integer (tile.getLevel()));
+            add(tile, Integer.valueOf(tile.getLevel()));
         }
         checkIfTileIsEnable(allTilesinBoard);
         tileSetEnableOnBoard(allTilesinBoard);
@@ -824,7 +840,7 @@ public class Panel extends JLayeredPane {
             movesNumber=movesNumber+(identicalId%2);
             identicalId=1;
         }
-        return movesNumber / 2;
+        return movesNumber/2;
 
     }
 
@@ -861,6 +877,9 @@ public class Panel extends JLayeredPane {
     }
 
     public void showWinningMassage() {
+        endGameTime = getTimeOnFinish();
+        if(endGameTime<worstresult)
+            printToPlik(Window.playerName);
 
         youWin.setVisible(true);
         youRWinner.setVisible(true);
@@ -1530,5 +1549,87 @@ public class Panel extends JLayeredPane {
         }
     }
 
+    public static ArrayList<String> scoreSort (File file, String name, int time) {
+        String scoreInfo;
+        String [] scoreTable;
+        ArrayList<Integer> allScores = new ArrayList<>();
+        ArrayList<String> allinfo = new ArrayList<>();
+        ArrayList<String> afterSorting = new ArrayList<>();
+
+        try {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine() && allScores.size()<5){
+                    scoreInfo = scanner.nextLine();
+                    allinfo.add(scoreInfo);
+                    scoreTable = scoreInfo.split(" ");
+                    allScores.add(Integer.parseInt(scoreTable[1]));
+            }
+            System.out.println(allinfo);
+            allScores.add(time);
+            allinfo.add(name + " " + time);
+            scanner.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        Collections.sort(allScores);
+
+        for (Integer integer: allScores)
+            for (String s: allinfo) {
+                scoreTable = s.split(" ");
+                if (Integer.parseInt(scoreTable[1])==integer)
+                    afterSorting.add(scoreTable[0] + " " + integer);
+            }
+
+        return afterSorting;
+
+    }
+
+    public int getTimeOnFinish () {
+        String nowy = startGame.getText().substring(0,startGame.getText().indexOf(':')).trim() + startGame.getText().substring(startGame.getText().indexOf(':')+1).trim();
+        return Integer.parseInt(nowy);
+    }
+
+    public void printToPlik (String name) {
+        ArrayList<String> information = scoreSort(file, name, endGameTime);
+        PrintWriter pw = null;
+        int counter =1;
+        try {
+            pw = new PrintWriter(file);
+            pw.print("");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (String top5 : information) {
+                if (counter<=5) {
+                    pw.println(top5);
+                    pw.flush();
+                }
+                counter++;
+
+            }
+            pw.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public int findWorstResult () {
+        ArrayList<String> findarray = new ArrayList<>();
+        try {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine())
+                findarray.add(scanner.nextLine());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return Integer.parseInt(findarray.get(findarray.size()-1).split(" ")[1]);
+    }
 
 }
