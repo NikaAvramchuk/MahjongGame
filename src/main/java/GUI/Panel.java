@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import static GUI.Window.numberOfLives;
+import static GUI.Window.*;
 
 //396 line cheat
 public class Panel extends JLayeredPane {
@@ -22,6 +22,7 @@ public class Panel extends JLayeredPane {
     ArrayList<Tile> allTilesinBoardCopy = new ArrayList<Tile>();
     Tile[] remowedTiles = new Tile[2];
     ArrayList<Tile> compareTiles = new ArrayList<Tile>();
+    ArrayList<Tile> removedTiles = new ArrayList<>();
     JButton start;
     JButton help;
     JButton shuffle;
@@ -34,7 +35,7 @@ public class Panel extends JLayeredPane {
     static JLabel movesNumber;
 
     Timer timer = new Timer(400, null);
-    public static Timer timerHard = new Timer(3000, null);
+    public static Timer timerHard = new Timer(30000, null);
     Timer timeForMove = new Timer(1000, null);
     int secondsToMove = timerHard.getDelay() / 1000;
     boolean isListenerforHardTimerToBeAdded = true;
@@ -391,11 +392,8 @@ public class Panel extends JLayeredPane {
                         for (ActionListener actionListener : tile.getActionListeners())
                             tile.removeActionListener(actionListener);
                     }
-                    for (Tile t : allTilesinBoard) {
-                        t.setVisible(false);
-                    }
                     addActionListen();
-                    showWinningMassage();
+
 
                     repaint();
                 }
@@ -567,7 +565,6 @@ public class Panel extends JLayeredPane {
         int z =0;
 
         for (Tile tile : allTilesinBoard) {
-            System.out.println(tile.getIconPath());
             z= tile.getTileZ();
             x = 180 + (SizeOfTiles.WIDTH.getValue() * tile.getTileX()) -SizeOfTiles.BOARD_lEFT.getValue()*tile.getTileX() + z*6;
             y = 100 + (SizeOfTiles.HEIGHT.getValue() * tile.getTileY()) - SizeOfTiles.BOARD_DOWN.getValue()*tile.getTileY() -z*10;
@@ -600,25 +597,26 @@ public class Panel extends JLayeredPane {
     ActionListener forHardMode = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e2) {
-            numberOfLives--;
-            timeForMove.restart();
-            secondsToMove = timerHard.getDelay()/1000;
-            timeToMove.setText(String.valueOf(secondsToMove));
-            timeToMove.repaint();
-            System.out.println(numberOfLives);
+            if (isHardModeOn) {
+                numberOfLives--;
+                timeForMove.restart();
+                secondsToMove = timerHard.getDelay() / 1000;
+                timeToMove.setText(String.valueOf(secondsToMove));
+                timeToMove.repaint();
 
-            if (numberOfLives == 2) {
-                bunny.setVisible(false);
-                repaint();
-            }
-            if (numberOfLives == 1) {
-                bunny2.setVisible(false);
-                repaint();
-            }
-            if (numberOfLives == 0) {
-                bunny3.setVisible(false);
-                repaint();
+                if (numberOfLives == 2) {
+                    bunny.setVisible(false);
+                    repaint();
+                }
+                if (numberOfLives == 1) {
+                    bunny2.setVisible(false);
+                    repaint();
+                }
+                if (numberOfLives == 0) {
+                    bunny3.setVisible(false);
+                    repaint();
 
+                }
             }
         }
     };
@@ -633,6 +631,7 @@ public class Panel extends JLayeredPane {
                     timeForMove.start();
                     compareTiles.add(t);
                     t.setIcon(new QualityIcon(replacePath(t.getIconPath())));
+                    removedTiles.add(t);
 
                     if (compareTiles.size() == 2) {
                         timer.start();
@@ -640,12 +639,20 @@ public class Panel extends JLayeredPane {
                     ActionListener action = new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e1) {
-                            setNormalIcons(allTilesinBoard);
-                            repaint();
+                            System.out.println(removedTiles.size());
+                            setNormalIcons(removedTiles);
+                            removedTiles.get(0).repaint();
+                            removedTiles.get(1).repaint();
+                            removedTiles.clear();
                             timer.stop();
+                            isListenerToBeAdded = 0;
+                            timer.removeActionListener(this);
+
                         }
                     };
+                    if (compareTiles.size() == 1) {
                         timer.addActionListener(action);
+                    }
 
 
                     if (Window.isHardModeOn && isListenerforHardTimerToBeAdded) {
@@ -682,6 +689,7 @@ public class Panel extends JLayeredPane {
                             revalidate();
                         }
                         compareTiles.clear();
+
 
 
 
@@ -816,7 +824,7 @@ public class Panel extends JLayeredPane {
             movesNumber=movesNumber+(identicalId%2);
             identicalId=1;
         }
-        return movesNumber;
+        return movesNumber / 2;
 
     }
 
@@ -1132,6 +1140,7 @@ public class Panel extends JLayeredPane {
                 exitText.setVisible(false);
                 tryAgainText.setVisible(false);
                 gameover.setVisible(false);
+                setNormalIcons(allTilesinBoard);
                 repaint();
                 if (!bunny.isVisible()) {
                     bunny.setVisible(true);

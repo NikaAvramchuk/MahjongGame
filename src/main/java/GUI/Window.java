@@ -35,6 +35,7 @@ public class Window extends JFrame {
     static String playersToMove;
     public static int numberOfLives = 3;
     public static String playerName = "";
+    static int isListenerToBeAdded = 0;
 
 
     public static void showGameBoard(){
@@ -98,7 +99,6 @@ public class Window extends JFrame {
         listSortedTimes(top5ScoresSorted);
         movePlayersFromFile(top5ScoresWithNames);
         listSortedScoresWithNames(top5ScoresSortedWithNames);
-        System.out.println(top5ScoresSortedWithNames);
         int counter = 0;
         try {
             pw = new PrintWriter(new File(bestScoresPath));

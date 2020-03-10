@@ -38,7 +38,6 @@ public class Music {
 
     public static void main(String[] args) {
         moveMusic();
-        System.out.println(musicPaths);
 
 
     }

@@ -44,6 +44,7 @@ public class GameMenu extends JLayeredPane {
 
         }
         setName.setBounds(92, 28, 225, 48);
+        setName.setHorizontalAlignment(SwingConstants.CENTER);
         setName.setOpaque(false);
         setName.setBorder(null);
         setName.setForeground(new Color(255, 102, 0));
@@ -170,7 +171,6 @@ public class GameMenu extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
-                System.out.println(Music.musicPaths);
                 if (musicNumber == 0) {
                     try {
                         clip.stop();
@@ -181,7 +181,6 @@ public class GameMenu extends JLayeredPane {
                         clip.addLineListener(new LineListener() {
                             @Override
                             public void update(LineEvent event) {
-                                System.out.println(clip.getMicrosecondPosition());
                             }
                         });
                     }
@@ -375,7 +374,6 @@ public class GameMenu extends JLayeredPane {
                     challangeNumber = 0;
                 }
                 hardModeChooser.repaint();
-                System.out.println(isHardModeOn);
 
             }
 

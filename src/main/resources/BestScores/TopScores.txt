@@ -1,0 +1,5 @@
+Score: 950 Name: Milena
+Score: 1100 Name: Piotrek
+Score: 1200 Name: Monika
+Score: 1250 Name: Marcin
+Score: 1250 Name: Weronika
