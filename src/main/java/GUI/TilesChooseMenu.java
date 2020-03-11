@@ -10,9 +10,10 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import static GUI.Window.theme;
+
 public class TilesChooseMenu extends JLayeredPane {
     BufferedImage bf;
-    public static int theme = 1;
 
 
 

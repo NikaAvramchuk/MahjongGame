@@ -43,7 +43,7 @@ public class TileBorder extends AbstractBorder
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         g2d.translate(x, y);
 
-        if (TilesChooseMenu.theme == 1) {
+        if (Window.theme == 1) {
             g2d.setColor(new Color(0x989898));
         }
         else {
@@ -59,7 +59,7 @@ public class TileBorder extends AbstractBorder
         ml.addPoint(x + 6, y + 2);
         g2d.fillPolygon(ml);
 
-        if (TilesChooseMenu.theme == 1) {
+        if (Window.theme == 1) {
             g2d.setColor(new Color(0xFAFBFF));
         }
         else {

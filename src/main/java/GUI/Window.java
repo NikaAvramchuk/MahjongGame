@@ -26,6 +26,7 @@ public class Window extends JFrame {
     public static int numberOfLives = 3;
     public static String playerName = "";
     static int isListenerToBeAdded = 0;
+    public static int theme = 1;
 
 
 

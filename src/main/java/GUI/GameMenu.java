@@ -252,6 +252,9 @@ public class GameMenu extends JLayeredPane {
                     setNameForWinner(setName.getText());
                     window.getContentPane().removeAll();
                     repaint();
+                    if (Tile.allTiles.isEmpty()) {
+                        Tile.allTiles = new ArrayList<Tile>(Tile.createAllTilesInBoard());
+                    }
                     window.getContentPane().add(new Panel());
                     window.getContentPane().validate();
                     repaint();
@@ -421,7 +424,7 @@ public class GameMenu extends JLayeredPane {
         infoRank.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
         info.add(infoRank);
 
-        JLabel infoPoints = new JLabel("Points:");
+        JLabel infoPoints = new JLabel("Time:");
         infoPoints.setVerticalAlignment(SwingConstants.CENTER);
         infoPoints.setHorizontalAlignment(SwingConstants.CENTER);
         infoPoints.setBounds(155, 0, 80, 40);
@@ -448,8 +451,9 @@ public class GameMenu extends JLayeredPane {
             while (sc.hasNextLine()) {
                 scoreInfo = sc.nextLine();
                 scoreTable = scoreInfo.split(" ");
-                time.add(Integer.parseInt(scoreTable[1]));
+                System.out.println(scoreTable.length);
                 names.add(scoreTable[0]);
+                time.add(Integer.parseInt(scoreTable[1]));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

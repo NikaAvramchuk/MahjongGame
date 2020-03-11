@@ -4,6 +4,7 @@ import GUI.BlackTheme;
 import GUI.QualityIcon;
 import GUI.ResizeImages;
 import GUI.TilesChooseMenu;
+import GUI.Window;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -112,14 +113,14 @@ public class Tile extends JButton {
 
 
     public static ArrayList<Tile> createAllTilesInBoard() {
-        if (TilesChooseMenu.theme == 1) {
+        if (Window.theme == 1) {
             putImagesOnTiles("TilesBlack", "\\TilesFixBlack\\");
         }
-        else if (TilesChooseMenu.theme == 2){
+        else if (Window.theme == 2){
             putImagesOnTiles("TilesStandard", "\\TilesFixStandard\\");
         }
 
-        final ArrayList<Tile> allTiles = new ArrayList<Tile>();
+        ArrayList<Tile> allTiles = new ArrayList<Tile>();
             int lastID = 35;
             for (int i = 0; i < 144; i++) {
                 Tile t = new Tile();
