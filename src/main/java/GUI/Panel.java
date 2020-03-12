@@ -21,10 +21,13 @@ import static GUI.Window.*;
 public class Panel extends JLayeredPane {
     ArrayList<Tile> allTilesinBoard = new ArrayList<Tile>();
     ArrayList<Tile> allTilesinBoardCopy = new ArrayList<Tile>();
+    static ArrayList<Integer> allScores;
+    static ArrayList<String> allinfo;
+    static ArrayList<String> afterSorting;
+    ArrayList<String> information;
     Tile[] remowedTiles = new Tile[2];
     ArrayList<Tile> compareTiles = new ArrayList<Tile>();
     ArrayList<Tile> removedTiles = new ArrayList<>();
-    ArrayList<String> information;
     public static ArrayList<String> findarray;
     Bunny bunny3;
     Bunny bunny2;
@@ -916,7 +919,7 @@ public class Panel extends JLayeredPane {
             public void mouseClicked(MouseEvent e) {
                 resetAll();
                 Tile.imagesPaths.clear();
-                Panel.findarray.clear();
+                clearAllArrays();
                 Window.window.getContentPane().removeAll();
                 Window.window.getContentPane().add(new GameMenu());
                 Window.window.getContentPane().validate();
@@ -940,7 +943,9 @@ public class Panel extends JLayeredPane {
                 bunny3.setVisible(true);
                 setNormalIcons(allTilesinBoard);
                 timerHard.removeActionListener(forHardMode);
-                timer.removeActionListener(timer.getActionListeners()[0]);
+                if (timer.getActionListeners().length > 0) {
+                    timer.removeActionListener(timer.getActionListeners()[0]);
+                }
                 Music.playSound("Click");
                 for (Tile t : allTilesinBoard){
                     t.setVisible(true);
@@ -979,6 +984,7 @@ public class Panel extends JLayeredPane {
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
                 resetAll();
+                clearAllArrays();
                 Tile.imagesPaths.clear();
                 Panel.findarray.clear();
                 window.getContentPane().removeAll();
@@ -1053,6 +1059,7 @@ public class Panel extends JLayeredPane {
                 allTilesinBoardCopy.clear();
                 Tile.allTiles.clear();
                 resetAll();
+                clearAllArrays();
                 Window.window.getContentPane().removeAll();
                 Window.window.getContentPane().add(new GameMenu());
                 Window.window.getContentPane().validate();
@@ -1113,6 +1120,7 @@ public class Panel extends JLayeredPane {
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
                 resetAll();
+                clearAllArrays();
                 window.getContentPane().removeAll();
                 repaint();
                 window.getContentPane().add(new Panel());
@@ -1496,12 +1504,30 @@ public class Panel extends JLayeredPane {
         }
     }
 
+    public void clearAllArrays (){
+        if (allScores.size() > 0) {
+            allScores.clear();
+        }
+        if (allinfo.size() > 0) {
+            allinfo.clear();
+        }
+        if (afterSorting.size() > 0) {
+            afterSorting.clear();
+        }
+        if (information.size() > 0) {
+            information.clear();
+        }
+        if (findarray.size() > 0) {
+            findarray.clear();
+        }
+    }
+
     public static ArrayList<String> scoreSort (File file, String name, int time) {
         String scoreInfo;
         String [] scoreTable;
-        ArrayList<Integer> allScores = new ArrayList<>();
-        ArrayList<String> allinfo = new ArrayList<>();
-        ArrayList<String> afterSorting = new ArrayList<>();
+        allScores = new ArrayList<>();
+        allinfo = new ArrayList<>();
+        afterSorting = new ArrayList<>();
         try {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine() && allScores.size()<5){
