@@ -252,6 +252,8 @@ public class GameMenu extends JLayeredPane {
                     setNameForWinner(setName.getText());
                     window.getContentPane().removeAll();
                     repaint();
+                    if (retry == 1) {
+                    }
                     if (Tile.allTiles.isEmpty()) {
                         Tile.allTiles = new ArrayList<Tile>(Tile.createAllTilesInBoard());
                     }
@@ -451,7 +453,6 @@ public class GameMenu extends JLayeredPane {
             while (sc.hasNextLine()) {
                 scoreInfo = sc.nextLine();
                 scoreTable = scoreInfo.split(" ");
-                System.out.println(scoreTable.length);
                 names.add(scoreTable[0]);
                 time.add(Integer.parseInt(scoreTable[1]));
             }

@@ -27,6 +27,8 @@ public class Window extends JFrame {
     public static String playerName = "";
     static int isListenerToBeAdded = 0;
     public static int theme = 1;
+    public static int retry = 0;
+    public static int oneTime = 0;
 
 
 

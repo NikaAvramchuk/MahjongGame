@@ -6,16 +6,14 @@ import GameBoard.*;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import static GUI.Window.*;
 
@@ -26,7 +24,7 @@ public class Panel extends JLayeredPane {
     Tile[] remowedTiles = new Tile[2];
     ArrayList<Tile> compareTiles = new ArrayList<Tile>();
     ArrayList<Tile> removedTiles = new ArrayList<>();
-    public static ArrayList<String> information;
+    ArrayList<String> information;
     public static ArrayList<String> findarray;
     Bunny bunny3;
     Bunny bunny2;
@@ -390,6 +388,7 @@ public class Panel extends JLayeredPane {
         shuffle.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                showWinningMassage();
                 if (numberOfLives != 0 && !winTrophy.isVisible()) {
                     Music.playSound("Click");
                     shuflleAllTilesOnBoard(allTilesinBoard);
@@ -881,6 +880,8 @@ public class Panel extends JLayeredPane {
         endGameTime = getTimeOnFinish();
         if(endGameTime<worstresult)
             printToPlik(Window.playerName);
+        oneTime = 0;
+        System.out.println(information);
         youWin.setVisible(true);
         youRWinner.setVisible(true);
         winTrophy.setVisible(true);
@@ -916,7 +917,6 @@ public class Panel extends JLayeredPane {
                 resetAll();
                 Tile.imagesPaths.clear();
                 Panel.findarray.clear();
-                Panel.information.clear();
                 Window.window.getContentPane().removeAll();
                 Window.window.getContentPane().add(new GameMenu());
                 Window.window.getContentPane().validate();
@@ -981,7 +981,6 @@ public class Panel extends JLayeredPane {
                 resetAll();
                 Tile.imagesPaths.clear();
                 Panel.findarray.clear();
-                Panel.information.clear();
                 window.getContentPane().removeAll();
                 repaint();
                 window.getContentPane().add(new Panel());
@@ -1503,7 +1502,6 @@ public class Panel extends JLayeredPane {
         ArrayList<Integer> allScores = new ArrayList<>();
         ArrayList<String> allinfo = new ArrayList<>();
         ArrayList<String> afterSorting = new ArrayList<>();
-
         try {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine() && allScores.size()<5){
@@ -1525,8 +1523,9 @@ public class Panel extends JLayeredPane {
         for (Integer integer: allScores)
             for (String s: allinfo) {
                 scoreTable = s.split(" ");
-                if (Integer.parseInt(scoreTable[1])==integer)
+                if (Integer.parseInt(scoreTable[1]) == integer && !afterSorting.contains(scoreTable[0] + " " + integer)) {
                     afterSorting.add(scoreTable[0] + " " + integer);
+                }
             }
 
         return afterSorting;
@@ -1558,6 +1557,7 @@ public class Panel extends JLayeredPane {
 
             }
             pw.close();
+
         }
         catch (Exception e){
             e.printStackTrace();
