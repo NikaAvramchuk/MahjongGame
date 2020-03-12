@@ -445,8 +445,11 @@ public class GameMenu extends JLayeredPane {
 
         String scoreInfo = null;
         String [] scoreTable;
+        String minutes;
+        String seconds;
         ArrayList<Integer> time = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> timeString = new ArrayList<>();
 
         try {
             Scanner sc = new Scanner(Panel.file);
@@ -455,6 +458,33 @@ public class GameMenu extends JLayeredPane {
                 scoreTable = scoreInfo.split(" ");
                 names.add(scoreTable[0]);
                 time.add(Integer.parseInt(scoreTable[1]));
+            }
+            for (Integer integer : time){
+                String result = String.valueOf(integer);
+                if (result.length() == 1){
+                    minutes = "00 : ";
+                    seconds = "0" + result;
+                    timeString.add(minutes + seconds);
+                }
+                else if (result.length() == 2){
+                    minutes = "00 : ";
+                    seconds = result;
+                    timeString.add(minutes + seconds);
+
+                }
+                else if (result.length() == 3){
+                    minutes = "0" + result.substring(0, 1) + " : ";
+                    seconds = result.substring(result.length() - 2);
+                    timeString.add(minutes + seconds);
+
+                }
+                else {
+                    minutes = result.substring(0, 2) + " : ";
+                    seconds = result.substring(result.length() - 2);
+                    timeString.add(minutes + seconds);
+
+                }
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -472,7 +502,7 @@ public class GameMenu extends JLayeredPane {
         firstName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
         first.add(firstName);
 
-        JLabel firstPoints = new JLabel(String.valueOf(time.get(0)));
+        JLabel firstPoints = new JLabel(timeString.get(0));
         firstPoints.setVerticalAlignment(SwingConstants.CENTER);
         firstPoints.setHorizontalAlignment(SwingConstants.CENTER);
         firstPoints.setBounds(160, 0, 75, 40);
@@ -496,7 +526,7 @@ public class GameMenu extends JLayeredPane {
         secondName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
         second.add(secondName);
 
-        JLabel secondPoints = new JLabel(String.valueOf(time.get(1)));
+        JLabel secondPoints = new JLabel(timeString.get(1));
         secondPoints.setVerticalAlignment(SwingConstants.CENTER);
         secondPoints.setHorizontalAlignment(SwingConstants.CENTER);
         secondPoints.setBounds(160, 0, 75, 40);
@@ -520,7 +550,7 @@ public class GameMenu extends JLayeredPane {
         thirdName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
         third.add(thirdName);
 
-        JLabel thirdPoints = new JLabel(String.valueOf(time.get(2)));
+        JLabel thirdPoints = new JLabel(timeString.get(2));
         thirdPoints.setVerticalAlignment(SwingConstants.CENTER);
         thirdPoints.setHorizontalAlignment(SwingConstants.CENTER);
         thirdPoints.setBounds(160, 0, 75, 40);
@@ -538,7 +568,7 @@ public class GameMenu extends JLayeredPane {
         forth.setFont(new Font("Showcard Gothic", Font.PLAIN, 22));
         bestScores.add(forth);
 
-        JLabel forthPoints = new JLabel(String.valueOf(time.get(3)));
+        JLabel forthPoints = new JLabel(timeString.get(3));
         forthPoints.setVerticalAlignment(SwingConstants.CENTER);
         forthPoints.setHorizontalAlignment(SwingConstants.CENTER);
         forthPoints.setBounds(160, 0, 75, 40);
@@ -561,7 +591,7 @@ public class GameMenu extends JLayeredPane {
         fifth.setFont(new Font("Showcard Gothic", Font.PLAIN, 22));
         bestScores.add(fifth);
 
-        JLabel fifthPoints = new JLabel(String.valueOf(time.get(4)));
+        JLabel fifthPoints = new JLabel(timeString.get(4));
         fifthPoints.setVerticalAlignment(SwingConstants.CENTER);
         fifthPoints.setHorizontalAlignment(SwingConstants.CENTER);
         fifthPoints.setBounds(160, 0, 75, 40);
