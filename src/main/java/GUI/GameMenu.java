@@ -5,6 +5,7 @@ import GameBoard.Tile;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -15,12 +16,13 @@ import java.util.Random;
 import java.util.Scanner;
 
 import static GUI.Window.*;
+import static javax.swing.border.BevelBorder.LOWERED;
+import static javax.swing.border.BevelBorder.RAISED;
 
 public class GameMenu extends JLayeredPane {
     BufferedImage bf;
     Random random = new Random();
     Timer timerWrongName = new Timer(1500, null);
-
 
 
     public GameMenu() {
@@ -37,12 +39,11 @@ public class GameMenu extends JLayeredPane {
         add(name, 4);
 
         JTextField setName = new JTextField();
-        if (playerName.isEmpty()){
+        if (playerName.isEmpty()) {
             setName.setText("Type your name here...");
-        }
-        else {
+        } else {
             setName.setText(Window.playerName);
-
+            setName.setFont(new Font("Showcard Gothic", Font.PLAIN, 25));
         }
         setName.setBounds(92, 28, 225, 48);
         setName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -55,12 +56,13 @@ public class GameMenu extends JLayeredPane {
         setName.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (setName.getText().equalsIgnoreCase("Type your name here...")){
+                if (setName.getText().equalsIgnoreCase("Type your name here...")) {
                     setName.setText("");
-                    setName.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
+                    setName.setFont(new Font("Showcard Gothic", Font.PLAIN, 25));
                 }
 
             }
+
             @Override
             public void mousePressed(MouseEvent e) {
 
@@ -87,23 +89,22 @@ public class GameMenu extends JLayeredPane {
             @Override
             public void keyTyped(KeyEvent e) {
 
-                if (setName.getText().length() > 8 && !(setName.getText().equalsIgnoreCase("Type your name here..."))){
+                if (setName.getText().length() > 8 && !(setName.getText().equalsIgnoreCase("Type your name here..."))) {
                     if (e.getKeyCode() != KeyEvent.VK_BACK_SPACE) {
                         e.consume();
                     }
                 }
 
 
-
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (setName.getText().equalsIgnoreCase("Type your name here...")){
+                if (setName.getText().equalsIgnoreCase("Type your name here...")) {
                     setName.setText("");
                     setName.setFont(new Font("Showcard Gothic", Font.PLAIN, 40));
                 }
-                if (e.getKeyCode() == KeyEvent.VK_ENTER){
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     Window.playerName = setName.getText();
                 }
 
@@ -153,13 +154,10 @@ public class GameMenu extends JLayeredPane {
         });
 
 
-
-
         JLabel musicOn = new JLabel();
-        if (musicNumber == 1){
+        if (musicNumber == 1) {
             musicOn.setText("Music: Off");
-        }
-        else {
+        } else {
             musicOn.setText("Music: On");
         }
         musicOn.setBounds(770, 530, 250, 40);
@@ -184,13 +182,11 @@ public class GameMenu extends JLayeredPane {
                             public void update(LineEvent event) {
                             }
                         });
-                    }
-                    catch (Exception ex1){
+                    } catch (Exception ex1) {
                         ex1.printStackTrace();
                     }
 
-                }
-                else if (musicNumber == 1){
+                } else if (musicNumber == 1) {
                     try {
                         musicNumber = 0;
                         musicOn.setText("Music: On");
@@ -198,8 +194,7 @@ public class GameMenu extends JLayeredPane {
                         input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get(random.nextInt(4))));
                         clip.open(input);
                         clip.start();
-                    }
-                    catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -238,6 +233,14 @@ public class GameMenu extends JLayeredPane {
         wrongName.setVisible(false);
         add(wrongName);
 
+        JLabel border = new JLabel();
+        border.setBounds(750, 365, 380, 270);
+        Border bevel1 = BorderFactory.createBevelBorder(LOWERED, new Color(255, 102, 0), new Color(255, 102, 0));
+        Border bevel2 = BorderFactory.createBevelBorder(LOWERED, new Color(255, 102, 0), new Color(255, 102, 0));
+        Border borderB = BorderFactory.createCompoundBorder(bevel1, bevel2);
+        border.setBorder(borderB);
+        add(border);
+
         final JLabel newGame = new JLabel("New Game");
         newGame.setForeground(new Color(255, 102, 0));
         newGame.setBounds(770, 380, 260, 40);
@@ -247,7 +250,7 @@ public class GameMenu extends JLayeredPane {
         newGame.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (!setName.getText().equalsIgnoreCase("Type your name here...") && !setName.getText().contains(" ")) {
+                if (!setName.getText().equalsIgnoreCase("Type your name here...") && !setName.getText().contains(" ") && !setName.getText().isEmpty()){
                     Music.playSound("Click");
                     setNameForWinner(setName.getText());
                     window.getContentPane().removeAll();
@@ -260,8 +263,7 @@ public class GameMenu extends JLayeredPane {
                     window.getContentPane().add(new Panel());
                     window.getContentPane().validate();
                     repaint();
-                }
-                else {
+                } else {
                     timerWrongName.start();
                     wrongName.setVisible(true);
                     timerWrongName.addActionListener(new ActionListener() {
@@ -271,8 +273,6 @@ public class GameMenu extends JLayeredPane {
                             timerWrongName.stop();
                         }
                     });
-
-
 
 
                 }
@@ -300,8 +300,6 @@ public class GameMenu extends JLayeredPane {
 
             }
         });
-
-
 
         final JLabel tilesChooser = new JLabel("Tiles Chooser");
         tilesChooser.setForeground(new Color(255, 102, 0));
@@ -352,10 +350,9 @@ public class GameMenu extends JLayeredPane {
         add(fire);
 
         JLabel hardModeChooser = new JLabel();
-        if (challangeNumber == 1){
+        if (challangeNumber == 1) {
             hardModeChooser.setText("Challenge: Off");
-        }
-        else {
+        } else {
             hardModeChooser.setText("Challenge: On");
         }
         hardModeChooser.setBounds(770, 480, 370, 40);
@@ -372,8 +369,7 @@ public class GameMenu extends JLayeredPane {
                     hardModeChooser.repaint();
                     isHardModeOn = false;
                     challangeNumber = 1;
-                }
-                else if (challangeNumber == 1){
+                } else if (challangeNumber == 1) {
                     hardModeChooser.setText("Challenge: On");
                     hardModeChooser.repaint();
                     isHardModeOn = true;
@@ -444,9 +440,9 @@ public class GameMenu extends JLayeredPane {
 
 
         String scoreInfo = null;
-        String [] scoreTable;
-        String minutes;
-        String seconds;
+        String[] scoreTable;
+        String minutesR;
+        String secondsR;
         ArrayList<Integer> time = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         ArrayList<String> timeString = new ArrayList<>();
@@ -459,29 +455,26 @@ public class GameMenu extends JLayeredPane {
                 names.add(scoreTable[0]);
                 time.add(Integer.parseInt(scoreTable[1]));
             }
-            for (Integer integer : time){
+            for (Integer integer : time) {
                 String result = String.valueOf(integer);
-                if (result.length() == 1){
-                    minutes = "00 : ";
-                    seconds = "0" + result;
-                    timeString.add(minutes + seconds);
-                }
-                else if (result.length() == 2){
-                    minutes = "00 : ";
-                    seconds = result;
-                    timeString.add(minutes + seconds);
+                if (result.length() == 1) {
+                    minutesR = "00 : ";
+                    secondsR = "0" + result;
+                    timeString.add(minutesR + secondsR);
+                } else if (result.length() == 2) {
+                    minutesR = "00 : ";
+                    secondsR = result;
+                    timeString.add(minutesR + secondsR);
 
-                }
-                else if (result.length() == 3){
-                    minutes = "0" + result.substring(0, 1) + " : ";
-                    seconds = result.substring(result.length() - 2);
-                    timeString.add(minutes + seconds);
+                } else if (result.length() == 3) {
+                    minutesR = "0" + result.substring(0, 1) + " : ";
+                    secondsR = result.substring(result.length() - 2);
+                    timeString.add(minutesR + secondsR);
 
-                }
-                else {
-                    minutes = result.substring(0, 2) + " : ";
-                    seconds = result.substring(result.length() - 2);
-                    timeString.add(minutes + seconds);
+                } else {
+                    minutesR = result.substring(0, 2) + " : ";
+                    secondsR = result.substring(result.length() - 2);
+                    timeString.add(minutesR + secondsR);
 
                 }
 
@@ -635,10 +628,9 @@ public class GameMenu extends JLayeredPane {
         bestScores.add(sep6);
 
 
-
     }
 
-    public static void setNameForWinner(String nameForWinner){
+    public static void setNameForWinner(String nameForWinner) {
         Window.playerName = nameForWinner;
     }
 
@@ -656,24 +648,23 @@ public class GameMenu extends JLayeredPane {
         g2d.drawImage(bf, 0, 0, 1200, 680, null);
     }
 
-    class Trophy extends JLabel{
+    class Trophy extends JLabel {
 
         BufferedImage trophy;
 
-        public Trophy(){
+        public Trophy() {
 
             try {
                 trophy = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Trophy.PNG"));
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
         }
 
-        public void paintComponent(Graphics g){
-            Graphics2D g2d = (Graphics2D)g;
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -690,24 +681,23 @@ public class GameMenu extends JLayeredPane {
     }
 
 
-    class NameField extends JLabel{
+    class NameField extends JLabel {
 
         BufferedImage nameField;
 
-        public NameField(){
+        public NameField() {
 
             try {
                 nameField = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameMenuImage").getFile() + "\\TextName.PNG"));
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
         }
 
-        public void paintComponent(Graphics g){
-            Graphics2D g2d = (Graphics2D)g;
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -720,24 +710,23 @@ public class GameMenu extends JLayeredPane {
         }
     }
 
-    class BestScores extends JLabel{
+    public static class BestScores extends JLabel {
 
         BufferedImage bestScores;
 
-        public BestScores(){
+        public BestScores() {
 
             try {
                 bestScores = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Top5Best2.PNG"));
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
         }
 
-        public void paintComponent(Graphics g){
-            Graphics2D g2d = (Graphics2D)g;
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -753,24 +742,23 @@ public class GameMenu extends JLayeredPane {
 
     }
 
-    class Golden extends JLabel{
+    public static class Golden extends JLabel {
 
         BufferedImage golden;
 
-        public Golden(){
+        public Golden() {
 
             try {
                 golden = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Gold.PNG"));
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
         }
 
-        public void paintComponent(Graphics g){
-            Graphics2D g2d = (Graphics2D)g;
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -786,24 +774,23 @@ public class GameMenu extends JLayeredPane {
 
     }
 
-    class Silver extends JLabel{
+    public static class Silver extends JLabel {
 
         BufferedImage silver;
 
-        public Silver(){
+        public Silver() {
 
             try {
                 silver = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Silver.PNG"));
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
         }
 
-        public void paintComponent(Graphics g){
-            Graphics2D g2d = (Graphics2D)g;
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -819,24 +806,23 @@ public class GameMenu extends JLayeredPane {
 
     }
 
-    class Bronze extends JLabel{
+    public static class Bronze extends JLabel {
 
         BufferedImage bronze;
 
-        public Bronze(){
+        public Bronze() {
 
             try {
                 bronze = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Bronze.PNG"));
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
         }
 
-        public void paintComponent(Graphics g){
-            Graphics2D g2d = (Graphics2D)g;
+        public void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -851,11 +837,7 @@ public class GameMenu extends JLayeredPane {
         }
 
     }
-
-
-
 }
-
 
 //--------------------------------------------------------------------------------------
 

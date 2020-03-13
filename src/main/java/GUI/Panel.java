@@ -24,11 +24,11 @@ public class Panel extends JLayeredPane {
     static ArrayList<Integer> allScores;
     static ArrayList<String> allinfo;
     static ArrayList<String> afterSorting;
+    public static ArrayList<String> findarray;
     ArrayList<String> information;
-    Tile[] remowedTiles = new Tile[2];
     ArrayList<Tile> compareTiles = new ArrayList<Tile>();
     ArrayList<Tile> removedTiles = new ArrayList<>();
-    public static ArrayList<String> findarray;
+    Tile[] remowedTiles = new Tile[2];
     Bunny bunny3;
     Bunny bunny2;
     Bunny bunny;
@@ -36,6 +36,29 @@ public class Panel extends JLayeredPane {
     BufferedImage flames;
     Restart restart;
     static JLabel movesNumber;
+    static String scoreInfo = null;
+    static String [] scoreTable;
+    static String minutesR;
+    static String secondsR;
+    static ArrayList<Integer> time = new ArrayList<>();
+    static ArrayList<String> names = new ArrayList<>();
+    static ArrayList<String> timeString = new ArrayList<>();
+    static GameMenu.BestScores bestScores;
+    static JLabel firstPoints;
+    static JLabel firstName;
+    static JLabel secondPoints;
+    static JLabel secondName;
+    static JLabel thirdPoints;
+    static JLabel thirdName;
+    static JLabel fourthPoints;
+    static JLabel fourthName;
+    static JLabel fifthPoints;
+    static JLabel fifthName;
+    static JLabel first;
+    static JLabel second;
+    static JLabel third;
+    static JLabel fourth;
+    static JLabel fifth;
 
     Timer timer = new Timer(400, null);
     public static Timer timerHard = new Timer(3000, null);
@@ -71,6 +94,237 @@ public class Panel extends JLayeredPane {
             e.printStackTrace();
         }
 
+        bestScores = new GameMenu.BestScores();
+        bestScores.setBounds(880, 170, 300, 350);
+        add(bestScores);
+
+        JLabel info = new JLabel();
+        info.setHorizontalAlignment(SwingConstants.LEFT);
+        info.setVerticalAlignment(SwingConstants.CENTER);
+        info.setBounds(30, 50, 240, 40);
+        bestScores.add(info);
+
+        JLabel infoRank = new JLabel("Rank:");
+        infoRank.setVerticalAlignment(SwingConstants.CENTER);
+        infoRank.setHorizontalAlignment(SwingConstants.CENTER);
+        infoRank.setBounds(2, 0, 50, 40);
+        infoRank.setForeground(new Color(255, 102, 0));
+        infoRank.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        info.add(infoRank);
+
+        JLabel infoPoints = new JLabel("Time:");
+        infoPoints.setVerticalAlignment(SwingConstants.CENTER);
+        infoPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        infoPoints.setBounds(155, 0, 80, 40);
+        infoPoints.setForeground(new Color(255, 102, 0));
+        infoPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        info.add(infoPoints);
+
+        JLabel infoName = new JLabel("Name:");
+        infoName.setVerticalAlignment(SwingConstants.CENTER);
+        infoName.setHorizontalAlignment(SwingConstants.CENTER);
+        infoName.setBounds(35, 0, 135, 40);
+        infoName.setForeground(new Color(255, 102, 0));
+        infoName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        info.add(infoName);
+
+
+        String scoreInfo = null;
+        String [] scoreTable;
+        String minutesR;
+        String secondsR;
+        ArrayList<Integer> time = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> timeString = new ArrayList<>();
+
+        try {
+            Scanner sc = new Scanner(Panel.file);
+            while (sc.hasNextLine()) {
+                scoreInfo = sc.nextLine();
+                scoreTable = scoreInfo.split(" ");
+                names.add(scoreTable[0]);
+                time.add(Integer.parseInt(scoreTable[1]));
+            }
+            for (Integer integer : time){
+                String result = String.valueOf(integer);
+                if (result.length() == 1){
+                    minutesR = "00 : ";
+                    secondsR = "0" + result;
+                    timeString.add(minutesR + secondsR);
+                }
+                else if (result.length() == 2){
+                    minutesR = "00 : ";
+                    secondsR = result;
+                    timeString.add(minutesR + secondsR);
+
+                }
+                else if (result.length() == 3){
+                    minutesR = "0" + result.substring(0, 1) + " : ";
+                    secondsR = result.substring(result.length() - 2);
+                    timeString.add(minutesR + secondsR);
+
+                }
+                else {
+                    minutesR = result.substring(0, 2) + " : ";
+                    secondsR = result.substring(result.length() - 2);
+                    timeString.add(minutesR + secondsR);
+
+                }
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        first = new JLabel();
+        first.setBounds(30, 92, 240, 40);
+        bestScores.add(first);
+
+        firstName = new JLabel(names.get(0));
+        firstName.setVerticalAlignment(SwingConstants.CENTER);
+        firstName.setHorizontalAlignment(SwingConstants.CENTER);
+        firstName.setBounds(35, 0, 135, 40);
+        firstName.setForeground(new Color(255, 102, 0));
+        firstName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        first.add(firstName);
+
+        firstPoints = new JLabel(timeString.get(0));
+        firstPoints.setVerticalAlignment(SwingConstants.CENTER);
+        firstPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        firstPoints.setBounds(160, 0, 75, 40);
+        firstPoints.setForeground(new Color(255, 102, 0));
+        firstPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        first.add(firstPoints);
+
+        GameMenu.Golden golden = new GameMenu.Golden();
+        golden.setBounds(0, 2, 40, 40);
+        first.add(golden);
+
+        second = new JLabel();
+        second.setBounds(30, 134, 240, 40);
+        bestScores.add(second);
+
+        secondName = new JLabel(names.get(1));
+        secondName.setVerticalAlignment(SwingConstants.CENTER);
+        secondName.setHorizontalAlignment(SwingConstants.CENTER);
+        secondName.setBounds(35, 0, 135, 40);
+        secondName.setForeground(new Color(255, 102, 0));
+        secondName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        second.add(secondName);
+
+        secondPoints = new JLabel(timeString.get(1));
+        secondPoints.setVerticalAlignment(SwingConstants.CENTER);
+        secondPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        secondPoints.setBounds(160, 0, 75, 40);
+        secondPoints.setForeground(new Color(255, 102, 0));
+        secondPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        second.add(secondPoints);
+
+        GameMenu.Silver silver = new GameMenu.Silver();
+        silver.setBounds(0, 2, 35, 35);
+        second.add(silver);
+
+        third = new JLabel();
+        third.setBounds(30, 176, 240, 40);
+        bestScores.add(third);
+
+        thirdName = new JLabel(names.get(2));
+        thirdName.setVerticalAlignment(SwingConstants.CENTER);
+        thirdName.setHorizontalAlignment(SwingConstants.CENTER);
+        thirdName.setBounds(35, 0, 135, 40);
+        thirdName.setForeground(new Color(255, 102, 0));
+        thirdName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        third.add(thirdName);
+
+        thirdPoints = new JLabel(timeString.get(2));
+        thirdPoints.setVerticalAlignment(SwingConstants.CENTER);
+        thirdPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        thirdPoints.setBounds(160, 0, 75, 40);
+        thirdPoints.setForeground(new Color(255, 102, 0));
+        thirdPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        third.add(thirdPoints);
+
+        GameMenu.Bronze bronze = new GameMenu.Bronze();
+        bronze.setBounds(3, 4, 30, 30);
+        third.add(bronze);
+
+        fourth = new JLabel("  4");
+        fourth.setBounds(30, 218, 240, 40);
+        fourth.setForeground(new Color(255, 102, 0));
+        fourth.setFont(new Font("Showcard Gothic", Font.PLAIN, 22));
+        bestScores.add(fourth);
+
+        fourthPoints = new JLabel(timeString.get(3));
+        fourthPoints.setVerticalAlignment(SwingConstants.CENTER);
+        fourthPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        fourthPoints.setBounds(160, 0, 75, 40);
+        fourthPoints.setForeground(new Color(255, 102, 0));
+        fourthPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        fourth.add(fourthPoints);
+
+        fourthName = new JLabel(names.get(3));
+        fourthName.setBackground(Color.LIGHT_GRAY);
+        fourthName.setVerticalAlignment(SwingConstants.CENTER);
+        fourthName.setHorizontalAlignment(SwingConstants.CENTER);
+        fourthName.setBounds(35, 0, 135, 40);
+        fourthName.setForeground(new Color(255, 102, 0));
+        fourthName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        fourth.add(fourthName);
+
+        fifth = new JLabel("  5");
+        fifth.setBounds(30, 260, 240, 40);
+        fifth.setForeground(new Color(255, 102, 0));
+        fifth.setFont(new Font("Showcard Gothic", Font.PLAIN, 22));
+        bestScores.add(fifth);
+
+        fifthPoints = new JLabel(timeString.get(4));
+        fifthPoints.setVerticalAlignment(SwingConstants.CENTER);
+        fifthPoints.setHorizontalAlignment(SwingConstants.CENTER);
+        fifthPoints.setBounds(160, 0, 75, 40);
+        fifthPoints.setForeground(new Color(255, 102, 0));
+        fifthPoints.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        fifth.add(fifthPoints);
+
+        fifthName = new JLabel(names.get(4));
+        fifthName.setBackground(Color.LIGHT_GRAY);
+        fifthName.setVerticalAlignment(SwingConstants.CENTER);
+        fifthName.setHorizontalAlignment(SwingConstants.CENTER);
+        fifthName.setBounds(35, 0, 135, 40);
+        fifthName.setForeground(new Color(255, 102, 0));
+        fifthName.setFont(new Font("Showcard Gothic", Font.PLAIN, 16));
+        fifth.add(fifthName);
+
+        JSeparator sep1 = new JSeparator();
+        sep1.setBackground(Color.WHITE);
+
+        sep1.setBounds(30, 91, 235, 10);
+        bestScores.add(sep1);
+
+        JSeparator sep2 = new JSeparator();
+        sep2.setBounds(30, 133, 235, 10);
+        bestScores.add(sep2);
+
+        JSeparator sep3 = new JSeparator();
+        sep3.setBounds(30, 175, 235, 10);
+        bestScores.add(sep3);
+
+        JSeparator sep4 = new JSeparator();
+        sep4.setBounds(30, 217, 235, 10);
+        bestScores.add(sep4);
+
+        JSeparator sep5 = new JSeparator();
+        sep5.setBounds(30, 259, 235, 10);
+        bestScores.add(sep5);
+
+        JSeparator sep6 = new JSeparator();
+        sep6.setBounds(30, 301, 235, 10);
+        bestScores.add(sep6);
+
+        Dragon dragon = new Dragon();
+        dragon.setBounds(-15, 80, 240, 450);
+        add(dragon);
+
+
         SoundOn soundOn = new SoundOn();
         SoundOff soundOff = new SoundOff();
         soundOn.setBounds(30, 25, 60, 60);
@@ -79,7 +333,7 @@ public class Panel extends JLayeredPane {
         add(soundOff);
         soundOn.setVisible(false);
         soundOff.setVisible(false);
-        if (!Window.clip.isOpen()){
+        if (!clip.isOpen()){
             soundOff.setVisible(true);
             soundOn.setVisible(false);
         }
@@ -108,10 +362,10 @@ public class Panel extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
-                if (Window.clip.isRunning()) {
+                if (clip.isRunning()) {
                     try {
-                        Window.clip.stop();
-                        Window.clip.close();
+                        clip.stop();
+                        clip.close();
                         soundOff.setVisible(true);
                         soundOn.setVisible(false);
                     }
@@ -120,14 +374,14 @@ public class Panel extends JLayeredPane {
                     }
 
                 }
-                else if (!Window.clip.isRunning()){
+                else if (!clip.isRunning()){
                     try {
                         soundOff.setVisible(false);
                         soundOn.setVisible(true);
-                        Window.input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get((new Random()).nextInt(4))));
+                        input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get((new Random()).nextInt(4))));
 
-                        Window.clip.open(Window.input);
-                        Window.clip.start();
+                        clip.open(input);
+                        clip.start();
                     }
                     catch (Exception ex){
                         ex.printStackTrace();
@@ -164,10 +418,10 @@ public class Panel extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Music.playSound("Click");
-                if (Window.clip.isRunning()) {
+                if (clip.isRunning()) {
                     try {
-                        Window.clip.stop();
-                        Window.clip.close();
+                        clip.stop();
+                        clip.close();
                         soundOff.setVisible(true);
                         soundOn.setVisible(false);
                     }
@@ -176,14 +430,14 @@ public class Panel extends JLayeredPane {
                     }
 
                 }
-                else if (!Window.clip.isRunning()){
+                else if (!clip.isRunning()){
                     try {
                         soundOff.setVisible(false);
                         soundOn.setVisible(true);
-                        Window.input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get((new Random()).nextInt(4))));
+                        input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get((new Random()).nextInt(4))));
 
-                        Window.clip.open(Window.input);
-                        Window.clip.start();
+                        clip.open(input);
+                        clip.start();
                     }
                     catch (Exception ex){
                         ex.printStackTrace();
@@ -217,18 +471,18 @@ public class Panel extends JLayeredPane {
         });
 
         youWin = new JLabel("Congratulations, you win!!!");
-        youWin.setBounds(350, 130, 500, 100);
+        youWin.setBounds(320, 130, 500, 100);
         youWin.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         youWin.setForeground(new Color(255, 102, 0));
         add(youWin);
         youWin.setVisible(false);
 
         winTrophy = new Trophy();
-        winTrophy.setBounds(450, 150, 300, 400 );
+        winTrophy.setBounds(420, 150, 300, 400 );
         add(winTrophy);
         winTrophy.setVisible(false);
 
-        youRWinner = new JLabel(Window.playerName);
+        youRWinner = new JLabel(playerName);
         youRWinner.setBounds(79, 311, 100, 30);
         youRWinner.setFont(new Font("Showcard Gothic", Font.PLAIN, 18));
         youRWinner.setForeground(new Color(255, 102, 0));
@@ -276,12 +530,12 @@ public class Panel extends JLayeredPane {
                 if (numberOfLives != 0 && !winTrophy.isVisible()) {
                     Music.playSound("Click");
                     tooManyClues++;
-                    if (secondsPassedFromStart >= 30) {
-                        secondsPassedFromStart -= 30;
+                    if (secondsPassedFromStart >= 45) {
+                        secondsPassedFromStart = secondsPassedFromStart - 45;
                         minutes++;
                         startGame.repaint();
                     } else {
-                        secondsPassedFromStart += 30;
+                        secondsPassedFromStart += 15;
                         startGame.repaint();
                     }
                     helpPare = findPare();
@@ -351,7 +605,7 @@ public class Panel extends JLayeredPane {
             }
         });
 
-        if (Window.isHardModeOn){
+        if (isHardModeOn){
             timeToMove = new JLabel(String.valueOf(secondsToMove));
             timeToMove.setBounds(1060, 120, 50, 50);
             timeToMove.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
@@ -394,9 +648,19 @@ public class Panel extends JLayeredPane {
                 showWinningMassage();
                 if (numberOfLives != 0 && !winTrophy.isVisible()) {
                     Music.playSound("Click");
+                    if (secondsPassedFromStart >= 45) {
+                        secondsPassedFromStart = secondsPassedFromStart - 45;
+                        minutes++;
+                        startGame.repaint();
+                    } else {
+                        secondsPassedFromStart += 15;
+                        startGame.repaint();
+                    }
                     shuflleAllTilesOnBoard(allTilesinBoard);
+                    setNormalIcons(compareTiles);
                     movesNumber.setText("(" + checkMovesNumber() + ")");
                     setLocationOnBoard(allTilesinBoard);
+                    compareTiles.clear();
                     for (Tile tile : allTilesinBoard) {
                         for (ActionListener actionListener : tile.getActionListeners())
                             tile.removeActionListener(actionListener);
@@ -638,7 +902,7 @@ public class Panel extends JLayeredPane {
 
 
     public void addActionListen () {
-        for (final Tile t: allTilesinBoard){
+        for (Tile t: allTilesinBoard){
             t.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -678,7 +942,6 @@ public class Panel extends JLayeredPane {
                         timerHard.addActionListener(forHardMode);
                         timerHard.start();
                     }
-
 
                     if (compareTiles.size() == 2) {
                         if (compareTiles.get(0).getTileID() == compareTiles.get(1).getTileID() && (compareTiles.get(0).getTileX() != compareTiles.get(1).getTileX() || compareTiles.get(0).getTileY() != compareTiles.get(1).getTileY() || compareTiles.get(0).getTileZ() != compareTiles.get(1).getTileZ())) {
@@ -883,6 +1146,8 @@ public class Panel extends JLayeredPane {
         endGameTime = getTimeOnFinish();
         if(endGameTime<worstresult)
             printToPlik(Window.playerName);
+        updateRanking();
+        bestScores.repaint();
         oneTime = 0;
         System.out.println(information);
         youWin.setVisible(true);
@@ -898,21 +1163,21 @@ public class Panel extends JLayeredPane {
             }
         }
         JLabel tryAgainText = new JLabel("Try again?");
-        tryAgainText.setBounds(650, 220, 300, 50);
+        tryAgainText.setBounds(620, 220, 300, 50);
         tryAgainText.setHorizontalAlignment(SwingConstants.CENTER);
         tryAgainText.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         tryAgainText.setForeground(new Color(255, 102, 0));
         add(tryAgainText);
 
         JLabel exitText = new JLabel("Exit?");
-        exitText.setBounds(220, 220, 300, 50);
+        exitText.setBounds(190, 220, 300, 50);
         exitText.setHorizontalAlignment(SwingConstants.CENTER);
         exitText.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         exitText.setForeground(new Color(255, 102, 0));
         add(exitText);
 
         Exit exit = new Exit();
-        exit.setBounds(320, 288, 100, 100);
+        exit.setBounds(290, 288, 100, 100);
         add(exit);
         exit.addMouseListener(new MouseListener() {
             @Override
@@ -977,21 +1242,50 @@ public class Panel extends JLayeredPane {
 
 
         TryAgain tryAgain = new TryAgain();
-        tryAgain.setBounds(750, 280, 100, 100);
+        tryAgain.setBounds(720, 280, 100, 100);
         add(tryAgain);
         tryAgain.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                exitText.setVisible(false);
+                exit.setVisible(false);
+                tryAgainText.setVisible(false);
+                tryAgain.setVisible(false);
+                timeForMove.restart();
+                timerHard.restart();
+                pointsTimer.restart();
+                secondsPassedFromStart = 0;
+                minutes = 0;
+                numberOfLives = 3;
+                secondsToMove = 30;
+                winTrophy.setVisible(false);
+                youRWinner.setVisible(false);
+                youWin.setVisible(false);
+                movesNumber.setText("");
+                for (Tile t : allTilesinBoard){
+                    t.setVisible(true);
+                }
+                if (!bunny.isVisible()) {
+                    bunny.setVisible(true);
+                }
+                if (!bunny2.isVisible()) {
+                    bunny2.setVisible(true);
+                }
+                if (!bunny3.isVisible()) {
+                    bunny3.setVisible(true);
+                }
                 Music.playSound("Click");
-                resetAll();
-                clearAllArrays();
-                Tile.imagesPaths.clear();
-                Panel.findarray.clear();
-                window.getContentPane().removeAll();
+                deleteBoard();
+                allTilesinBoard.clear();
+                createBoard();
+                setLocationOnBoard(allTilesinBoard);
+                for (Tile tile : allTilesinBoard) {
+                    for (ActionListener actionListener : tile.getActionListeners())
+                        tile.removeActionListener(actionListener);
+                }
+                addActionListen();
                 repaint();
-                window.getContentPane().add(new Panel());
-                window.getContentPane().validate();
-                repaint();
+
             }
 
             @Override
@@ -1023,12 +1317,17 @@ public class Panel extends JLayeredPane {
 
     public void showLosingMassage(){
         JLabel gameover = new JLabel("Game Over");
-        gameover.setBounds(450, 260, 500, 60);
-        gameover.setFont(new Font("Showcard Gothic", Font.PLAIN, 60));
+        gameover.setBounds(370, 260, 500, 80);
+        gameover.setFont(new Font("Showcard Gothic", Font.PLAIN, 80));
         gameover.setForeground(new Color(255, 102, 0));
         add(gameover);
+
         setNormalIcons(allTilesinBoard);
         compareTiles.clear();
+        for (Tile t : allTilesinBoard){
+            t.setVisible(false);
+        }
+        repaint();
 
         pointsTimer.stop();
         timeForMove.stop();
@@ -1036,30 +1335,30 @@ public class Panel extends JLayeredPane {
         timer.stop();
 
         JLabel tryAgainText = new JLabel("Try again?");
-        tryAgainText.setBounds(580, 340, 300, 50);
+        tryAgainText.setBounds(530, 340, 300, 50);
         tryAgainText.setHorizontalAlignment(SwingConstants.CENTER);
         tryAgainText.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         tryAgainText.setForeground(new Color(255, 102, 0));
         add(tryAgainText);
 
         JLabel exitText = new JLabel("Exit?");
-        exitText.setBounds(350, 340, 300, 50);
+        exitText.setBounds(300, 340, 300, 50);
         exitText.setHorizontalAlignment(SwingConstants.CENTER);
         exitText.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
         exitText.setForeground(new Color(255, 102, 0));
         add(exitText);
 
         Exit exit = new Exit();
-        exit.setBounds(450, 408, 100, 100);
+        exit.setBounds(400, 408, 100, 100);
         add(exit);
         exit.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 allTilesinBoard.clear();
                 allTilesinBoardCopy.clear();
                 Tile.allTiles.clear();
                 resetAll();
-                clearAllArrays();
                 Window.window.getContentPane().removeAll();
                 Window.window.getContentPane().add(new GameMenu());
                 Window.window.getContentPane().validate();
@@ -1113,22 +1412,50 @@ public class Panel extends JLayeredPane {
 
 
         TryAgain tryAgain = new TryAgain();
-        tryAgain.setBounds(680, 400, 100, 100);
+        tryAgain.setBounds(630, 400, 100, 100);
         add(tryAgain);
         tryAgain.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Music.playSound("Click");
-                resetAll();
-                clearAllArrays();
-                window.getContentPane().removeAll();
-                repaint();
-                window.getContentPane().add(new Panel());
-                window.getContentPane().validate();
-                repaint();
-                for (Tile tile : allTilesinBoard){
-                    tile.setVisible(true);
+                gameover.setVisible(false);
+                exitText.setVisible(false);
+                exit.setVisible(false);
+                tryAgainText.setVisible(false);
+                tryAgain.setVisible(false);
+                timeForMove.restart();
+                timerHard.restart();
+                pointsTimer.restart();
+                secondsPassedFromStart = 0;
+                minutes = 0;
+                numberOfLives = 3;
+                secondsToMove = 30;
+                winTrophy.setVisible(false);
+                youRWinner.setVisible(false);
+                youWin.setVisible(false);
+                movesNumber.setText("");
+                for (Tile t : allTilesinBoard){
+                    t.setVisible(true);
                 }
+                if (!bunny.isVisible()) {
+                    bunny.setVisible(true);
+                }
+                if (!bunny2.isVisible()) {
+                    bunny2.setVisible(true);
+                }
+                if (!bunny3.isVisible()) {
+                    bunny3.setVisible(true);
+                }
+                Music.playSound("Click");
+                deleteBoard();
+                allTilesinBoard.clear();
+                createBoard();
+                setLocationOnBoard(allTilesinBoard);
+                for (Tile tile : allTilesinBoard) {
+                    for (ActionListener actionListener : tile.getActionListeners())
+                        tile.removeActionListener(actionListener);
+                }
+                addActionListen();
+                repaint();
             }
 
             @Override
@@ -1152,10 +1479,64 @@ public class Panel extends JLayeredPane {
 
             }
         });
-        for (Tile t : allTilesinBoard){
-            t.setVisible(false);
+
+    }
+
+    public static void updateRanking(){
+        try {
+            Scanner sc = new Scanner(Panel.file);
+            while (sc.hasNextLine()) {
+                scoreInfo = sc.nextLine();
+                scoreTable = scoreInfo.split(" ");
+                names.add(scoreTable[0]);
+                time.add(Integer.parseInt(scoreTable[1]));
+            }
+            for (Integer integer : time){
+                String result = String.valueOf(integer);
+                if (result.length() == 1){
+                    minutesR = "00 : ";
+                    secondsR = "0" + result;
+                    timeString.add(minutesR + secondsR);
+                }
+                else if (result.length() == 2){
+                    minutesR = "00 : ";
+                    secondsR = result;
+                    timeString.add(minutesR + secondsR);
+
+                }
+                else if (result.length() == 3){
+                    minutesR = "0" + result.substring(0, 1) + " : ";
+                    secondsR = result.substring(result.length() - 2);
+                    timeString.add(minutesR + secondsR);
+
+                }
+                else {
+                    minutesR = result.substring(0, 2) + " : ";
+                    secondsR = result.substring(result.length() - 2);
+                    timeString.add(minutesR + secondsR);
+
+                }
+            }
+            firstName.setText(names.get(0));
+            firstPoints.setText(timeString.get(0));
+            secondName.setText(names.get(1));
+            secondPoints.setText(timeString.get(1));
+            thirdName.setText(names.get(2));
+            thirdPoints.setText(timeString.get(2));
+            fourthName.setText(names.get(3));
+            fourthPoints.setText(timeString.get(3));
+            fifthName.setText(names.get(4));
+            fifthPoints.setText(timeString.get(4));
+            first.repaint();
+            second.repaint();
+            third.repaint();
+            fourth.repaint();
+            fifth.repaint();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-        repaint();
+
     }
 
     public static void resetAll(){
@@ -1502,6 +1883,37 @@ public class Panel extends JLayeredPane {
             g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
             g2d.drawImage(soundOff, 0, 0, 60, 60, null);
         }
+    }
+
+    class Dragon extends JLabel{
+
+        BufferedImage dragon;
+
+        public Dragon(){
+
+            try {
+                dragon = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Dragon.PNG"));
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+        }
+
+        public void paintComponent(Graphics g){
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g2d.drawImage(dragon, 0, 0, 240, 450, null);
+        }
+
     }
 
     public void clearAllArrays (){
