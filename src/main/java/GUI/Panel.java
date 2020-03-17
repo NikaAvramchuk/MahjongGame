@@ -645,17 +645,6 @@ public class Panel extends JLayeredPane {
         shuffle.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                showWinningMassage();
-                if (numberOfLives != 0 && !winTrophy.isVisible()) {
-                    Music.playSound("Click");
-                    if (secondsPassedFromStart >= 45) {
-                        secondsPassedFromStart = secondsPassedFromStart - 45;
-                        minutes++;
-                        startGame.repaint();
-                    } else {
-                        secondsPassedFromStart += 15;
-                        startGame.repaint();
-                    }
                     shuflleAllTilesOnBoard(allTilesinBoard);
                     setNormalIcons(compareTiles);
                     movesNumber.setText("(" + checkMovesNumber() + ")");
@@ -669,7 +658,7 @@ public class Panel extends JLayeredPane {
 
                     repaint();
                 }
-            }
+
 
 
             @Override
@@ -1034,6 +1023,13 @@ public class Panel extends JLayeredPane {
         return isSuchTileOnBoard(allTilesinBoard, z+1, y, x);
 
     }
+    public boolean check4level (ArrayList<Tile> allTilesinBoard) {
+        for (Tile tile: allTilesinBoard)
+            if (tile.getTileZ()==4)
+                return true;
+
+        return false;
+    }
 
     public void tileSetEnableOnBoard (ArrayList < Tile > allTilesinBoard) {
         for (Tile tile: allTilesinBoard)
@@ -1044,9 +1040,10 @@ public class Panel extends JLayeredPane {
 
     }
 
+
     public void checkIfTileIsEnable (ArrayList < Tile > allTilesinBoard) {
         for (Tile tile: allTilesinBoard)
-            if (tileHasTwoNeighbors(tile, allTilesinBoard) || tileHasAnotherTileOnIt(tile, allTilesinBoard)) {
+            if (tileHasTwoNeighbors(tile, allTilesinBoard) || tileHasAnotherTileOnIt(tile, allTilesinBoard) || (tile.getTileZ()==3 && check4level(allTilesinBoard))) {
                 tile.tileSetEnable(false);
                 tile.setDisabledIcon(tile.getIcon());
             }
