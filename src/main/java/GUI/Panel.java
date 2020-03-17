@@ -61,7 +61,7 @@ public class Panel extends JLayeredPane {
     static JLabel fifth;
 
     Timer timer = new Timer(400, null);
-    public static Timer timerHard = new Timer(3000, null);
+    public static Timer timerHard = new Timer(30000, null);
     Timer timeForMove = new Timer(1000, null);
     int secondsToMove = timerHard.getDelay() / 1000;
     boolean isListenerforHardTimerToBeAdded = true;
@@ -358,6 +358,8 @@ public class Panel extends JLayeredPane {
         add(infoMusicOff);
         infoMusicOff.setVisible(false);
 
+
+
         soundOn.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -366,6 +368,8 @@ public class Panel extends JLayeredPane {
                     try {
                         clip.stop();
                         clip.close();
+                        timeForMusic.restart();
+                        timeForMusic.stop();
                         soundOff.setVisible(true);
                         soundOn.setVisible(false);
                     }
@@ -378,8 +382,7 @@ public class Panel extends JLayeredPane {
                     try {
                         soundOff.setVisible(false);
                         soundOn.setVisible(true);
-                        input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get((new Random()).nextInt(4))));
-
+                        playRandomMusic();
                         clip.open(input);
                         clip.start();
                     }
@@ -516,7 +519,7 @@ public class Panel extends JLayeredPane {
         Clue clue = new Clue();
         clue.setBounds(485,20,60,60);
 
-        JLabel infoClue = new JLabel("Get a clue (+30sec)");
+        JLabel infoClue = new JLabel("Get a clue (+15sec)");
         infoClue.setHorizontalAlignment(SwingConstants.CENTER);
         infoClue.setBounds(110, 40, 250, 30);
         infoClue.setFont(new Font("Showcard Gothic", Font.PLAIN, 20));
@@ -634,9 +637,9 @@ public class Panel extends JLayeredPane {
         Shuffle shuffle = new Shuffle();
         shuffle.setBounds(545,20,60,60);
 
-        JLabel infoShuffle = new JLabel("Shuffle the board");
+        JLabel infoShuffle = new JLabel("Shuffle the board (+15sec)");
         infoShuffle.setHorizontalAlignment(SwingConstants.CENTER);
-        infoShuffle.setBounds(110, 40, 250, 30);
+        infoShuffle.setBounds(70, 40, 350, 30);
         infoShuffle.setFont(new Font("Showcard Gothic", Font.PLAIN, 20));
         infoShuffle.setForeground(new Color(255, 102, 0));
         add(infoShuffle);
@@ -1000,7 +1003,6 @@ public class Panel extends JLayeredPane {
         }
     }
 
-
     public boolean isSuchTileOnBoard (ArrayList < Tile > allTilesinBoard,int z, int y, int x){
         for (Tile tile : allTilesinBoard) {
             if (tile.getTileX() == x && tile.getTileY() == y && tile.getTileZ() == z)
@@ -1143,13 +1145,14 @@ public class Panel extends JLayeredPane {
     }
 
     public void showWinningMassage() {
+        livesBonus();
         endGameTime = getTimeOnFinish();
         if(endGameTime<worstresult)
             printToPlik(Window.playerName);
-        updateRanking();
         bestScores.repaint();
         oneTime = 0;
         System.out.println(information);
+        updateRanking();
         youWin.setVisible(true);
         youRWinner.setVisible(true);
         winTrophy.setVisible(true);
@@ -1532,6 +1535,9 @@ public class Panel extends JLayeredPane {
             third.repaint();
             fourth.repaint();
             fifth.repaint();
+            time.clear();
+            timeString.clear();
+            names.clear();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -1917,19 +1923,19 @@ public class Panel extends JLayeredPane {
     }
 
     public void clearAllArrays (){
-        if (allScores.size() > 0) {
+        if (allScores != null) {
             allScores.clear();
         }
-        if (allinfo.size() > 0) {
+        if (allinfo != null) {
             allinfo.clear();
         }
-        if (afterSorting.size() > 0) {
+        if (afterSorting != null) {
             afterSorting.clear();
         }
-        if (information.size() > 0) {
+        if (information != null) {
             information.clear();
         }
-        if (findarray.size() > 0) {
+        if (findarray != null) {
             findarray.clear();
         }
     }
@@ -2003,6 +2009,57 @@ public class Panel extends JLayeredPane {
 
     }
 
+    public void livesBonus(){
+        if (numberOfLives == 3){
+            if (secondsPassedFromStart >= 15){
+                secondsPassedFromStart -= 15;
+            }
+            else {
+                secondsPassedFromStart += 45;
+                minutes--;
+            }
+            if (secondsPassedFromStart < 10) {
+                startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(tenTimesSecond) + String.valueOf(secondsPassedFromStart));
+            }
+            else {
+                startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(secondsPassedFromStart));
+            }
+            startGame.repaint();
+        }
+        else if (numberOfLives == 2){
+            if (secondsPassedFromStart >= 10){
+                secondsPassedFromStart -= 10;
+            }
+            else {
+                secondsPassedFromStart += 50;
+                minutes--;
+            }
+            if (secondsPassedFromStart < 10) {
+                startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(tenTimesSecond) + String.valueOf(secondsPassedFromStart));
+            }
+            else {
+                startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(secondsPassedFromStart));
+            }
+            startGame.repaint();
+        }
+        else if (numberOfLives == 1){
+            if (secondsPassedFromStart >= 5){
+                secondsPassedFromStart -= 5;
+            }
+            else {
+                secondsPassedFromStart += 55;
+                minutes--;
+            }
+            if (secondsPassedFromStart < 10) {
+                startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(tenTimesSecond) + String.valueOf(secondsPassedFromStart));
+            }
+            else {
+                startGame.setText(String.valueOf(minutes) + " : " + String.valueOf(secondsPassedFromStart));
+            }
+            startGame.repaint();
+
+        }
+    }
     public int findWorstResult () {
         findarray = new ArrayList<>();
         try {

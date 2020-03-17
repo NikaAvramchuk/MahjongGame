@@ -11,6 +11,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -21,8 +23,8 @@ import static javax.swing.border.BevelBorder.RAISED;
 
 public class GameMenu extends JLayeredPane {
     BufferedImage bf;
-    Random random = new Random();
     Timer timerWrongName = new Timer(1500, null);
+
 
 
     public GameMenu() {
@@ -174,29 +176,20 @@ public class GameMenu extends JLayeredPane {
                     try {
                         clip.stop();
                         clip.close();
+                        timeForMusic.restart();
+                        timeForMusic.stop();
                         musicNumber = 1;
                         musicOn.setText("Music: Off");
                         musicOn.repaint();
-                        clip.addLineListener(new LineListener() {
-                            @Override
-                            public void update(LineEvent event) {
-                            }
-                        });
                     } catch (Exception ex1) {
                         ex1.printStackTrace();
                     }
 
                 } else if (musicNumber == 1) {
-                    try {
-                        musicNumber = 0;
-                        musicOn.setText("Music: On");
-                        musicOn.repaint();
-                        input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get(random.nextInt(4))));
-                        clip.open(input);
-                        clip.start();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
+                    musicNumber = 0;
+                    musicOn.setText("Music: On");
+                    musicOn.repaint();
+                    playRandomMusic();
                 }
 
 
