@@ -26,13 +26,8 @@ press it. Clue button will highlight a pair of mathing tiles for you. But it wil
 Restart will restart your curreng game, building up new board, resetting your lives to 3, if you lost any and also resets your timer
 move.
 5) Music: For now there are a total of 4 songs, played randomly, but you can choose to silent the music.
-
---------
-### Plans for the future:
-
-1) Level builder: We are planning to implement a "level builder" function, that will give you the option to create new board tile
-by tile.
-2) Scores: There will be a table, showing up top 5 best scores, updating itself dynamically, just when you finish your game.
+6) Scores table: If you manage to finish the game with time that is better than last time from "top 5 times", the game will
+update scores table and you will be able to see your name and your time in the proper position in top 5 scores table
 
 --------
 ### Authors:
