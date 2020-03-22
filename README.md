@@ -16,15 +16,16 @@ that it will give it to you.
 -------
 ### Features:
 
-1) Tiles Choose Menu: "You can choose a board on which you want to play on. For now there are 2 boards: black and standard. Black board
+1) Tiles Choose Menu: "You can choose a board on which you want to play. For now there are 2 boards: black and standard. Black board
 makes the tiles black, while standard makes it white.
-2) Challange game mode: In challange mode, you will only have 30 seconds to find a pair and put it out of the board. If you won't, you will
-lose 1 live. If you will lose 3 lives, the game will end and you can start another one. There is also a main timer, that indicates, how
-time has passed from the start of the game. In the future, the points algorithm based on that timer will also be implemented.
+2) Challange game mode: In challange mode, you will only have 30 seconds to find a pair and put it out of the board. If you won't, 
+you will lose 1 live. If you will lose 3 lives, the game will end and you can start another one. There is also a main timer, 
+that indicates, how time has passed from the start of the game.
 3) Normal game mode: It's like the "challange mode", but you have infinite time to find a pair of tiles and you will not lose any of
 your lives.
 4) Shuffle, clue and restart: Shuffle button presented on top of the game screen will shuffle the tiles on the board for you, if you
-press it. Clue button will highlight a pair of mathing tiles for you. But it will also add to your main timer 30 seconds.
+press it and will add 15 seconds to your timer for balance purposes. Clue button will highlight a pair of matching tiles for you.
+But it will also add to your main timer 15 seconds.
 Restart will restart your curreng game, building up new board, resetting your lives to 3, if you lost any and also resets your timer
 move.
 5) Music: For now there are a total of 4 songs, played randomly, but you can choose to silent the music.
@@ -48,4 +49,4 @@ Marcin Obuszyński
 
 Weronika Avramchuk
 
-We would like to make special thanks to Piotr Wrona to and whole C_School team. Without them, this project wouldn't exist ;)
+We would like to make special thanks to Piotr Wrona and whole C_School team. Without them, this project wouldn't exist ;)
