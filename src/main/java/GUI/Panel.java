@@ -10,9 +10,7 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 
 import static GUI.Window.*;
@@ -77,22 +75,42 @@ public class Panel extends JLayeredPane {
     JLabel winTrophy;
     JLabel youRWinner;
     JLabel youWin;
-
-    int worstresult = findWorstResult();
     int endGameTime;
+
     public static final String bestScoresPath = Tile.class.getClassLoader().getResource("BestScores").getFile() + "\\TopScores.txt";
     static File file = new File(bestScoresPath);
+
+    static InputStream inputStream2;
+    static InputStreamReader reader2;
+    public static BufferedReader bufferedReader2;
+
+    static InputStream inputStream3;
+    static InputStreamReader reader3;
+    public static BufferedReader bufferedReader3;
+
+    static InputStream inputStream4;
+    static InputStreamReader reader4;
+    public static BufferedReader bufferedReader4;
 
 
     public Panel() {
         setLayout(null);
         Font font1 = new Font("base", Font.BOLD,14);
         try {
-            flames = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\flames.png"));
+            flames = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/flames.PNG"));
         }
         catch (Exception e){
             e.printStackTrace();
         }
+        inputStream2 = GameMenu.class.getClassLoader().getResourceAsStream("BestScores/TopScores.txt");
+        reader2 = new InputStreamReader(inputStream2);
+        bufferedReader2 = new BufferedReader(reader2);
+        inputStream3 = GameMenu.class.getClassLoader().getResourceAsStream("BestScores/TopScores.txt");
+        reader3 = new InputStreamReader(inputStream3);
+        bufferedReader3 = new BufferedReader(reader3);
+        inputStream4 = GameMenu.class.getClassLoader().getResourceAsStream("BestScores/TopScores.txt");
+        reader4 = new InputStreamReader(inputStream4);
+        bufferedReader4 = new BufferedReader(reader4);
 
         bestScores = new GameMenu.BestScores();
         bestScores.setBounds(880, 170, 300, 350);
@@ -138,7 +156,7 @@ public class Panel extends JLayeredPane {
         ArrayList<String> timeString = new ArrayList<>();
 
         try {
-            Scanner sc = new Scanner(Panel.file);
+            Scanner sc = new Scanner(bufferedReader2);
             while (sc.hasNextLine()) {
                 scoreInfo = sc.nextLine();
                 scoreTable = scoreInfo.split(" ");
@@ -172,7 +190,7 @@ public class Panel extends JLayeredPane {
                 }
 
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1142,9 +1160,10 @@ public class Panel extends JLayeredPane {
     }
 
     public void showWinningMassage() {
+        int worstResult = findWorstResult();
         livesBonus();
         endGameTime = getTimeOnFinish();
-        if(endGameTime<worstresult)
+        if(endGameTime < worstResult)
             printToPlik(Window.playerName);
         bestScores.repaint();
         oneTime = 0;
@@ -1484,7 +1503,7 @@ public class Panel extends JLayeredPane {
 
     public static void updateRanking(){
         try {
-            Scanner sc = new Scanner(Panel.file);
+            Scanner sc = new Scanner(bufferedReader4);
             while (sc.hasNextLine()) {
                 scoreInfo = sc.nextLine();
                 scoreTable = scoreInfo.split(" ");
@@ -1536,7 +1555,7 @@ public class Panel extends JLayeredPane {
             timeString.clear();
             names.clear();
 
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1575,7 +1594,7 @@ public class Panel extends JLayeredPane {
         public void actionPerformed(ActionEvent e){
             try {
                 numberOfImage++;
-                heart = ImageIO.read(new File(Tile.class.getClassLoader().getResource("Heart").getFile() + "\\Heart" + numberOfImage + ".PNG"));
+                heart = ImageIO.read(Panel.class.getClassLoader().getResource("Heart" + "/Heart" + numberOfImage + ".PNG"));
                 if (numberOfImage == 12)
                     numberOfImage = 1;
                 repaint();
@@ -1594,7 +1613,7 @@ public class Panel extends JLayeredPane {
                 Timer timer = new Timer(delay, this);
                 timer.start();
 
-                heart = ImageIO.read(new File(Tile.class.getClassLoader().getResource("Heart").getFile() + "\\Heart" + numberOfImage + ".PNG"));
+                heart = ImageIO.read(Panel.class.getClassLoader().getResource("Heart" + "/Heart" + numberOfImage + ".PNG"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1624,7 +1643,7 @@ public class Panel extends JLayeredPane {
         public Bunny(){
 
             try {
-                bunny = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Bunny2.PNG"));
+                bunny = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/Bunny2.PNG"));
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -1656,7 +1675,7 @@ public class Panel extends JLayeredPane {
         public Infinity() {
 
             try {
-                infinity = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\infinity.PNG"));
+                infinity = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/infinity.PNG"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1682,7 +1701,7 @@ public class Panel extends JLayeredPane {
         public Trophy(){
 
             try {
-                trophy = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Trophy.PNG"));
+                trophy = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/Trophy.PNG"));
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -1713,7 +1732,7 @@ public class Panel extends JLayeredPane {
         public Restart() {
 
             try {
-                restart = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Restart.PNG"));
+                restart = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/Restart.PNG"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1739,7 +1758,7 @@ public class Panel extends JLayeredPane {
         public TryAgain() {
 
             try {
-                tryAgain = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Restart.PNG"));
+                tryAgain = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/Restart.PNG"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1765,7 +1784,7 @@ public class Panel extends JLayeredPane {
         public Exit() {
 
             try {
-                exit = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Exit.PNG"));
+                exit = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/Exit.PNG"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1790,7 +1809,7 @@ public class Panel extends JLayeredPane {
         public Clue() {
 
             try {
-                clue = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Clue.PNG"));
+                clue = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/Clue.PNG"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1816,7 +1835,7 @@ public class Panel extends JLayeredPane {
         public Shuffle() {
 
             try {
-                shuffle = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Shuffle.PNG"));
+                shuffle = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/shuffle.PNG"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1842,7 +1861,7 @@ public class Panel extends JLayeredPane {
         public SoundOn() {
 
             try {
-                soundOn = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\SoundOn.PNG"));
+                soundOn = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/SoundOn.PNG"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1868,7 +1887,7 @@ public class Panel extends JLayeredPane {
         public SoundOff() {
 
             try {
-                soundOff = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\SoundOff.PNG"));
+                soundOff = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/SoundOff.PNG"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1895,7 +1914,7 @@ public class Panel extends JLayeredPane {
         public Dragon(){
 
             try {
-                dragon = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Dragon.PNG"));
+                dragon = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/Dragon.PNG"));
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -1938,13 +1957,16 @@ public class Panel extends JLayeredPane {
     }
 
     public static ArrayList<String> scoreSort (File file, String name, int time) {
+        InputStream inputStream5 = GameMenu.class.getClassLoader().getResourceAsStream("BestScores/TopScores.txt");
+        InputStreamReader reader5 = new InputStreamReader(inputStream5);
+        BufferedReader bufferedReader5 = new BufferedReader(reader5);
         String scoreInfo;
         String [] scoreTable;
         allScores = new ArrayList<>();
         allinfo = new ArrayList<>();
         afterSorting = new ArrayList<>();
         try {
-            Scanner scanner = new Scanner(file);
+            Scanner scanner = new Scanner(bufferedReader5);
             while (scanner.hasNextLine() && allScores.size()<5){
                     scoreInfo = scanner.nextLine();
                     allinfo.add(scoreInfo);
@@ -1954,6 +1976,9 @@ public class Panel extends JLayeredPane {
             allScores.add(time);
             allinfo.add(name + " " + time);
             scanner.close();
+            inputStream5.close();
+            reader5.close();
+            bufferedReader5.close();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -2060,15 +2085,33 @@ public class Panel extends JLayeredPane {
     public int findWorstResult () {
         findarray = new ArrayList<>();
         try {
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine())
+            Scanner scanner = new Scanner(bufferedReader3);
+            while (scanner.hasNextLine()) {
                 findarray.add(scanner.nextLine());
+            }
 
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return Integer.parseInt(findarray.get(findarray.size()-1).split(" ")[1]);
+    }
+
+    public void closeGameStreams(){
+        try {
+            inputStream2.close();
+            reader2.close();
+            bufferedReader2.close();
+            inputStream3.close();
+            reader3.close();
+            bufferedReader3.close();
+            inputStream4.close();
+            reader4.close();
+            bufferedReader4.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

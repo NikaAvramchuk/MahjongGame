@@ -22,7 +22,7 @@ public class TilesChooseMenu extends JLayeredPane {
         setLayout(null);
         setSize(1000, 700);
         try {
-            bf = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameMenuImage").getFile() + "\\MahjongResize.PNG"));
+            bf = ImageIO.read(GameMenu.class.getClassLoader().getResource("GameMenuImage/MahjongResize.PNG"));
         }
         catch (Exception e){
             e.printStackTrace();
@@ -309,7 +309,8 @@ public class TilesChooseMenu extends JLayeredPane {
         BufferedImage arrow;
         public Arrow(){
             try {
-                arrow = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Arrow.PNG")); }
+                arrow = ImageIO.read(GameMenu.class.getClassLoader().getResource("GameBoardImage/Arrow.PNG"));
+            }
             catch (Exception e){
                 e.printStackTrace();
             }
@@ -343,7 +344,7 @@ public class TilesChooseMenu extends JLayeredPane {
         public Tick(){
 
             try {
-                tick = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\Tick2.PNG"));
+                tick = ImageIO.read(GameMenu.class.getClassLoader().getResource("GameBoardImage/Tick2.PNG"));
             }
             catch (Exception e){
                 e.printStackTrace();

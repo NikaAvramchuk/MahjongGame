@@ -41,7 +41,8 @@ public class BlackTheme extends JLabel {
 
     public BlackTheme(){
         try {
-            blackTheme = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\BlackBoard.PNG")); }
+            blackTheme = ImageIO.read(GameMenu.class.getClassLoader().getResource("GameBoardImage/BlackBoard.PNG"));
+        }
         catch (Exception e){
             e.printStackTrace();
         }

@@ -43,7 +43,7 @@ public class StandardTheme extends JLabel {
 
     public StandardTheme() {
         try {
-            standardTheme = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\StandardBoard.PNG"));
+            standardTheme = ImageIO.read(GameMenu.class.getClassLoader().getResource("GameBoardImage/StandardBoard.PNG"));
         } catch (Exception e) {
             e.printStackTrace();
         }

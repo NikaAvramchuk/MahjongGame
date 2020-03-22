@@ -1,5 +1,5 @@
-Nika(nicetry;)) 454
+Nika 454
 Marcin 454
-Piotr 1000
-Krzysiek 2000
-Mariusz 3000
+MileStone1 1000
+MileStone2 2000
+MileStone3 3000

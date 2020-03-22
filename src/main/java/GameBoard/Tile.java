@@ -1,9 +1,6 @@
 package GameBoard;
 
-import GUI.BlackTheme;
-import GUI.QualityIcon;
-import GUI.ResizeImages;
-import GUI.TilesChooseMenu;
+import GUI.*;
 import GUI.Window;
 
 import javax.imageio.ImageIO;
@@ -98,8 +95,8 @@ public class Tile extends JButton {
 
     public static void putImagesOnTiles(String inputFolder, String outputFolder){
         try {
-            File isExisting = new File(Tile.class.getClassLoader().getResource(outputFolder).getFile());
-            File dir = new File(Tile.class.getClassLoader().getResource(inputFolder).getFile());
+            File isExisting = new File(GameMenu.class.getClassLoader().getResource(outputFolder).toString().substring(6));
+            File dir = new File(GameMenu.class.getClassLoader().getResource(inputFolder).toString().substring(6));
             File[] listOfFiles = dir.listFiles();
             for (File file : listOfFiles) {
                 imagesPaths.add(dir.getParent() + outputFolder + file.getName());

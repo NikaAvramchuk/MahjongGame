@@ -10,7 +10,10 @@ import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 
@@ -30,13 +33,12 @@ public class Window extends JFrame {
     public static int retry = 0;
     public static int oneTime = 0;
     static int randomMusic;
-    static Random randomM = new Random();
     static int delay;
     static Timer timeForMusic;
-    static int isWindowMinimized = 0;
     public static ActionListener musicListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+
             System.out.println("im in action listener");
             clip.stop();
             clip.close();
@@ -48,8 +50,9 @@ public class Window extends JFrame {
 
     public static void playRandomMusic(){
         try {
-            input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get(randomM.nextInt(4))));
+            Random randomM = new Random();
             randomMusic = randomM.nextInt(4);
+            input = AudioSystem.getAudioInputStream(new File(Music.musicPaths.get(randomMusic)));
             clip.open(input);
             delay = (int) clip.getMicrosecondLength()/1000;
             timeForMusic = new Timer(delay, musicListener);
@@ -141,7 +144,7 @@ public class Window extends JFrame {
 
         Image im = null;
         try {
-            im = ImageIO.read(new File(Tile.class.getClassLoader().getResource("GameBoardImage").getFile() + "\\yinYang.PNG"));
+            im = ImageIO.read(Tile.class.getClassLoader().getResource("GameBoardImage/yinYang.PNG"));
         } catch (Exception e) {
             e.printStackTrace();
         }
