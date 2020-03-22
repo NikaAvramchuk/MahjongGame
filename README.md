@@ -46,10 +46,10 @@ You can buy the tracks here: <a href="url">https://www.psyshop.com/Weird-Circles
 ### Authors:
 
 <i>Marcin Obuszyński</i>
-E-mail: MarcinObuszynski213@gmail.com
+<br>E-mail: MarcinObuszynski213@gmail.com
 
 <i>Weronika Avramchuk</i>
-E-mail:
+<br>E-mail:
 
 --------
 ### Special thanks:
