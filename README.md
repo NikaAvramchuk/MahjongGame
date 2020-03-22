@@ -45,8 +45,8 @@ You can buy the tracks here: <a href="url">https://www.psyshop.com/Weird-Circles
 --------
 ### Authors:
 
-Marcin Obuszyński
+<i>Marcin Obuszyński</i>
 
-Weronika Avramchuk
+<i>Weronika Avramchuk</i>
 
-We would like to make special thanks to Piotr Wrona and whole C_School team. Without them, this project wouldn't exist ;)
+We would like to make special thanks to <i>Piotr Wrona</i> and whole <i>C_School</i> team. Without them, this project wouldn't exist ;)
