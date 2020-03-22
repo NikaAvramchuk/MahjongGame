@@ -10,7 +10,8 @@
 Our project is variation of a game called "Solitaire Mahjong". Your task in this game is to find a pair of matching tiles as fast
 as you can and put them out of board by clicking on them. There is a total of 144 tiles. Our game is implementing all funcionalities
 (you can read about them in this document), that are in most of "Mahjong Solitaire" variants, such as shuffling the board,
-getting a clue, and restarting a game. But there is more. We wanted this game to be fun and we hope, that it will give it to you.
+getting a clue, and restarting a game. But there is more, and you can check out yourself. We wanted this game to be fun and we hope,
+that it will give it to you.
 
 -------
 ### Features:
@@ -29,6 +30,16 @@ move.
 5) Music: For now there are a total of 4 songs, played randomly, but you can choose to silent the music.
 6) Scores table: If you manage to finish the game with time that is better than last time from "top 5 times", the game will
 update scores table and you will be able to see your name and your time in the proper position in top 5 scores table
+
+--------
+### Graphics and music:
+We used and modified graphics downloaded from 
+<a href="url">https://www.freepik.com/</a>
+
+There are a total of 4 songs played randomly, and all of them are created by Ascent and Shogan, Phoenix Groove Records.
+You can buy the tracks here: <a href="url">https://www.psyshop.com/Weird-Circles-Ascent-Shogan/pgr1dw034/</a>
+
+
 
 --------
 ### Authors:
