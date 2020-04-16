@@ -49,7 +49,7 @@ You can buy the tracks here: <a href="url">https://www.psyshop.com/Weird-Circles
 <br>E-mail: MarcinObuszynski213@gmail.com
 
 <i>Weronika Avramchuk</i>
-<br>E-mail:
+<br>E-mail: nika.avramchuk@gmail.com
 
 --------
 ### Special thanks:
